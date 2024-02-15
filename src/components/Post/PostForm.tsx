@@ -3,49 +3,7 @@ import TabItem from "./TabItem";
 import { ChangeEvent, useState } from "react";
 import Post from "./PostForm/Post";
 import ImageUpload from "./PostForm/ImageUpload";
-<<<<<<< HEAD
-
-
-export type Item = {
-  title: string;
-  icon: unknown;
-  type: "post" | "image_video" | "link" | "poll";
-}
-
-export type PostForm = {
-  title: string;
-  postType: "post" | "image_video" | "link" | "poll";
-  body?: string;
-  image?: [string];
-  video?: string;
-  poll?: [string];
-}
-
-const formTabs: Item[] = [
-  {
-    title: 'Post',
-    type: 'post',
-    icon: <RiFileList3Line size={22} />,
-  },
-  {
-    title: 'Images & Video',
-    type: 'image_video',
-    icon: <RiImageCircleLine size={22} />,
-  },
-  {
-    title: 'Link',
-    type: 'link',
-    icon: <RiLink size={22} />,
-  },
-  {
-    title: 'Poll',
-    type: 'poll',
-    icon: <RiChatPollLine size={22} />,
-  }
-];
-=======
 import { formTabs, PostForm } from "../../config/postConfig";
->>>>>>> f754e7e (working on file upload)
 
 
 const PostForm = () => {
@@ -71,11 +29,6 @@ const PostForm = () => {
     setTitleSize((prev) => prev = event.target.value.length);
   }
 
-<<<<<<< HEAD
-  console.log(post);
-
-=======
->>>>>>> f754e7e (working on file upload)
 
   return (
     <div className="flex flex-col gap-2 px-2">
