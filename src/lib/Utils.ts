@@ -1,44 +1,37 @@
-import toast from "react-hot-toast";
-import { ALLOWED_FILE_TYPES } from "../config/postConfig"
+import { ALLOWED_FILE_TYPES, postError } from "../config/postConfig";
+import { Toast } from "./Toast";
 
 export const validateFileType = (file: File) => {
   return ALLOWED_FILE_TYPES.includes(file.type);
 }
 
 
-const Style = {
-  borderRadius: '10px',
-  fontSize: 14,
-  fontWeight: 800,
-  'max-width': '800px',
-  backgroundColor: '#e5e7eb',
-}
+export const getValidFiles = (files: File[]) => {
+  let toast = { type: '', message: '', duration: 0, }
+  // validate files type 
+  const validFiles = files.filter((file) => {
 
-export const Toast = (toastType: string, message: string, duration: number) => {
-  switch (toastType) {
-    case 'succes': {
-      toast.error(message, {
-        duration: 3000,
-        style: Style,
-      });
+    if (files.length === 1 && !validateFileType(file)) {
+      toast = {
+        ...toast,
+        type: 'info-bottom', message: postError['suppoted_file_type'], duration: 30000,
+      }
+      return false;
     }
-      break;
-    case 'error': {
-      toast.error(message, {
-        duration: 3000,
-        style: Style,
-      });
+    else if (files.length >= 2 && file.type.includes('video')) {
+      toast = {
+        ...toast,
+        type: 'error-bottom', message: postError['video_not_allowed_in_gallery'], duration: 30000,
+      }
+      return false;
     }
-      break;
-    case 'error_bottom': {
-      toast.error(message, {
-        position: "bottom-center",
-        duration: duration,
-        style: Style
-      })
-    }
-      break;
-    default:
-      console.log('Invalid Toast Message Type');
-  }
+
+    return true;
+  });
+
+  if (toast.message.length)
+    Toast(toast.type, toast.message, toast.duration);
+
+  return validFiles;
+
 }

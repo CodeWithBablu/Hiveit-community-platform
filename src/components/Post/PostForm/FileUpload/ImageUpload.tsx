@@ -27,8 +27,7 @@ export type Action = {
 const fileHandler = (state: State, action: Action) => {
   switch (action.type) {
     case 'Add_files': {
-      console.log('Add_files');
-      return state;
+      return [...state, ...action.payload];
     }
   }
 }

@@ -1,7 +1,6 @@
 import { RiFileList3Line, RiLink, RiImageCircleLine, RiChatPollLine } from "@remixicon/react"
 
-
-export const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', '.gif', 'video/mp4', 'video/mov'];
+export const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'video/mp4', 'video/mov'];
 
 export type Item = {
   title: string;
@@ -45,5 +44,4 @@ export const formTabs: Item[] = [
 export const postError = {
   'video_not_allowed_in_gallery': "Videos aren’t supported within galleries...yet 🥶️",
   'suppoted_file_type': "Sorry, we accept only images (.png, .jpeg, .gif) and videos (.mp4, .mov)",
-  'remove_video_from_gallery': "Sorry video aren't supported in gallery yet",
 }

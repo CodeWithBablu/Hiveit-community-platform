@@ -76,6 +76,9 @@ export default {
         blackAplha800: "rgba(0, 0, 0, 0.80)",
         blackAplha900: "rgba(0, 0, 0, 0.90)",
         dimWhite: "rgba(255, 255, 255, 0.7)",
+        success: "rgba(16, 185, 129, 0.2)",
+        error: "rgba(239, 68, 68, 0.2)",
+        info: "rgba(59, 130, 246, 0.2)",
         header: "rgba(255, 255, 255, 0.4)",
       },
       fontFamily: {
