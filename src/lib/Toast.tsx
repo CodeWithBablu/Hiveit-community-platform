@@ -1,65 +1,83 @@
 import toast, { ToastPosition } from "react-hot-toast";
-import { RiCloseLine } from "@remixicon/react";
+import { RiCloseCircleLine, RiInformationLine, RiCheckFill, RiCloseLine } from "@remixicon/react";
 
-
-const tostConfig: { [key: string]: { [key: string]: number | string } } = {
-  success: {
-    type: 'success',
-    position: 'top-center',
-    textColor: 'text-green-500',
-    bgPrimary: 'bg-green-500',
-    bgSecondary: 'bg-success',
-  },
-  error: {
-    type: 'error',
-    position: 'top-center',
-    textColor: 'text-rose-500',
-    bgPrimary: 'bg-rose-500',
-    bgSecondary: 'bg-error',
-  },
-  info: {
-    type: 'info',
-    position: 'top-center',
-    textColor: 'text-blue-500',
-    bgPrimary: 'bg-blue-500',
-    bgSecondary: 'bg-info',
-  },
-  'info-bottom': {
-    type: 'info-bottom',
-    position: 'bottom-center',
-    textColor: 'text-blue-500',
-    bgPrimary: 'bg-blue-500',
-    bgSecondary: 'bg-info',
-  },
-  'error-bottom': {
-    type: 'error-bottom',
-    position: 'bottom-center',
-    textColor: 'text-rose-500',
-    bgPrimary: 'bg-rose-500',
-    bgSecondary: 'bg-error',
-  }
+type ToastConfig = {
+  type: ToastType;
+  position: string;
+  textColor: string;
+  Icon: unknown,
+  bgPrimary: string;
 }
 
-export const Toast = (toastType: string, message: string, duration: number) => {
+type ToastType = "success" | "error" | "info" | "info-bottom" | "error-bottom";
 
-  const config = tostConfig[toastType];
+
+const tostConfig = {
+  'success': {
+    type: 'success',
+    Icon: <RiCheckFill className="w-7 h-7 font-semibold text-green-500" />,
+    position: 'top-center',
+    textColor: 'text-green-500',
+    bgPrimary: 'bg-success',
+  },
+  'error': {
+    type: 'error',
+    Icon: <RiCloseCircleLine className="w-7 h-7 font-semibold text-rose-500" />,
+    position: 'top-center',
+    textColor: 'text-rose-500',
+    bgPrimary: 'bg-error',
+  },
+  'error-bottom': {
+    type: 'error',
+    Icon: <RiCloseCircleLine className="w-7 h-7 font-semibold text-rose-500" />,
+    position: 'bottom-center',
+    textColor: 'text-rose-500',
+    bgPrimary: 'bg-error',
+  },
+  'info': {
+    type: 'info',
+    Icon: <RiInformationLine className="w-7 h-7 font-semibold text-blue-500" />,
+    position: 'top-center',
+    textColor: 'text-blue-500',
+    bgPrimary: 'bg-info',
+  },
+  'info-bottom': {
+    type: 'info',
+    Icon: <RiInformationLine className="w-7 h-7 font-semibold text-blue-500" />,
+    position: 'bottom-center',
+    textColor: 'text-blue-500',
+    bgPrimary: 'bg-info',
+  },
+}
+
+
+
+export const Toast = (toastType: ToastType, message: string, duration: number) => {
+  console.log(toastType);
+  const config = tostConfig[toastType] as ToastConfig;
+  console.log(config);
   toast.custom(
     (t) => (
-      <div className={` md:max-w-[800px] flex items-center min-h-14 ${config.textColor} rounded-sm overflow-hidden`} >
-        <div className={`w-2 h-full ${config.bgPrimary}`}> </div>
-        <div className={` flex flex-grow gap-3 items-center h-full p-2 ${config.bgSecondary} border-none backdrop-blur-md`}>
-          <span>{message}</span>
+      <div className={`flex items-center justify-between min-w-[90%] sm:min-w-[400px] max-w-[90%] md:max-w-[600px] ${config.bgPrimary} min-h-14 p-3 rounded-md overflow-hidden backdrop-blur-xl`}>
+        <div className="h-full w-fit pr-3">
+          <>{config.Icon}</>
         </div>
-        <span onClick={() => toast.dismiss(t.id)} className={`hover:bg-zinc-800/80 ${config.bgSecondary} h-full p-1 cursor-pointer`}>
-          <RiCloseLine size={22} />
+
+        <div className="flex flex-1 flex-col text-lg">
+          <h3 className={`${config.textColor} font-poppins font-medium capitalize`}>{config.type}</h3>
+          <h4 className="text-gray-50 ">{message}</h4>
+        </div>
+
+        <span className="h-full w-fit">
+          <RiCloseLine onClick={() => toast.dismiss(t.id)} className={`w-8 h-8 cursor-pointer rounded-full ${config.textColor} hover:bg-zinc-800/20`} />
         </span>
+
       </div>
     ),
     {
       duration: duration,
       position: config.position as ToastPosition,
     },
-
   );
 
   return;

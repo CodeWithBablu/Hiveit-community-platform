@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Menu, MenuButton, MenuList } from '@chakra-ui/react';
 import Communities from './Communities';
 import { RiArrowDropDownLine } from '@remixicon/react';
@@ -17,7 +15,7 @@ const Directory = () => {
     <Menu >
       <MenuButton
         cursor="pointer"
-        _hover={{ outline: "none", background: "gray.800" }}
+        _hover={{ outline: "none", background: "whiteAlpha.200" }}
         className=' z-10 mx-1 px-2 h-10 rounded-md'
       >
         <div className=' flex items-center justify-between space-x-1'>
@@ -26,7 +24,7 @@ const Directory = () => {
           <RiArrowDropDownLine size={20} />
         </div>
       </MenuButton>
-      <MenuList boxShadow={'0px 0px 10px 1px rgb(93 0 255 / 0.8 )'} padding={'0px 0px'} borderColor='gray.500' bgColor='blackAlpha.900' className=' flex flex-col items-center'>
+      <MenuList boxShadow={'0px 0px 30px 0px rgba(225,225,225,0.5)'} color={"gray.400"} padding={'10px 10px'} borderRadius={10} borderColor='gray.600' bgColor='blackAlpha.900' className=' flex flex-col items-center p-2'>
         <Communities />
       </MenuList>
     </Menu>

@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../firebase/clientApp";
 import { collection, doc, getDocs, increment, writeBatch } from "firebase/firestore";
 import { setAuthModalState, setCommunitiesState } from "../slices";
+import { Toast } from "../lib/Toast";
 
 const useCommunity = () => {
 
@@ -69,11 +70,15 @@ const useCommunity = () => {
       dispatch(setCommunitiesState({ mySnippets: [...userCommunities.mySnippets, newSnippet] as [CommunitySnippet] }));
     } catch (error) {
       console.log('Joining community error : ', error instanceof Error ? error.message : String(error));
+      Toast('error', 'Failed to Join community. Try again later', 4000);
     }
   }
 
   const leaveCommunity = async (communityData: Community) => {
     try {
+      if (communityData.creatorId === user?.uid)
+        return Toast('info', "Nice try, but you're the founding member!", 4000);
+
       const batch = writeBatch(firestore);
 
       //remove snippet from user communitySnippets collection
@@ -95,6 +100,7 @@ const useCommunity = () => {
 
     } catch (error) {
       console.log('Leaving community error : ', error instanceof Error ? error.message : String(error));
+      Toast('error', 'Failed to leave community. Try again later', 4000);
     }
   }
 

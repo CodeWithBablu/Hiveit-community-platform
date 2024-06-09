@@ -1,11 +1,13 @@
 import { motion } from "framer-motion"
 import { auth, firestore } from "../../../firebase/clientApp";
 import { Spinner } from "@chakra-ui/react";
-import toast from "react-hot-toast";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { useEffect } from "react";
+import { Toast } from "../../../lib/Toast";
+import { FirebaseError } from "firebase/app";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 // type Props = {}
 
@@ -15,23 +17,19 @@ const OAuthButton = () => {
 
   useEffect(() => {
     if (userCred) createUserDocument(userCred.user);
-  }, [userCred]);
+
+    if (error) Toast('error', FIREBASE_ERRORS[error.message as keyof typeof FIREBASE_ERRORS], 5000);
+  }, [userCred, error]);
+
+  useEffect(() => {
+  }, [error]);
 
   const onSignin = async () => {
-    const userCred = await signInWithGoogle();
-
-    if (userCred) {
-      toast.success(`Signed in Successful!!`, {
-        duration: 3000,
-        icon: "👏️😉️",
-        style: {
-          borderRadius: '10px',
-          background: '#1b1b19',
-          color: '#ffffff',
-          fontSize: 18,
-          fontWeight: 800,
-        },
-      });
+    try {
+      const userCred = await signInWithGoogle();
+      if (userCred) return Toast('success', "Signed in Successful!!", 5000);
+    } catch (error) {
+      Toast('error', error instanceof FirebaseError ? FIREBASE_ERRORS[error.message as keyof typeof FIREBASE_ERRORS] : 'Failed to login/signup. Try again', 4000);
     }
   }
 

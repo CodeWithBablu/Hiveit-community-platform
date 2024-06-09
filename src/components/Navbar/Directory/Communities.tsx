@@ -16,7 +16,7 @@ const Communities = () => {
   return (
     <>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
-      <MenuItem bgColor='transparent' className='gap-2 rounded-md hover:text-indigo-200 hover:bg-zinc-900' onClick={() => setOpen(true)}>
+      <MenuItem bgColor='transparent' className='gap-2 rounded-md hover:text-gray-100 hover:bg-zinc-900' onClick={() => setOpen(true)}>
         {addicon}
         <span className='text-lg font-medium font-poppins'>Create Community</span>
       </MenuItem>

@@ -9,9 +9,9 @@ import { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/Navbar/Navbar.tsx';
 import store from './store.ts';
-import Community from './pages/community.tsx';
 import ErrorPage from './pages/error-page.tsx';
 import Submit from './pages/submit.tsx';
+import CommunityPage from './pages/communityPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   {
     path: "h/:communityId",
     errorElement: <ErrorPage />,
-    element: <Community />,
+    element: <CommunityPage />,
   },
   {
     path: "h/:communityId/submit",

@@ -19,7 +19,6 @@
 // }]
 
 
-
 // option 2  Sql Approach
 // create separate table for mapping user and community
 // const USER_COMMUNITY = [

@@ -3,10 +3,12 @@ import { Timestamp } from "firebase/firestore";
 
 export interface Community {
   id: string;
+  description: string;
   creatorId: string;
   numberOfMembers: number;
+  numberOfPosts: number;
   privacyType: 'public' | 'private' | 'restricted',
-  createdAt?: Timestamp;
+  createdAt: Timestamp;
   imageURL?: string;
   bgImageURL?: string;
 }

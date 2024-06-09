@@ -27,7 +27,7 @@ const Header = ({ communityData }: Props) => {
         </div>
         <div className=' flex items-center gap-4 text-white'>
           <motion.button whileTap={{ scale: 0.9 }} className=' p-1 cursor-pointer border-[1px] border-zinc-700 rounded-full hover:bg-zinc-800'><RiMoreFill size={25} /></motion.button>
-          <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` w-28 text-center font-semibold text-lg rounded-full py-1 ${isJoined ? 'ring-2 ring-indigo-300' : 'bg-indigo-500'}`}>{isJoined ? 'Joined' : 'Join'}</motion.button>
+          <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` ${isJoined ? `w-32 after:content-['Following'] hover:after:content-['unfollow'] ring-[1px] ring-gray-300 hover:ring-rose-950 hover:bg-rose-900/20 hover:text-rose-600` : `w-28 after:content-['Follow'] bg-gray-100 text-zinc-900`} text-center font-chillax font-semibold tracking-wider text-lg rounded-full py-2 transition-all duration-300 ease-in-out`}></motion.button>
         </div>
       </div>
 
@@ -44,29 +44,29 @@ const Header = ({ communityData }: Props) => {
 
           <div className=' flex items-center gap-4 text-white'>
             <motion.button whileTap={{ scale: 0.9 }} className=' p-1 cursor-pointer border-[1px] border-zinc-700 rounded-full hover:bg-zinc-800'><RiMoreFill size={25} /></motion.button>
-            <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` w-28 text-center font-semibold text-lg rounded-full py-1 ${isJoined ? 'ring-2 ring-indigo-300' : 'bg-indigo-500'}`}>{isJoined ? 'Joined' : 'Join'}</motion.button>
+            <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` ${isJoined ? `w-32 after:content-['Following'] hover:after:content-['unfollow'] ring-[1px] ring-gray-300 hover:ring-rose-950 hover:bg-rose-900/20 hover:text-rose-600` : `w-28 after:content-['Follow'] bg-gray-100 text-zinc-900`} text-center font-chillax font-semibold tracking-wider text-lg rounded-full py-2 transition-all duration-300 ease-in-out`}></motion.button>
           </div>
         </div>
 
         <div className=' flex flex-col gap-2 p-2 md:p-3'>
-          <h1 className=' font-poppins font-medium text-xl'>{communityData.id}</h1>
-          <p className='text-zinc-400 text-sm'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum consectetur, enim dignissimos corrupti adipisci nisi.</p>
+          <h1 className=' font-poppins font-medium text-xl sm:text-2xl'>{communityData.id}</h1>
+          <p className='text-zinc-400 text-lg'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum consectetur, enim dignissimos corrupti adipisci nisi.</p>
 
-          <div className=' flex items-center justify-end gap-3 text-sm text-zinc-400 font-medium'>
+          <div className=' flex items-center justify-end gap-3 text-zinc-400 font-medium'>
             <div className=' flex items-center gap-2'>
               <RiLink size={20} />
-              <a className=' text-indigo-400 underline underline-offset-2 hover:text-indigo-300'>pawan890@.com</a>
+              <a href={`mailto:pawan890@.com`} className=' text-sky-500 text-base sm:text-lg font-normal hover:text-sky-300 cursor-pointer'>pawan890@.com</a>
             </div>
             <div className=' flex items-center gap-2'>
               <RiCalendar2Line size={20} />
-              <span>Since June 2021</span>
+              <span className='text-base sm:text-lg'>Since June 2021</span>
             </div>
           </div>
 
         </div>
-      </main>
+      </main >
 
-    </div>
+    </div >
   )
 }
 
