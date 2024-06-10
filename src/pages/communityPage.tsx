@@ -45,7 +45,7 @@ const CommunityPage = () => {
   return (
     <div className=' bg-zinc-950'>
       <div>
-        {/* flex flex-col max-w-7xl m-auto xl:border-x-[1px] border-zinc-600 */}
+        {/* flex flex-col max-w-7xl m-auto xl:border-x-[1px] border-zinc-600 shadow-[0px_0px_30px_0px_rgba(124 ,45 ,18,0.5)]*/}
         <PageLayout>
           {/* //// Left content */}
           <>
@@ -53,7 +53,7 @@ const CommunityPage = () => {
               <Header communityData={communityData} />
               <div className='mt-10 w-full flex justify-between items-center'>
                 <SortbyMenu />
-                <button onClick={() => navigate(`submit`)} className='text-base font-semibold bg-blue-600 flex items-center gap-2 p-2 rounded-md'><RiAddLine size={20} /> Create post</button>
+                <button onClick={() => navigate(`submit`)} className='text-base font-semibold ring-[1px] ring-orange-600 shadow-[0px_0px_20px_0px_rgba(124,45,18,0.8)] rounded-full flex items-center gap-2 px-3 py-2'><RiAddLine size={20} /> Create post</button>
               </div>
             </div>
           </>

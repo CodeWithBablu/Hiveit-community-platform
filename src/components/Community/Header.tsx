@@ -44,7 +44,7 @@ const Header = ({ communityData }: Props) => {
 
           <div className=' flex items-center gap-4 text-white'>
             <motion.button whileTap={{ scale: 0.9 }} className=' p-1 cursor-pointer border-[1px] border-zinc-700 rounded-full hover:bg-zinc-800'><RiMoreFill size={25} /></motion.button>
-            <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` ${isJoined ? `w-32 after:content-['Following'] hover:after:content-['unfollow'] ring-[1px] ring-gray-300 hover:ring-rose-950 hover:bg-rose-900/20 hover:text-rose-600` : `w-28 after:content-['Follow'] bg-gray-100 text-zinc-900`} text-center font-chillax font-semibold tracking-wider text-lg rounded-full py-2 transition-all duration-300 ease-in-out`}></motion.button>
+            <motion.button onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)} whileTap={{ scale: 0.9 }} className={` ${isJoined ? `w-32 after:content-['Following'] hover:after:content-['unfollow'] ring-[1px] ring-gray-500 hover:ring-rose-950 hover:bg-rose-900/20 hover:text-rose-600` : `w-28 after:content-['Follow'] bg-gray-100 text-zinc-900`} text-center font-chillax font-semibold tracking-wider text-lg rounded-full py-2 transition-all duration-300 ease-in-out`}></motion.button>
           </div>
         </div>
 

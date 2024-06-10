@@ -3,6 +3,7 @@ import { Action } from "./ImageUpload"
 import { useRef, useState } from "react";
 import { getValidFiles } from "../../../../lib/Utils";
 import PreviewContainer from "./PreviewContainer";
+import { RiUploadCloud2Fill } from "@remixicon/react";
 
 type Props = {
   filesSelected: File[],
@@ -72,18 +73,18 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
   return (
 
     <div>
-      <div className=" relative min-h-72 ">
+      <div className=" relative min-h-72 font-chillax">
         <div id="drop_zone"
           onDragEnter={handleDrag}
           onDragOver={handleDrag}
           onDragLeave={handleDrag}
           onDrop={handleDrop}
-          className={`absolute flex inset-0 place-content-center rounded-md border-2 ${isDragActive ? ' border-dashed border-cyan-300' : 'border-zinc-700'}`}>
+          className={`absolute flex inset-0 place-content-center rounded-2xl border-2 ${isDragActive ? ' border-dashed border-blue-600' : 'border-gray-700'}`}>
           {
             !filesSelected.length ? (
               <div className="  flex items-center gap-3">
-                <h1 className=" font-medium">Drag and drop images or </h1>
-                <motion.button onClick={() => fileInputBtn.current?.click()} whileTap={{ scale: 0.9 }} className=" text-gray-800 font-semibold bg-gradient-to-tr from-gray-200 from-40% hover:from-0% to-cyan-500 py-1 px-3 rounded-2xl">Upload</motion.button>
+                <h1 className=" font-medium text-lg">Drag and Drop images or videos or </h1>
+                <motion.span whileTap={{ scale: 0.9 }} onClick={() => fileInputBtn.current?.click()} className="bg-blue-950/50 rounded-full p-3 cursor-pointer"><RiUploadCloud2Fill className="text-blue-500" size={30} /></motion.span>
               </div>
             ) : (
               <PreviewContainer filesSelected={filesSelected} dispatch={dispatch} />

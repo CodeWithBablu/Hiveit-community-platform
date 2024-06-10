@@ -163,9 +163,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
 
           <ModalFooter className=' bg-gray-900 rounded-b-[8px] text-white font-poppins font-medium gap-3'>
 
-            <motion.button onClick={handleClose} whileTap={{ scale: 0.8 }} className={`rounded-md bg-rose-600 py-2 px-3`}>Cancel</motion.button>
+            <motion.button onClick={handleClose} whileTap={{ scale: 0.8 }} className={`rounded-xl text-red-600 hover:bg-rose-950/80 py-3 px-4`}>Close</motion.button>
             <div className="relative w-fit">
-              <motion.button onClick={handleCreateCommunity} whileTap={{ scale: 0.8 }} type="submit" className={`rounded-md bg-blue-500 py-2 px-3 ${loading ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>Create Community</motion.button>
+              <motion.button onClick={handleCreateCommunity} whileTap={{ scale: 0.8 }} type="submit" className={`rounded-xl bg-blue-600 py-3 px-4 ${loading ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>Create Community</motion.button>
               {loading && <Spinner thickness='4px' className="absolute top-0 bottom-0 left-0 right-0 m-auto" />}
             </div>
 

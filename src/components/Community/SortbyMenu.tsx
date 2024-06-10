@@ -20,7 +20,7 @@ const SortbyMenu = () => {
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
         className=' mx-1 px-2 h-10 md:h-12 rounded-md'
       >
-        <div className=" px-2 py-2 flex items-center gap-3 text-lg capitalize text-sky-500 font-semibold">{sortby} <RiArrowDropDownLine size={30} /></div>
+        <div className=" px-2 py-2 flex items-center gap-3 text-lg capitalize text-orange-500 font-semibold">{sortby} <RiArrowDropDownLine size={30} /></div>
       </MenuButton>
       <MenuList boxShadow={'0px 0px 30px 0px rgba(225,225,225,0.5)'} padding={'10px 10px'} borderRadius={10} borderColor='gray.600' bgColor='blackAlpha.900' className=' flex flex-col items-center p-2'>
         {

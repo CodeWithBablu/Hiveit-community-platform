@@ -1,31 +1,39 @@
-import { RiFileList3Line, RiLink, RiImageCircleLine, RiChatPollLine } from "@remixicon/react"
+import { RiLink, RiImageCircleLine, RiReceiptLine, RiMenu4Fill } from "@remixicon/react"
 
 export const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'video/mp4', 'video/mov'];
 
 export type Item = {
   title: string;
   icon: unknown;
-  type: "post" | "image_video" | "link" | "poll";
+  type: "post" | "media" | "link" | "poll";
 }
 
-export type PostForm = {
-  title: string;
-  postType: "post" | "image_video" | "link" | "poll";
+// export type PostForm = {
+//   title: string;
+//   postType: "post" | "image_video" | "link" | "poll";
+//   body?: string;
+//   image?: [string];
+//   video?: string;
+//   poll?: [string];
+// }
+
+
+export interface Payload {
+  type: "post" | "media" | "link" | "poll";
   body?: string;
-  image?: [string];
-  video?: string;
-  poll?: [string];
+  gallery?: string[];
+  link?: string;
 }
 
 export const formTabs: Item[] = [
   {
     title: 'Post',
     type: 'post',
-    icon: <RiFileList3Line size={22} />,
+    icon: <RiReceiptLine size={22} />,
   },
   {
     title: 'Images & Video',
-    type: 'image_video',
+    type: 'media',
     icon: <RiImageCircleLine size={22} />,
   },
   {
@@ -36,7 +44,7 @@ export const formTabs: Item[] = [
   {
     title: 'Poll',
     type: 'poll',
-    icon: <RiChatPollLine size={22} />,
+    icon: <RiMenu4Fill size={22} />,
   }
 ];
 
