@@ -1,22 +1,80 @@
 import { motion } from "framer-motion"
-import { Action } from "./ImageUpload"
 import { useRef, useState } from "react";
 import { getValidFiles } from "../../../../lib/Utils";
-import PreviewContainer from "./PreviewContainer";
 import { RiUploadCloud2Fill } from "@remixicon/react";
+import { Action, FileWithUrl } from "../../PostForm";
+import Gallery from "./Gallery";
+import { storage } from "../../../../firebase/clientApp";
+import { Toast } from "../../../../lib/Toast";
+import { postError } from "../../../../config/postConfig";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { Progress, Spinner } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 
 type Props = {
-  filesSelected: File[],
+  user: User,
+  filesSelected: FileWithUrl[],
   dispatch: ({ type, payload }: Action) => void;
 }
+
 
 const FileInput = ({ filesSelected, dispatch }: Props) => {
 
   const fileInputBtn = useRef<HTMLInputElement>(null);
   const [isDragActive, setIsDragActive] = useState(false);
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  // const [tempFiles, setTempFiles] = useState<FileWithUrl[]>([]);
 
-  const addFilesToState = (files: File[]) => {
+  const uploadTempFiles = async (files: File[]) => {
+    const tempFiles: FileWithUrl[] = [];
+    setLoading(true);
+    setProgress(0);
+
+    if ((filesSelected.length + files.length) > 5) {
+      Toast('info-bottom', postError['max_upload_limit_reached'], 4000);
+      files = files.slice(0, (5 - filesSelected.length));
+    }
+
+    let totalFiles = files.length;
+    let totalBytes = files.reduce((acc, file) => acc + file.size, 0);
+    let bytesTransferred = 0;
+    const prevBytesTransferred: { [key: string]: number } = {};
+
+    for (const file of files) {
+      const tempFileRef = ref(storage, `temp/${file.name}`);
+      const uploadTask = uploadBytesResumable(tempFileRef, file);
+
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          bytesTransferred += snapshot.bytesTransferred - (prevBytesTransferred[file.name] || 0);
+          const totalProgress = (bytesTransferred / totalBytes) * 100;
+          prevBytesTransferred[file.name] = snapshot.bytesTransferred;
+          setProgress(totalProgress);
+        },
+        (error) => {
+          bytesTransferred -= prevBytesTransferred[file.name];
+          totalBytes -= file.size;
+          totalFiles--;
+          console.error('upload failed: ', error);
+        },
+        async () => {
+          const tempURL = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log(tempURL);
+          tempFiles.push({ name: file.name, type: file.type, url: tempURL, caption: "", link: "" });
+          if (tempFiles.length === totalFiles) {
+            setLoading(false);
+            addFilesToState(tempFiles);
+            console.log('All files uploaded to temporary: ', tempFiles);
+          }
+        }
+      )
+    }
+
+  }
+
+  const addFilesToState = (files: FileWithUrl[]) => {
     dispatch({ type: 'Add_files', payload: files });
   }
 
@@ -39,8 +97,8 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
         const files = Array.from(e.target.files);
         console.log("Files:", files);
 
-        const validFiles = getValidFiles(files);
-        addFilesToState(validFiles);
+        const validFiles = getValidFiles(filesSelected, files);
+        await uploadTempFiles(validFiles);
         setIsDragActive(false);
         console.log("Valid Files:", validFiles);
       }
@@ -50,7 +108,7 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
   }
 
   // triggers when files are dropped
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -59,8 +117,8 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
       console.log("Files:", files);
 
       if (files && files[0]) {
-        const validFiles = getValidFiles(files);
-        addFilesToState(validFiles);
+        const validFiles = getValidFiles(filesSelected, files);
+        await uploadTempFiles(validFiles);
         setIsDragActive(false);
         console.log("Valid Files:", validFiles);
       }
@@ -71,36 +129,38 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
 
 
   return (
-
-    <div>
-      <div className=" relative min-h-72 font-chillax">
-        <div id="drop_zone"
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-          className={`absolute flex inset-0 place-content-center rounded-2xl border-2 ${isDragActive ? ' border-dashed border-blue-600' : 'border-gray-700'}`}>
-          {
-            !filesSelected.length ? (
-              <div className="  flex items-center gap-3">
-                <h1 className=" font-medium text-lg">Drag and Drop images or videos or </h1>
-                <motion.span whileTap={{ scale: 0.9 }} onClick={() => fileInputBtn.current?.click()} className="bg-blue-950/50 rounded-full p-3 cursor-pointer"><RiUploadCloud2Fill className="text-blue-500" size={30} /></motion.span>
-              </div>
-            ) : (
-              <PreviewContainer filesSelected={filesSelected} dispatch={dispatch} />
-            )
-          }
-        </div>
-
-        <input
-          ref={fileInputBtn}
-          onChange={handleChange}
-          multiple
-          accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov"
-          type="file"
-          className="hidden"
-        />
+    <div className=" relative min-h-72 font-chillax rounded-2xl">
+      <div id="drop_zone"
+        onDragEnter={handleDrag}
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
+        onDrop={handleDrop}
+        className={`flex flex-col relative place-content-center rounded-2xl border-2 ${isDragActive ? ' border-dashed border-blue-600' : 'border-gray-700'}`}>
+        {
+          !filesSelected.length ? (
+            <div className="  flex flex-col justify-center min-h-72 items-center h-full gap-3">
+              <h1 className=" font-medium text-base sm:text-lg">Drag and Drop images or videos or </h1>
+              <motion.span whileTap={{ scale: 0.9 }} onClick={() => fileInputBtn.current?.click()} className="bg-blue-950/50 rounded-full p-3 cursor-pointer"><RiUploadCloud2Fill className="text-blue-500" size={30} /></motion.span>
+            </div>
+          ) : (
+            <Gallery filesSelected={filesSelected} dispatch={dispatch} />
+          )
+        }
       </div>
+
+      {(loading && progress > 0) && <div className="absolute z-20 inset-2 rounded-xl flex flex-col gap-5 justify-center items-center bg-blackAplha500 backdrop-blur-lg">
+        <Spinner />
+        <Progress aria-valuenow={progress} size='sm' className="z-30 w-[50%] mb-10 rounded-full" colorScheme="blue" backgroundColor={"whiteAlpha.200"} value={progress} />
+      </div>}
+
+      <input
+        ref={fileInputBtn}
+        onChange={handleChange}
+        multiple
+        accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov"
+        type="file"
+        className="hidden"
+      />
     </div>
   )
 }

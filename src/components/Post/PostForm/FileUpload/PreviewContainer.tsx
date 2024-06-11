@@ -1,19 +1,19 @@
-import Gallery from "./Gallery";
-import { Action } from "./ImageUpload";
+// import Gallery from "./Gallery";
+// import { Action } from "./ImageUpload";
 
-type Props = {
-  filesSelected: File[],
-  dispatch: ({ type, payload }: Action) => void;
-}
+// type Props = {
+//   filesSelected: File[],
+//   dispatch: ({ type, payload }: Action) => void;
+// }
 
-const PreviewContainer = ({ filesSelected, dispatch }: Props) => {
+// const PreviewContainer = ({ filesSelected, dispatch }: Props) => {
 
 
-  return (
-    <div className=" w-full">
-      {filesSelected.length && <Gallery filesSelected={filesSelected} dispatch={dispatch} />}
-    </div>
-  )
-}
+//   return (
+//     <div className=" w-full">
+//       {filesSelected.length && <Gallery filesSelected={filesSelected} dispatch={dispatch} />}
+//     </div>
+//   )
+// }
 
-export default PreviewContainer
+// export default PreviewContainer

@@ -1,46 +1,42 @@
-import { useReducer, useState } from "react"
-import FileInput from "./FileInput";
+// import { useReducer, useState } from "react"
+// import FileInput from "./FileInput";
 
-// type Props = {}
+// // type Props = {}
 
 
 // export type FileWithUrl = {
+//   name: string;
 //   getUrl: string;
 //   size: number;
 //   error?: boolean | undefined;
 // }
 
-const addFilesToInput = () => ({
-  type: 'Add_files' as const,
-  payload: [] as File[],
-})
-// type Action = ReturnType<typeof addFilesToInput>;
 
-export type State = File[];
+// export type State = FileWithUrl[];
 
-export type Action = {
-  type: 'Add_files',
-  payload: File[];
-}
+// export type Action = {
+//   type: 'Add_files',
+//   payload: FileWithUrl[];
+// }
 
 
-const fileHandler = (state: State, action: Action) => {
-  switch (action.type) {
-    case 'Add_files': {
-      return [...state, ...action.payload];
-    }
-  }
-}
+// const fileHandler = (state: State, action: Action) => {
+//   switch (action.type) {
+//     case 'Add_files': {
+//       return [...state, ...action.payload];
+//     }
+//   }
+// }
 
-const ImageUpload = () => {
+// const ImageUpload = () => {
 
-  const [filesSelected, dispatch] = useReducer(fileHandler, []);
+//   const [filesSelected, dispatch] = useReducer(fileHandler, []);
 
-  return (
-    <div>
-      <FileInput filesSelected={filesSelected} dispatch={dispatch} />
-    </div>
-  )
-}
+//   return (
+//     <div>
+//       <FileInput filesSelected={filesSelected} dispatch={dispatch} />
+//     </div>
+//   )
+// }
 
-export default ImageUpload
+// export default ImageUpload

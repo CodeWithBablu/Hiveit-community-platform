@@ -8,7 +8,7 @@ import { RiSearch2Line } from "@remixicon/react";
 
 const SearchInput = () => {
   return (
-    <div className="flex-1 mx-2 lg:max-w-xl">
+    <div className="flex-1 mx-2 max-w-80 lg:max-w-xl">
       <InputGroup className="outline-none">
         <InputLeftElement pointerEvents='none' height={12}>
           <RiSearch2Line size={20} color="red" />

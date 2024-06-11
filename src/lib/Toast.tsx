@@ -9,7 +9,7 @@ type ToastConfig = {
   bgPrimary: string;
 }
 
-type ToastType = "success" | "error" | "info" | "info-bottom" | "error-bottom";
+export type ToastType = "success" | "error" | "info" | "info-bottom" | "error-bottom";
 
 
 const tostConfig = {
@@ -28,9 +28,9 @@ const tostConfig = {
     bgPrimary: 'bg-error',
   },
   'error-bottom': {
-    type: 'error',
+    type: 'error-bottom',
     Icon: <RiCloseCircleLine className="w-7 h-7 font-semibold text-rose-500" />,
-    position: 'bottom-center',
+    position: 'bottom-right',
     textColor: 'text-rose-500',
     bgPrimary: 'bg-error',
   },
@@ -42,9 +42,9 @@ const tostConfig = {
     bgPrimary: 'bg-info',
   },
   'info-bottom': {
-    type: 'info',
+    type: 'info-bottom',
     Icon: <RiInformationLine className="w-7 h-7 font-semibold text-blue-500" />,
-    position: 'bottom-center',
+    position: 'bottom-right',
     textColor: 'text-blue-500',
     bgPrimary: 'bg-info',
   },
@@ -64,7 +64,7 @@ export const Toast = (toastType: ToastType, message: string, duration: number) =
         </div>
 
         <div className="flex flex-1 flex-col text-lg">
-          <h3 className={`${config.textColor} font-poppins font-medium capitalize`}>{config.type}</h3>
+          <h3 className={`${config.textColor} font-poppins font-medium capitalize`}>{config.type.split('-')[0]}</h3>
           <h4 className="text-gray-50 ">{message}</h4>
         </div>
 

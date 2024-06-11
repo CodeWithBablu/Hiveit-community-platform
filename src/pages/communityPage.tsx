@@ -53,7 +53,7 @@ const CommunityPage = () => {
               <Header communityData={communityData} />
               <div className='mt-10 w-full flex justify-between items-center'>
                 <SortbyMenu />
-                <button onClick={() => navigate(`submit`)} className='text-base font-semibold ring-[1px] ring-orange-600 shadow-[0px_0px_20px_0px_rgba(124,45,18,0.8)] rounded-full flex items-center gap-2 px-3 py-2'><RiAddLine size={20} /> Create post</button>
+                <button onClick={() => navigate(`submit`)} className='text-base font-semibold ring-[1px] ring-orange-600 shadow-[0px_0px_15px_0px_rgba(124,45,18,0.8)] rounded-full flex items-center gap-2 px-3 py-3'><RiAddLine size={20} /> Create post</button>
               </div>
             </div>
           </>
