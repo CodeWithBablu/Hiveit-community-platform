@@ -18,14 +18,13 @@ type Props = {
 }
 
 
-const FileInput = ({ filesSelected, dispatch }: Props) => {
+const FileInput = ({ user, filesSelected, dispatch }: Props) => {
 
   const fileInputBtn = useRef<HTMLInputElement>(null);
   const [isDragActive, setIsDragActive] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
-  // const [tempFiles, setTempFiles] = useState<FileWithUrl[]>([]);
 
   const uploadTempFiles = async (files: File[]) => {
     const tempFiles: FileWithUrl[] = [];
@@ -43,7 +42,7 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
     const prevBytesTransferred: { [key: string]: number } = {};
 
     for (const file of files) {
-      const tempFileRef = ref(storage, `temp/${file.name}`);
+      const tempFileRef = ref(storage, `temp/${user.uid}/${file.name}`);
       const uploadTask = uploadBytesResumable(tempFileRef, file);
 
       uploadTask.on('state_changed',
@@ -143,7 +142,7 @@ const FileInput = ({ filesSelected, dispatch }: Props) => {
               <motion.span whileTap={{ scale: 0.9 }} onClick={() => fileInputBtn.current?.click()} className="bg-blue-950/50 rounded-full p-3 cursor-pointer"><RiUploadCloud2Fill className="text-blue-500" size={30} /></motion.span>
             </div>
           ) : (
-            <Gallery filesSelected={filesSelected} dispatch={dispatch} />
+            <Gallery inputRef={fileInputBtn} filesSelected={filesSelected} dispatch={dispatch} />
           )
         }
       </div>

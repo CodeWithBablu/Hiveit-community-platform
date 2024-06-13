@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@reduxjs/toolkit": "^2.1.0",
     "@remixicon/react": "^4.1.1",
+    "clsx": "^2.1.1",
     "firebase": "^10.7.2",
     "framer-motion": "^11.0.3",
     "react": "^18.2.0",
@@ -37,6 +38,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.33",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
