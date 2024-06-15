@@ -1,18 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import Home from './pages/home.tsx';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Provider } from 'react-redux';
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import Home from "./pages/home.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
 
-import Navbar from './components/Navbar/Navbar.tsx';
-import store from './store.ts';
-import ErrorPage from './pages/error-page.tsx';
-import Submit from './pages/submit.tsx';
-import CommunityPage from './pages/communityPage.tsx';
-
+import Navbar from "./components/Navbar/Navbar.tsx";
+import store from "./store.ts";
+import ErrorPage from "./pages/error-page.tsx";
+import Submit from "./pages/submit.tsx";
+import CommunityPage from "./pages/communityPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -27,11 +26,11 @@ const router = createBrowserRouter([
   {
     path: "h/:communityId/submit",
     errorElement: <ErrorPage />,
-    element: <Submit />
-  }
+    element: <Submit />,
+  },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider>
@@ -41,4 +40,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </ChakraProvider>
     </Provider>
   </React.StrictMode>,
-)
+);

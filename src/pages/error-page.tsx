@@ -5,12 +5,19 @@ export default function ErrorPage() {
 
   return (
     <>
-      <div id="error-page" className="flex items-center justify-center w-full h-[600px] bg-zinc-950">
-        <div className=" text-center">
-          <h1 className=" text-3xl text-orange-600 font-semibold font-poppins my-3">Oops!</h1>
-          <p className=" text-xl text-gray-500 my-2">Sorry, an unexpected error has occurred.</p>
+      <div
+        id="error-page"
+        className="flex h-[600px] w-full items-center justify-center bg-zinc-950"
+      >
+        <div className="text-center">
+          <h1 className="my-3 font-poppins text-3xl font-semibold text-orange-600">
+            Oops!
+          </h1>
+          <p className="my-2 text-xl text-gray-500">
+            Sorry, an unexpected error has occurred.
+          </p>
           <p className="text-rose-400">
-            < i >
+            <i>
               {'"'}
               {error instanceof Error && error.message}
               {String(error)}
@@ -18,7 +25,7 @@ export default function ErrorPage() {
             </i>
           </p>
         </div>
-      </div >
+      </div>
     </>
   );
 }

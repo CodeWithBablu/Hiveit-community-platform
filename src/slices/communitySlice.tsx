@@ -7,7 +7,7 @@ export interface Community {
   creatorId: string;
   numberOfMembers: number;
   numberOfPosts: number;
-  privacyType: 'public' | 'private' | 'restricted',
+  privacyType: "public" | "private" | "restricted";
   createdAt: Timestamp;
   imageURL?: string;
   bgImageURL?: string;
@@ -20,28 +20,28 @@ export interface CommunitySnippet {
 }
 
 export interface CommunitiesState {
-  mySnippets: [CommunitySnippet] | [],
+  mySnippets: [CommunitySnippet] | [];
   // visitedCommunities
 }
 
 const defaultCommunitiesState: CommunitiesState = {
   mySnippets: [],
-}
+};
 
 export const CommunitySlice = createSlice({
-  name: 'communitiesState',
+  name: "communitiesState",
   initialState: defaultCommunitiesState,
   reducers: {
     setCommunitiesState: (state, action: PayloadAction<CommunitiesState>) => {
-      return state = {
+      return (state = {
         ...state,
         mySnippets: action.payload.mySnippets,
-      };
+      });
     },
     resetCommunitiesState: (state) => {
-      return state = defaultCommunitiesState;
-    }
-  }
+      return (state = defaultCommunitiesState);
+    },
+  },
 });
 
 export default CommunitySlice.reducer;

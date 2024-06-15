@@ -8,17 +8,16 @@ export interface AuthModalState {
 const defaultAuthModalState: AuthModalState = {
   open: false,
   view: "login",
-}
+};
 
 export const AuthModalSlice = createSlice({
-  name: 'authModalState',
+  name: "authModalState",
   initialState: defaultAuthModalState,
   reducers: {
     setAuthModalState: (state, action: PayloadAction<AuthModalState>) => {
-      return state = action.payload;
-    }
-  }
+      return (state = action.payload);
+    },
+  },
 });
-
 
 export default AuthModalSlice.reducer;

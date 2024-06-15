@@ -3,7 +3,6 @@
 
 // // type Props = {}
 
-
 // export type FileWithUrl = {
 //   name: string;
 //   getUrl: string;
@@ -11,14 +10,12 @@
 //   error?: boolean | undefined;
 // }
 
-
 // export type State = FileWithUrl[];
 
 // export type Action = {
 //   type: 'Add_files',
 //   payload: FileWithUrl[];
 // }
-
 
 // const fileHandler = (state: State, action: Action) => {
 //   switch (action.type) {

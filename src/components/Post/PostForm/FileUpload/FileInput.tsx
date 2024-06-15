@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { getValidFiles } from "../../../../lib/Utils";
 import { RiUploadCloud2Fill } from "@remixicon/react";
@@ -12,14 +12,12 @@ import { Progress, Spinner } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 
 type Props = {
-  user: User,
-  filesSelected: FileWithUrl[],
+  user: User;
+  filesSelected: FileWithUrl[];
   dispatch: ({ type, payload }: Action) => void;
-}
-
+};
 
 const FileInput = ({ user, filesSelected, dispatch }: Props) => {
-
   const fileInputBtn = useRef<HTMLInputElement>(null);
   const [isDragActive, setIsDragActive] = useState(false);
 
@@ -31,9 +29,9 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
     setLoading(true);
     setProgress(0);
 
-    if ((filesSelected.length + files.length) > 5) {
-      Toast('info-bottom', postError['max_upload_limit_reached'], 4000);
-      files = files.slice(0, (5 - filesSelected.length));
+    if (filesSelected.length + files.length > 5) {
+      Toast("info-bottom", postError["max_upload_limit_reached"], 4000);
+      files = files.slice(0, 5 - filesSelected.length);
     }
 
     let totalFiles = files.length;
@@ -45,9 +43,11 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
       const tempFileRef = ref(storage, `temp/${user.uid}/${file.name}`);
       const uploadTask = uploadBytesResumable(tempFileRef, file);
 
-      uploadTask.on('state_changed',
+      uploadTask.on(
+        "state_changed",
         (snapshot) => {
-          bytesTransferred += snapshot.bytesTransferred - (prevBytesTransferred[file.name] || 0);
+          bytesTransferred +=
+            snapshot.bytesTransferred - (prevBytesTransferred[file.name] || 0);
           const totalProgress = (bytesTransferred / totalBytes) * 100;
           prevBytesTransferred[file.name] = snapshot.bytesTransferred;
           setProgress(totalProgress);
@@ -56,39 +56,42 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
           bytesTransferred -= prevBytesTransferred[file.name];
           totalBytes -= file.size;
           totalFiles--;
-          console.error('upload failed: ', error);
+          console.error("upload failed: ", error);
         },
         async () => {
           const tempURL = await getDownloadURL(uploadTask.snapshot.ref);
           console.log(tempURL);
-          tempFiles.push({ name: file.name, type: file.type, url: tempURL, caption: "", link: "" });
+          tempFiles.push({
+            name: file.name,
+            type: file.type,
+            url: tempURL,
+            caption: "",
+            link: "",
+          });
           if (tempFiles.length === totalFiles) {
             setLoading(false);
             addFilesToState(tempFiles);
-            console.log('All files uploaded to temporary: ', tempFiles);
+            console.log("All files uploaded to temporary: ", tempFiles);
           }
-        }
-      )
+        },
+      );
     }
-
-  }
+  };
 
   const addFilesToState = (files: FileWithUrl[]) => {
-    dispatch({ type: 'Add_files', payload: files });
-  }
+    dispatch({ type: "Add_files", payload: files });
+  };
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover')
-      setIsDragActive(true);
-    else if (e.type === 'dragleave')
-      setIsDragActive(false);
-  }
+    if (e.type === "dragenter" || e.type === "dragover") setIsDragActive(true);
+    else if (e.type === "dragleave") setIsDragActive(false);
+  };
 
   // triggers when file is selected with click
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     e.stopPropagation();
 
     try {
@@ -104,7 +107,7 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
     } catch (error) {
       // already handled
     }
-  }
+  };
 
   // triggers when files are dropped
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
@@ -124,33 +127,53 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
     } catch (error) {
       //already handled
     }
-  }
-
+  };
 
   return (
-    <div className=" relative min-h-72 font-chillax rounded-2xl">
-      <div id="drop_zone"
+    <div className="relative min-h-72 rounded-2xl font-chillax">
+      <div
+        id="drop_zone"
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
-        className={`flex flex-col relative place-content-center rounded-2xl border-2 ${isDragActive ? ' border-dashed border-blue-600' : 'border-gray-700'}`}>
-        {
-          !filesSelected.length ? (
-            <div className="  flex flex-col justify-center min-h-72 items-center h-full gap-3">
-              <h1 className=" font-medium text-base sm:text-lg">Drag and Drop images or videos or </h1>
-              <motion.span whileTap={{ scale: 0.9 }} onClick={() => fileInputBtn.current?.click()} className="bg-blue-950/50 rounded-full p-3 cursor-pointer"><RiUploadCloud2Fill className="text-blue-500" size={30} /></motion.span>
-            </div>
-          ) : (
-            <Gallery inputRef={fileInputBtn} filesSelected={filesSelected} dispatch={dispatch} />
-          )
-        }
+        className={`relative flex flex-col place-content-center rounded-2xl border-2 ${isDragActive ? "border-dashed border-blue-600" : "border-gray-700"}`}
+      >
+        {!filesSelected.length ? (
+          <div className="flex h-full min-h-72 flex-col items-center justify-center gap-3">
+            <h1 className="text-base font-medium sm:text-lg">
+              Drag and Drop images or videos or{" "}
+            </h1>
+            <motion.span
+              whileTap={{ scale: 0.9 }}
+              onClick={() => fileInputBtn.current?.click()}
+              className="cursor-pointer rounded-full bg-blue-950/50 p-3"
+            >
+              <RiUploadCloud2Fill className="text-blue-500" size={30} />
+            </motion.span>
+          </div>
+        ) : (
+          <Gallery
+            inputRef={fileInputBtn}
+            filesSelected={filesSelected}
+            dispatch={dispatch}
+          />
+        )}
       </div>
 
-      {(loading && progress > 0) && <div className="absolute z-20 inset-2 rounded-xl flex flex-col gap-5 justify-center items-center bg-blackAplha500 backdrop-blur-lg">
-        <Spinner />
-        <Progress aria-valuenow={progress} size='sm' className="z-30 w-[50%] mb-10 rounded-full" colorScheme="blue" backgroundColor={"whiteAlpha.200"} value={progress} />
-      </div>}
+      {loading && progress > 0 && (
+        <div className="absolute inset-2 z-20 flex flex-col items-center justify-center gap-5 rounded-xl bg-blackAplha500 backdrop-blur-lg">
+          <Spinner />
+          <Progress
+            aria-valuenow={progress}
+            size="sm"
+            className="z-30 mb-10 w-[50%] rounded-full"
+            colorScheme="blue"
+            backgroundColor={"whiteAlpha.200"}
+            value={progress}
+          />
+        </div>
+      )}
 
       <input
         ref={fileInputBtn}
@@ -161,7 +184,7 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
         className="hidden"
       />
     </div>
-  )
-}
+  );
+};
 
-export default FileInput
+export default FileInput;

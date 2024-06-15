@@ -52,6 +52,7 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    if (e.target.value.length > 180) return;
     const updatedFiles = filesSelected.map((file, index) => {
       if (index === currFileIndex)
         return { ...file, [e.target.name]: e.target.value };
@@ -78,7 +79,6 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
     dispatch({ type: "Delete_file", payload: index });
   };
 
-  console.log(currFileIndex);
   return (
     <div className="h-full w-full p-2 md:p-4">
       {filesSelected.length === 1 && filesSelected[0].type.includes("video") ? (
@@ -153,12 +153,13 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
                   onChange={onChange}
                   placeholder="Add a caption..."
                   value={filesSelected[currFileIndex].caption}
+                  autoComplete="off"
                   className="relative w-[90%] rounded-xl border-[1px] border-gray-700 bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 md:w-full"
                   type="text"
                 />
                 {filesSelected[currFileIndex].caption && (
                   <span
-                    className={`absolute right-[10%] text-xs font-semibold md:right-4 ${filesSelected[currFileIndex].caption.length > 180 ? "text-red-500/90" : "text-gray-500"}`}
+                    className={`absolute right-[10%] text-xs font-semibold md:right-4 ${filesSelected[currFileIndex].caption.length > 170 ? "text-pink-500" : "text-gray-500"}`}
                   >
                     {filesSelected[currFileIndex].caption.length}/180
                   </span>
@@ -170,10 +171,18 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
                   onChange={onChange}
                   value={filesSelected[currFileIndex].link}
                   name="link"
+                  autoComplete="off"
                   placeholder="Add a link..."
                   className="relative w-[90%] rounded-xl border-[1px] border-gray-700 bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 md:w-full"
                   type="text"
                 />
+                {filesSelected[currFileIndex].link && (
+                  <span
+                    className={`absolute right-[10%] text-xs font-semibold md:right-4 ${filesSelected[currFileIndex].caption.length > 170 ? "text-pink-500" : "text-gray-500"}`}
+                  >
+                    {filesSelected[currFileIndex].link.length}/180
+                  </span>
+                )}
               </div>
             </div>
           </div>

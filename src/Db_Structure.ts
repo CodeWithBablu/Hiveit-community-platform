@@ -1,7 +1,7 @@
 // option 1
 // const COMMUNITIES = [{
 //   id: "commId",
-//   /* 
+//   /*
 //   createdAt:
 //   numberOfmembers:
 //   */
@@ -18,7 +18,6 @@
 //   communities: ["commId1", "commId2"],
 // }]
 
-
 // option 2  Sql Approach
 // create separate table for mapping user and community
 // const USER_COMMUNITY = [
@@ -31,29 +30,29 @@
 //     communityId: "commId1",
 //   }]
 
-
 // option 3
-const USER = [{
-  id: "userId1",
-  /*
+const USER = [
+  {
+    id: "userId1",
+    /*
   userData
   */
-  communitySnippets: [
-    {
-      communityId: "commId1",
-      photoUrl: "...",
-    },
-    {
-      communityId: "commId2",
-      photoUrl: "...",
-    }
-  ]
-}]
+    communitySnippets: [
+      {
+        communityId: "commId1",
+        photoUrl: "...",
+      },
+      {
+        communityId: "commId2",
+        photoUrl: "...",
+      },
+    ],
+  },
+];
 
 const COMMUNITIES = [
   {
     id: "commId1",
     numOfMembers: 25364,
-  }
-]
-
+  },
+];

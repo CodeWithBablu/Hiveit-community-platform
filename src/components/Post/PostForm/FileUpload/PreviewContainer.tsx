@@ -8,7 +8,6 @@
 
 // const PreviewContainer = ({ filesSelected, dispatch }: Props) => {
 
-
 //   return (
 //     <div className=" w-full">
 //       {filesSelected.length && <Gallery filesSelected={filesSelected} dispatch={dispatch} />}

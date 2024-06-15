@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import authModalReducer from './slices/authModalSlice';
-import communityReducer from './slices/communitySlice';
-import postReducer from './slices/postSlice';
+import authModalReducer from "./slices/authModalSlice";
+import communityReducer from "./slices/communitySlice";
+import postReducer from "./slices/postSlice";
 
 export default configureStore({
   reducer: {
@@ -10,4 +10,4 @@ export default configureStore({
     communitiesState: communityReducer,
     postState: postReducer,
   },
-})
+});

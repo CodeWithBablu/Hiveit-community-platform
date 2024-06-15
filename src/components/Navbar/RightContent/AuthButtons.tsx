@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
 import { setAuthModalState } from "../../../slices";
 import { motion } from "framer-motion";
 
@@ -6,11 +6,27 @@ const AuthButtons = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className=" hidden md:flex font-chillax items-center gap-4">
-      <motion.button whileTap={{ scale: 0.8 }} onClick={() => { dispatch(setAuthModalState({ open: true, view: 'login' })) }} className=" h-10 px-5 text-xl font-medium rounded-md ring-2 ring-gray-100">Login</motion.button>
-      <motion.button whileTap={{ scale: 0.8 }} onClick={() => { dispatch(setAuthModalState({ open: true, view: 'signup' })) }} className=" h-10 px-5 text-xl font-medium rounded-md text-zinc-900 bg-gray-100">Sign Up</motion.button>
+    <div className="hidden items-center gap-4 font-chillax md:flex">
+      <motion.button
+        whileTap={{ scale: 0.8 }}
+        onClick={() => {
+          dispatch(setAuthModalState({ open: true, view: "login" }));
+        }}
+        className="h-10 rounded-md px-5 text-xl font-medium ring-2 ring-gray-100"
+      >
+        Login
+      </motion.button>
+      <motion.button
+        whileTap={{ scale: 0.8 }}
+        onClick={() => {
+          dispatch(setAuthModalState({ open: true, view: "signup" }));
+        }}
+        className="h-10 rounded-md bg-gray-100 px-5 text-xl font-medium text-zinc-900"
+      >
+        Sign Up
+      </motion.button>
     </div>
-  )
-}
+  );
+};
 
-export default AuthButtons
+export default AuthButtons;

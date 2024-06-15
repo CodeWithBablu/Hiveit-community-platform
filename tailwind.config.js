@@ -1,14 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   mode: "jit",
   theme: {
     extend: {
       gridTemplateColumns: {
-        'auto-fit': 'repeat(auto-fit,minmax(15rem,1fr))', //to automatic adjust grid layout
+        "auto-fit": "repeat(auto-fit,minmax(15rem,1fr))", //to automatic adjust grid layout
       },
 
       animation: {
@@ -28,8 +25,8 @@ export default {
           },
           "100%": {
             transform: "scale(1) translate(0px,0px)",
-          }
-        }
+          },
+        },
       },
 
       width: {
@@ -81,11 +78,11 @@ export default {
         header: "rgba(255, 255, 255, 0.4)",
       },
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+        poppins: ["Poppins", "sans-serif"],
         caveat: ["Caveat", "cursive"],
         chillax: ["Chillax", "sans-serif"],
       },
     },
   },
   plugins: [],
-}
+};
