@@ -14,7 +14,7 @@ import {
   increment,
   writeBatch,
 } from "firebase/firestore";
-import { setAuthModalState, setCommunitiesState } from "../slices";
+import { setAuthModalState, setMyCommunitySnippets } from "../slices";
 import { Toast } from "../lib/Toast";
 
 const useCommunity = () => {
@@ -54,7 +54,7 @@ const useCommunity = () => {
       const snippetDocs = await getDocs(snippetCollectionRef);
       const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
       dispatch(
-        setCommunitiesState({ mySnippets: snippets as [CommunitySnippet] }),
+        setMyCommunitySnippets({ mySnippets: snippets as [CommunitySnippet] }),
       );
     } catch (error) {
       console.log("getCommunity Snippets error: ", error);
@@ -87,14 +87,9 @@ const useCommunity = () => {
       await batch.commit();
 
       // update CommunitiesState.mySnippets
-      dispatch(
-        setCommunitiesState({
-          mySnippets: [...userCommunities.mySnippets, newSnippet] as [
-            CommunitySnippet,
-          ],
-        }),
-      );
-    } catch (error) {
+      dispatch(setMyCommunitySnippets({ mySnippets: [...userCommunities.mySnippets, newSnippet] as [CommunitySnippet] }));
+    }
+    catch (error) {
       console.log(
         "Joining community error : ",
         error instanceof Error ? error.message : String(error),
@@ -128,7 +123,7 @@ const useCommunity = () => {
 
       // update CommunitiesState.mySnippets
       dispatch(
-        setCommunitiesState({
+        setMyCommunitySnippets({
           mySnippets: [
             ...userCommunities.mySnippets.filter(
               (snippet) => snippet.communityId != communityData.id,

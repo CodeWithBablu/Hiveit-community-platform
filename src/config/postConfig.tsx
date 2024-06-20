@@ -22,7 +22,6 @@ export type Item = {
   type: "post" | "media" | "link" | "poll";
 };
 
-
 export interface Payload {
   type: "post" | "media" | "link" | "poll";
   body?: string;

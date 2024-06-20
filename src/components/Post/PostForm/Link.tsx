@@ -1,4 +1,3 @@
-
 import { Payload } from "@/config/postConfig";
 import { isValidURL } from "@/lib/Utils";
 import clsx from "clsx";
@@ -9,13 +8,10 @@ type Props = {
   setPayload: Dispatch<SetStateAction<Payload>>;
 };
 
-
-
 const Link = ({ link, setPayload }: Props) => {
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setPayload(prev => ({ ...prev, link: e.target.value }));
+    setPayload((prev) => ({ ...prev, link: e.target.value }));
   };
 
   return (

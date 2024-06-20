@@ -30,7 +30,7 @@ const Directory = () => {
       <MenuButton
         cursor="pointer"
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
-        className="z-10 mx-1 h-10 rounded-md px-2"
+        className="mx-1 h-10 rounded-md px-2"
       >
         <div className="flex items-center justify-between space-x-1">
           {homeicon}
@@ -41,9 +41,10 @@ const Directory = () => {
         </div>
       </MenuButton>
       <MenuList
+        zIndex={30}
         boxShadow={"0px 0px 15px 0px rgba(225,225,225,0.3)"}
-        color={"gray.400"}
         padding={"10px 10px"}
+        color={"gray.400"}
         borderRadius={10}
         borderColor="gray.600"
         bgColor="blackAlpha.900"

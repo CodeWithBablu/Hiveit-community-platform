@@ -25,14 +25,16 @@ const OAuthButton = () => {
         5000,
       );
     }
-
   }, [userCred, error]);
 
-  useEffect(() => { }, [error]);
+  useEffect(() => {}, [error]);
 
   const onSignin = async () => {
     try {
-      console.log((window.location.protocol === 'http:' || window.location.protocol === 'https:'));
+      console.log(
+        window.location.protocol === "http:" ||
+          window.location.protocol === "https:",
+      );
       const userCred = await signInWithGoogle();
       // await signInWithGooglePopup();
       // GoogleAuthProvider()

@@ -3,23 +3,25 @@ import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
 import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
-
   return (
-    <nav className="flex items-center justify-between border-b-[0.1px] border-gray-700 bg-zinc-950 px-2 py-2 text-white xl:px-[5%]">
+    <nav className="flex items-center justify-between border-b-[1px] border-gray-800 bg-zinc-950 px-2 py-2 text-white xl:px-[5%]">
       {/* left corner */}
-      <div className="relative z-10 cursor-pointer bg-transparent">
-        <div className="relative z-10 flex h-10 items-center gap-2 md:h-12">
-          <img
-            className="h-6 w-6 rounded-full sm:h-8 sm:w-8"
-            src="/Hiveit.png"
-            alt=""
-          />
-          <h1 className="hidden font-chillax text-xl font-medium sm:inline-block lg:text-2xl">
-            hive<span className="text-secondary">i</span>t
-          </h1>
+      <div className="relative z-50 cursor-pointer bg-transparent">
+        <div className="relative z-50 flex h-10 items-center gap-2 md:h-12">
+          <Link to={"/"} className="flex items-center gap-2">
+            <img
+              className="h-6 w-6 rounded-full sm:h-8 sm:w-8"
+              src="/Hiveit.png"
+              alt=""
+            />
+            <h1 className="hidden font-chillax text-xl font-medium sm:inline-block lg:text-2xl">
+              hive<span className="text-secondary">i</span>t
+            </h1>
+          </Link>
           {user && <Directory />}
         </div>
 

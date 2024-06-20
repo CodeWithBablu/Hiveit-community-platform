@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { setAuthModalState } from "../../../slices";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
 
 import { auth, firestore } from "../../../firebase/clientApp";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -11,6 +10,7 @@ import { Spinner } from "@chakra-ui/react";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth/cordova";
 import { FirebaseError } from "firebase/app";
+import { Toast } from "@/lib/Toast";
 
 // type Props = {}
 
@@ -83,17 +83,7 @@ const Signup = () => {
         setErrorMessage("");
 
         // Shows toast message
-        toast.success(`Created account Successful!!`, {
-          duration: 3000,
-          icon: "👏️😉️",
-          style: {
-            borderRadius: "10px",
-            background: "#1b1b19",
-            color: "#ffffff",
-            fontSize: 18,
-            fontWeight: 800,
-          },
-        });
+        Toast("success", "account created successfully!!", 3000);
       }
     } catch (error) {
       setErrorMessage(

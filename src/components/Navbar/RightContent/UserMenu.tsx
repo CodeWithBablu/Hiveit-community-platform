@@ -13,9 +13,11 @@ import {
 import { useDispatch } from "react-redux";
 import { auth } from "../../../firebase/clientApp";
 import { resetCommunitiesState, setAuthModalState } from "../../../slices";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { truncateText } from "@/lib/Utils";
 
 type Props = {
-  user?: User | null;
+  user: User;
 };
 
 const UserMenu = ({ user }: Props) => {
@@ -35,16 +37,23 @@ const UserMenu = ({ user }: Props) => {
       >
         <div className="flex items-center space-x-1">
           {user ? (
-            <div className="flex items-center justify-around space-x-1">
+            <div className="flex items-center justify-around space-x-2">
               <img
                 className="h-6 w-6 rounded-full shadow-2xl shadow-secondary lg:h-8 lg:w-8"
-                src="/profile.png"
+                src={
+                  user.providerData[0].photoURL
+                    ? user.providerData[0].photoURL
+                    : "/profile.png"
+                }
                 alt=""
               />
 
               <div className="hidden flex-col lg:flex">
                 <span className="hidden lg:inline-block">
-                  {user.displayName || user.email?.split("@")[0]}
+                  {truncateText(
+                    user.displayName || (user.email?.split("@")[0] as string),
+                    15,
+                  )}
                 </span>
                 <span className="flex items-center text-sm text-gray-500">
                   <RiBardLine size={20} className="text-secondary" /> 1 Karma
@@ -58,6 +67,7 @@ const UserMenu = ({ user }: Props) => {
         </div>
       </MenuButton>
       <MenuList
+        zIndex={30}
         boxShadow={"0px 0px 15px 0px rgba(225,225,225,0.3)"}
         padding={"10px 10px"}
         color={"gray.400"}

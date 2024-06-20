@@ -19,7 +19,7 @@ const SortbyMenu = () => {
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
         className="mx-1 h-10 rounded-md px-2 md:h-12"
       >
-        <div className="flex items-center gap-3 px-2 py-2 text-lg font-semibold capitalize text-orange-500">
+        <div className="flex items-center gap-3 px-2 py-2 text-lg font-semibold capitalize text-blue-600">
           {sortby} <RiArrowDropDownLine size={30} />
         </div>
       </MenuButton>
@@ -39,7 +39,7 @@ const SortbyMenu = () => {
             bgColor="transparent"
             className="gap-2 rounded-md hover:bg-zinc-900 hover:text-gray-50"
           >
-            <span className="cursor-pointer font-poppins text-lg font-medium capitalize">
+            <span className="cursor-pointerfont-poppins text-lg font-medium capitalize">
               {option}
             </span>
           </MenuItem>

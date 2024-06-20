@@ -1,19 +1,36 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   children: ReactNode;
+  maxWidth?: string;
 };
 
-const PageLayout = ({ children }: Props) => {
+const PageLayout = ({ children, maxWidth }: Props) => {
+
+  const location = useLocation();
+
+  const isHomePage = location.pathname === '/';
+  const isCommunityPage = location.pathname.startsWith('/h/');
+  const isSubmitPage = location.pathname.endsWith('/submit');
+
   return (
-    <div className="m-auto flex w-full max-w-7xl font-poppins text-white">
-      <div className="flex w-full justify-center lg:gap-10">
-        <div className="w-full lg:w-[65%] lg:max-w-[850px]">
+    <div className={`mx-auto flex w-full font-poppins lg:px-4 text-white ${maxWidth ? `max-w-[${maxWidth}]` : 'max-w-5xl'}`}>
+      <div className="flex w-full justify-center lg:gap-5">
+        <div className={clsx(
+          "w-full lg:w-[65%] lg:max-w-[860px]",
+          {
+            'lg:border-x-[1px] border-gray-800': isCommunityPage && !isSubmitPage
+          }
+        )}>
           {children && children[0 as keyof typeof children]}
         </div>
+
         <div className="hidden flex-grow lg:flex">
           {children && children[1 as keyof typeof children]}
         </div>
+
       </div>
     </div>
   );

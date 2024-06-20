@@ -14,7 +14,7 @@ const RightContent = ({ user }: Props) => {
       <AuthModal />
       <div className="flex items-center">
         {user ? <Icons /> : <AuthButtons />}
-        <UserMenu user={user} />
+        {user && <UserMenu user={user} />}
       </div>
     </div>
   );

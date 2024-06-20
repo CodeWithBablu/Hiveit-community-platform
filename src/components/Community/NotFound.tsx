@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <div className="flex min-h-[600px] w-full flex-col items-center justify-center gap-4 font-poppins text-xl font-medium">
+    <div className="flex min-h-[600px] w-full flex-col items-center justify-center gap-4 bg-zinc-950 font-poppins text-xl font-medium">
       <h1 className="text-gray-500">
         Sorry, that community does not exist or has been banned
       </h1>

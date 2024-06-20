@@ -14,7 +14,12 @@ type ToastConfig = {
   bgPrimary: string;
 };
 
-export type ToastType = "success" | "error" | "info" | "info-bottom" | "error-bottom";
+export type ToastType =
+  | "success"
+  | "error"
+  | "info"
+  | "info-bottom"
+  | "error-bottom";
 
 const tostConfig = {
   success: {

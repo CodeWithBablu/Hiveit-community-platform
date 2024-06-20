@@ -1,6 +1,8 @@
 import { FileWithUrl } from "../components/Post/PostForm";
 import { ALLOWED_FILE_TYPES, postError } from "../config/postConfig";
 import { Toast, ToastType } from "./Toast";
+import { Timestamp } from "firebase/firestore";
+import moment from "moment";
 
 export const isValidateFileType = (file: File) => {
   return ALLOWED_FILE_TYPES.includes(file.type);
@@ -86,10 +88,44 @@ export const getValidFiles = (filesSeleted: FileWithUrl[], files: File[]) => {
   return validFiles;
 };
 
-
 export function isValidURL(url: string) {
   const regex =
     /^(https?:\/\/)?(www\.)?((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|((\d{1,3}\.){3}\d{1,3}))(:\d+)?(\/[^\s]*)?$/;
 
   return regex.test(url);
 }
+
+// Convert Firestore Timestamp to milliseconds
+export const timestampToMillis = (timestamp: Timestamp): number => {
+  return timestamp.seconds * 1000;
+};
+//
+
+// Convert milliseconds to Firestore Timestamp
+export const millisToTimestamp = (millis: number): Timestamp => {
+  return Timestamp.fromMillis(millis);
+};
+
+export const truncateText = (text: string, maxLength: number) => {
+  return text.length > maxLength ? text.slice(0, maxLength) + "... " : text;
+};
+
+type FormatType = 'date-time' | 'only-date';
+
+export const formatPostDate = (timeFormat: FormatType, dateMillis: number): string => {
+  const date = moment(dateMillis);
+  let formatTime = "";
+
+  if (timeFormat === 'date-time') {
+    formatTime = date.format('MMM D, YYYY · h:mm A');
+  }
+  else if (timeFormat === 'only-date') {
+    if (date.isSame(new Date(), "year")) {
+      formatTime = date.format("MMM D"); // e.g., "June 16"
+    } else {
+      formatTime = date.format("MMM D, YYYY"); // e.g., "Nov 14, 2023"
+    }
+  }
+
+  return formatTime
+};

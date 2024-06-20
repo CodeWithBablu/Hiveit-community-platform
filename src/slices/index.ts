@@ -1,7 +1,19 @@
 import { AuthModalSlice } from "./authModalSlice";
 import { CommunitySlice } from "./communitySlice";
+import { PostsSlice } from "./postSlice";
 
 const { setAuthModalState } = AuthModalSlice.actions;
-const { setCommunitiesState, resetCommunitiesState } = CommunitySlice.actions;
+const { setCurrentCommunity, setMyCommunitySnippets, resetCommunitiesState } = CommunitySlice.actions;
 
-export { setAuthModalState, setCommunitiesState, resetCommunitiesState };
+const { setPostStateValue, setPosts, removePost, resetPostStatevalue } = PostsSlice.actions;
+
+export {
+  setAuthModalState,
+  setCurrentCommunity,
+  setMyCommunitySnippets,
+  resetCommunitiesState,
+  setPostStateValue,
+  setPosts,
+  removePost,
+  resetPostStatevalue,
+};

@@ -85,6 +85,7 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
         <div className="relative flex h-full w-full justify-center">
           <video
             controls
+            loop
             className="peer relative h-full w-full cursor-pointer object-cover"
             src={filesSelected[0].url}
           >
