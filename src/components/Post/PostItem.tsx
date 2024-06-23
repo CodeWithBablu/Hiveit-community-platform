@@ -56,6 +56,8 @@ const PostItem: React.FC<PostItemProps> = ({
 }) => {
   const [masterImage, setMasterImage] = useState("");
   const [deletingPost, setDeletingPost] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
+
 
   const currentCommunity: Community | undefined = useSelector(
     (state: { communitiesState: CommunitiesState }) => state.communitiesState.currentCommunity,
@@ -156,7 +158,82 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
 
           {post.gallery && post.gallery.length > 0 && (
-            <Carousel gallery={post.gallery} />
+            <>
+              <Carousel isOverlayOpen={isOverlayOpen} setIsOverlayOpen={setIsOverlayOpen} gallery={post.gallery} />
+
+              {isOverlayOpen && (
+                <div onClick={(e) => { e.stopPropagation() }} className={clsx(
+                  {
+                    "relative mt-2 w-full": !isOverlayOpen,
+                    'fixed flex flex-col top-0 left-0 w-[100dvw] h-[100dvh] bg-blackAplha900 z-10': isOverlayOpen
+                  }
+                )}>
+                  <Carousel isOverlayOpen={isOverlayOpen} setIsOverlayOpen={setIsOverlayOpen} gallery={post.gallery} />
+                  <div className="flex items-center w-full shrink-0 h-16 px-3 sm:px-0 justify-between sm:gap-10 max-w-[600px] mx-auto">
+
+                    <div className="flex items-center gap-2">
+                      <div className={clsx(
+                        'flex cursor-pointer items-center rounded-full',
+                        {
+                          'bg-pink-950/30': userVoteValue === 1,
+                          'bg-indigo-950/50': userVoteValue === -1,
+                        }
+                      )}>
+                        <motion.div whileTap={{ scale: 0.90 }} onClick={(e) => onVote(e, post, 1, post.communityId)} className="h-fit peer w-fit group rounded-full p-2 transition-all duration-200 ease-in hover:bg-pink-950/30">
+                          {(userVoteValue !== 1) && <RiThumbUpLine
+                            size={'1em'}
+                            className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-pink-700`}
+                          />}
+                          {(userVoteValue === 1) && <RiThumbUpFill
+                            size={'1em'}
+                            className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-pink-700 fill-pink-700`}
+                          />}
+                        </motion.div>
+                        <motion.div whileTap={{ scale: 0.90 }} onClick={(e) => onVote(e, post, -1, post.communityId)} className="h-fit peer w-fit group rounded-full p-2 transition-all duration-200 ease-in hover:bg-indigo-900/30">
+                          {(userVoteValue !== -1) && <RiThumbDownLine
+                            size={'1em'}
+                            className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-indigo-500 ${userVoteValue === -1 && 'fill-indigo-500'}`}
+                          />}
+                          {(userVoteValue === -1) && <RiThumbDownFill
+                            size={'1em'}
+                            className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-indigo-500 fill-indigo-600`}
+                          />}
+                        </motion.div>
+                      </div>
+                      <span className="text-gray-500/80 text-sm sm:text-base font-medium text-gray-400">
+                        {formatNumbers(post.voteStatus)}
+                      </span>
+                    </div>
+
+                    <div className="group flex cursor-pointer items-center">
+                      <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-sky-900/30">
+                        <RiChat1Line
+                          size={'1em'}
+                          className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-sky-500"
+                        />
+                      </div>
+                      <span className="text-gray-500/80 text-sm sm:text-base font-medium transition-all duration-200 ease-in group-hover:text-sky-500">
+                        {formatNumbers(post.numberOfComments)}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-2 sm:ml-auto">
+                      {userIsCreator && <DeletePopover deletingPost={deletingPost} handleDelete={handleDelete} />}
+
+                      <div className="group flex cursor-pointer items-center">
+                        <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-blue-900/30">
+                          <RiShare2Line
+                            size={'1em'}
+                            className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-blue-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           {/* //// post footer */}

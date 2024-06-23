@@ -26,7 +26,7 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
   const initRef = useRef(null)
 
   return (
-    <Popover placement='bottom' closeOnBlur initialFocusRef={initRef}>
+    <Popover placement='bottom' initialFocusRef={initRef}>
       {({ isOpen, onClose }) => (
         <>
           <PopoverTrigger>
@@ -40,8 +40,8 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
           <Portal>
             <PopoverContent onClick={(e) => { e.stopPropagation(); }} backgroundColor={"blackAlpha.700"} borderColor={"gray.700"} borderRadius={14} className="p-3 backdrop-blur-xl">
               <PopoverCloseButton className="text-gray-100 hover:bg-zinc-900" />
-              <PopoverBody>
-                <h2 className="text-gray-200 font-chillax font-medium text-base">
+              <PopoverBody zIndex={80}>
+                <h2 className="text-gray-200 z-[120] font-chillax font-medium text-base">
                   Wanna Trash this post?
                 </h2>
 
