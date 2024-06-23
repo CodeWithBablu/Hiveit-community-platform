@@ -1,3 +1,4 @@
+import { FileCategoryType } from "@/lib/Definations";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Timestamp } from "firebase/firestore";
 
@@ -38,14 +39,28 @@ export const CommunitySlice = createSlice({
         mySnippets: action.payload.mySnippets,
       });
     },
+    changeCommunityImages: (state, action: PayloadAction<{ fileCategory: FileCategoryType, url: string }>) => {
+      if (state.currentCommunity) {
+        return {
+          ...state,
+          currentCommunity: {
+            ...state.currentCommunity,
+            ...(action.payload.fileCategory === 'community_image' && { imageURL: action.payload.url }),
+            ...(action.payload.fileCategory === 'community_bgImage' && { bgImageURL: action.payload.url })
+          }
+        }
+      }
+      else
+        return state
+    },
     setCurrentCommunity: (state, action: PayloadAction<{ currentCommunity: Community }>) => {
       return (state = {
         ...state,
         currentCommunity: action.payload.currentCommunity,
       });
     },
-    resetCommunitiesState: (state) => {
-      return (state = defaultCommunitiesState);
+    resetMySnippets: (state) => {
+      return ({ ...state, mySnippets: [] });
     },
   },
 });

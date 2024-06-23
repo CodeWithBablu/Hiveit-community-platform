@@ -129,3 +129,23 @@ export const formatPostDate = (timeFormat: FormatType, dateMillis: number): stri
 
   return formatTime
 };
+
+
+export const formatNumbers = (num: number) => {
+  const format = (value: number, suffix: string) => {
+    const rounded = Math.round(value * 10) / 10; // Round to one decimal place
+    return (rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1)) + suffix;
+  };
+
+  if (num >= 1000000000000) {
+    return format(num / 1000000000000, 'T');
+  } else if (num >= 1000000000) {
+    return format(num / 1000000000, 'B');
+  } else if (num >= 1000000) {
+    return format(num / 1000000, 'M');
+  } else if (num >= 1000) {
+    return format(num / 1000, 'K');
+  } else {
+    return num.toString();
+  }
+};

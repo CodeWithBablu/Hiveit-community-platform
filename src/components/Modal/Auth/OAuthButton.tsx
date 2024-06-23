@@ -27,17 +27,16 @@ const OAuthButton = () => {
     }
   }, [userCred, error]);
 
-  useEffect(() => {}, [error]);
+  useEffect(() => { }, [error]);
 
   const onSignin = async () => {
     try {
       console.log(
         window.location.protocol === "http:" ||
-          window.location.protocol === "https:",
+        window.location.protocol === "https:",
       );
       const userCred = await signInWithGoogle();
-      // await signInWithGooglePopup();
-      // GoogleAuthProvider()
+
       if (userCred) return Toast("success", "Signed in Successful!!", 5000);
     } catch (error) {
       Toast(

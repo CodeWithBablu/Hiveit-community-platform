@@ -1,10 +1,14 @@
 
 // type Props = {}
 
+import { auth } from "@/firebase/clientApp";
+import useSelectFile from "@/hooks/useSelectFile";
 import { formatPostDate, timestampToMillis } from "@/lib/Utils";
 import { Community } from "@/slices/communitySlice"
 import { RiCalendar2Line, RiMoreFill } from "@remixicon/react"
 import { motion } from "framer-motion"
+import { useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 
 type AboutProps = {
@@ -13,10 +17,15 @@ type AboutProps = {
 
 function About({ communityData }: AboutProps) {
 
+  const [user] = useAuthState(auth);
+  const fileSelectorRef = useRef<HTMLInputElement>(null);
+
+  const { selectedFile, onSelectFile } = useSelectFile();
+
   const navigate = useNavigate();
 
   return (
-    <div className="sticky top-10 h-fit mt-32 p-4 w-full max-w-[400px] rounded-2xl border-[1px] border-gray-800">
+    <div className="sticky top-10 h-fit mt-32 p-4 w-full max-w-[350px] rounded-2xl border-[1px] border-gray-800">
       <div className="flex justify-between gap-2">
         <h2 className="font-chillax font-medium text-gray-50 tracking-wider text-[18px]">About Community</h2>
         <motion.button
@@ -27,7 +36,7 @@ function About({ communityData }: AboutProps) {
         </motion.button>
       </div>
 
-      <div className="h-max whitespace-pre-wrap font-poppins break-words mt-3 text-gray-300 tracking-wide text-sm">
+      <div className="h-max whitespace-pre-wrap font-poppins break-words mt-3 text-gray-300 tracking-wider text-sm">
         {communityData.description}
       </div>
 
@@ -54,8 +63,26 @@ function About({ communityData }: AboutProps) {
           </span>
         </div>
 
-        <button onClick={() => navigate(`submit`)} className="border-[1px] border-blue-600 shadow-[0px_0px_15px_0px_rgba(37,99,235,0.3)] w-full rounded-full py-2 font-semibold tracking-wider mt-5">Creat post</button>
+        <button onClick={() => navigate(`submit`)} className="border-[1px] border-blue-600 shadow-[0px_0px_15px_0px_rgba(37,99,235,0.3)] w-full rounded-full py-3 font-semibold tracking-wider mt-5">Create post</button>
 
+        {user?.uid === communityData.creatorId && (
+          <>
+            <hr className="border-gray-700 my-4" />
+            <div className="flex flex-col font-chillax tracking-wide font-medium gap-3">
+              <h3 className="text-slate-300">Settings</h3>
+              <div className=" flex justify-between items-center">
+                <span onClick={() => fileSelectorRef.current?.click()} className="text-blue-500 font-poppins hover:underline cursor-pointer text-sm">Change community avatar</span>
+
+                {(selectedFile || communityData.imageURL) ?
+                  <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={selectedFile || communityData.imageURL} alt="community image" /></div> :
+                  <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={'/profile.png'} alt="community image" /></div>
+                }
+              </div>
+
+              <input ref={fileSelectorRef} onChange={(e) => onSelectFile(e, "community_image", communityData)} id="file-upload" type="file" className="hidden" accept="image/x-png,image/gif,image/jpeg,/image/webp" />
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

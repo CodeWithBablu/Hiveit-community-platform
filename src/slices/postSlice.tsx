@@ -20,16 +20,23 @@ export type Post = {
   createdAt: Timestamp | number;
 };
 
+export type PostVote = {
+  id: string;
+  postId: string;
+  communityId: string;
+  voteValue: number;
+}
+
 export interface PostState {
   selectedPost: Post | null;
   posts: Post[];
-  //postVotes
+  postVotes: PostVote[];
 }
 
 const defaultInitialState: PostState = {
   selectedPost: null,
   posts: [],
-  //postVotes
+  postVotes: [],
 };
 
 export const PostsSlice = createSlice({
@@ -44,6 +51,12 @@ export const PostsSlice = createSlice({
         ...state,
         posts: [...state.posts, ...posts],
       });
+    },
+    setSelectedPost: (state, action: PayloadAction<{ post: Post }>) => {
+      return ({ ...state, selectedPost: action.payload.post });
+    },
+    setPostVotes: (state, action: PayloadAction<{ postVotes: PostVote[] }>) => {
+      return (state = { ...state, postVotes: action.payload.postVotes });
     },
     removePost: (state, action: PayloadAction<{ postId: string }>) => {
       return (state = { ...state, posts: state.posts.filter(post => post.id !== action.payload.postId) });

@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 import { Post } from "@/slices/postSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { formatPostDate, truncateText } from "@/lib/Utils";
-import { RiChat1Line, RiHeart2Line, RiShare2Line } from "@remixicon/react";
+import { formatNumbers, formatPostDate, truncateText } from "@/lib/Utils";
+import { RiChat1Line, RiHeart2Line, RiShare2Line, RiThumbDownFill, RiThumbDownLine, RiThumbUpFill, RiThumbUpLine } from "@remixicon/react";
 import Carousel from "./Carousel";
 import DeletePopover from "./DeletePopOver";
 import { Toast } from "@/lib/Toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentCommunity } from "@/slices";
 import { CommunitiesState, Community } from "@/slices/communitySlice";
+import clsx from "clsx";
 
 
 const dislikeicon = (stroke = "black", fill = "white") => {
@@ -40,9 +41,9 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onSelectPost: () => void;
-  onVote: () => void;
+  onVote: (e: React.MouseEvent<HTMLDivElement>, post: Post, vote: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
+  onSelectPost?: (post: Post) => void;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -77,7 +78,9 @@ const PostItem: React.FC<PostItemProps> = ({
   }, []);
 
 
-  const handleDelete = async () => {
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();// prevent propogating click event from child to parent( so that it does open the post)
+
     setDeletingPost(true);
     try {
       const success = await onDeletePost(post);
@@ -98,7 +101,7 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
-    <main className="h-full w-full border-t-[1px] border-gray-700">
+    <main onClick={() => onSelectPost && onSelectPost(post)} className="h-full w-full border-t-[1px] border-gray-800 hover:bg-zinc-900/30 cursor-pointer">
       <div className="flex w-full px-4 py-3">
         <div className="mr-2 w-[40px] shrink-0">
           <img
@@ -157,40 +160,62 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
 
           {/* //// post footer */}
-          <div className="flex items-center w-full gap-10">
+          <div className="flex items-center w-full justify-between sm:gap-10">
+
+            <div className="flex items-center gap-2">
+              <div className={clsx(
+                'flex cursor-pointer items-center rounded-full',
+                {
+                  'bg-pink-950/30': userVoteValue === 1,
+                  'bg-indigo-950/50': userVoteValue === -1,
+                }
+              )}>
+                <motion.div whileTap={{ scale: 0.90 }} onClick={(e) => onVote(e, post, 1, post.communityId)} className="h-fit peer w-fit group rounded-full p-2 transition-all duration-200 ease-in hover:bg-pink-950/30">
+                  {(userVoteValue !== 1) && <RiThumbUpLine
+                    size={'1em'}
+                    className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-pink-700`}
+                  />}
+                  {(userVoteValue === 1) && <RiThumbUpFill
+                    size={'1em'}
+                    className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-pink-700 fill-pink-700`}
+                  />}
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.90 }} onClick={(e) => onVote(e, post, -1, post.communityId)} className="h-fit peer w-fit group rounded-full p-2 transition-all duration-200 ease-in hover:bg-indigo-900/30">
+                  {(userVoteValue !== -1) && <RiThumbDownLine
+                    size={'1em'}
+                    className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-indigo-500 ${userVoteValue === -1 && 'fill-indigo-500'}`}
+                  />}
+                  {(userVoteValue === -1) && <RiThumbDownFill
+                    size={'1em'}
+                    className={`text-[20px] sm:text-2xl text-gray-500/80 group-hover:text-indigo-500 fill-indigo-600`}
+                  />}
+                </motion.div>
+              </div>
+              <span className="text-gray-500/80 text-sm sm:text-base font-medium text-gray-400">
+                {formatNumbers(post.voteStatus)}
+              </span>
+            </div>
 
             <div className="group flex cursor-pointer items-center">
               <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-sky-900/30">
                 <RiChat1Line
-                  size={25}
-                  className="text-gray-500/80 group-hover:text-sky-500"
+                  size={'1em'}
+                  className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-sky-500"
                 />
               </div>
-              <span className="text-gray-500/80 transition-all duration-200 ease-in group-hover:text-sky-500">
-                {post.numberOfComments}
+              <span className="text-gray-500/80 text-sm sm:text-base font-medium transition-all duration-200 ease-in group-hover:text-sky-500">
+                {formatNumbers(post.numberOfComments)}
               </span>
             </div>
 
-            <div className="group flex cursor-pointer items-center">
-              <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-red-900/30">
-                <RiHeart2Line
-                  size={25}
-                  className="text-gray-500/80 group-hover:text-red-500"
-                />
-              </div>
-              <span className="text-gray-500/80 transition-all duration-200 ease-in group-hover:text-red-500">
-                {post.voteStatus}
-              </span>
-            </div>
-
-            <div className="flex gap-2 ml-auto">
-              <DeletePopover deletingPost={deletingPost} handleDelete={handleDelete} />
+            <div className="flex gap-2 sm:ml-auto">
+              {userIsCreator && <DeletePopover deletingPost={deletingPost} handleDelete={handleDelete} />}
 
               <div className="group flex cursor-pointer items-center">
                 <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-blue-900/30">
                   <RiShare2Line
-                    size={25}
-                    className="text-gray-500/80 group-hover:text-blue-500"
+                    size={'1em'}
+                    className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-blue-500"
                   />
                 </div>
               </div>

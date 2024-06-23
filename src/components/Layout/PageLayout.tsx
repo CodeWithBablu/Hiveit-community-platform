@@ -16,7 +16,7 @@ const PageLayout = ({ children, maxWidth }: Props) => {
   const isSubmitPage = location.pathname.endsWith('/submit');
 
   return (
-    <div className={`mx-auto flex w-full font-poppins lg:px-4 text-white ${maxWidth ? `max-w-[${maxWidth}]` : 'max-w-5xl'}`}>
+    <div style={{ maxWidth: `${maxWidth ? maxWidth : '1024px'}` }} className={`mx-auto flex w-full font-poppins lg:px-4 text-white`}>
       <div className="flex w-full justify-center lg:gap-5">
         <div className={clsx(
           "w-full lg:w-[65%] lg:max-w-[860px]",

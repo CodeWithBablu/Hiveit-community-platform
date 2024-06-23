@@ -14,7 +14,7 @@ import {
   increment,
   writeBatch,
 } from "firebase/firestore";
-import { setAuthModalState, setMyCommunitySnippets } from "../slices";
+import { resetMySnippets, setAuthModalState, setMyCommunitySnippets } from "../slices";
 import { Toast } from "../lib/Toast";
 
 const useCommunity = () => {
@@ -25,7 +25,12 @@ const useCommunity = () => {
   );
 
   useEffect(() => {
-    if (user) getMySnippets();
+    if (!user) {
+      dispatch(resetMySnippets());
+      return;
+    }
+
+    getMySnippets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

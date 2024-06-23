@@ -12,6 +12,7 @@ import ErrorPage from "./pages/error-page.tsx";
 import Submit from "./pages/submit.tsx";
 import CommunityPage from "./pages/communityPage.tsx";
 import Layout from "./pages/layout.tsx";
+import PostPage from "./pages/postPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
         path: "h/:communityId/submit",
         errorElement: <ErrorPage />,
         element: <Submit />,
+      },
+      {
+        path: "h/:communityId/comments/:postId",
+        errorElement: <ErrorPage />,
+        element: <PostPage />,
       },
     ],
   },

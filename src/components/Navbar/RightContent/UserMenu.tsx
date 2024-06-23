@@ -12,8 +12,7 @@ import {
 } from "@remixicon/react";
 import { useDispatch } from "react-redux";
 import { auth } from "../../../firebase/clientApp";
-import { resetCommunitiesState, setAuthModalState } from "../../../slices";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { setAuthModalState } from "../../../slices";
 import { truncateText } from "@/lib/Utils";
 
 type Props = {
@@ -23,9 +22,8 @@ type Props = {
 const UserMenu = ({ user }: Props) => {
   const dispatch = useDispatch();
 
-  const logout = () => {
-    signOut(auth);
-    dispatch(resetCommunitiesState());
+  const logout = async () => {
+    await signOut(auth);
   };
 
   return (

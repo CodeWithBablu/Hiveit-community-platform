@@ -146,6 +146,7 @@ function Posts({ communityData }: PostsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, lastVisible]);
 
+
   return (
     <div className="h-full">
       {postStateValue.posts.length > 0 ? (
@@ -156,6 +157,7 @@ function Posts({ communityData }: PostsProps) {
                 key={post.id}
                 post={post}
                 userIsCreator={user?.uid === post.creatorId}
+                userVoteValue={postStateValue.postVotes.find(vote => vote.postId === post.id)?.voteValue}
                 onVote={onVote}
                 onSelectPost={onSelectPost}
                 onDeletePost={OnDeletePost}

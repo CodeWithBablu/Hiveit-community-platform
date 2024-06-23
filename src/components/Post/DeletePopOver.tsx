@@ -8,7 +8,7 @@ const deleteicon = (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="h-6 w-6"
+    className="h-5 w-5 sm:w-6 sm:h-6"
   >
     <path
       strokeLinecap="round"
@@ -20,7 +20,7 @@ const deleteicon = (
 
 type Props = {
   deletingPost: boolean,
-  handleDelete: () => void,
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
   const initRef = useRef(null)
@@ -30,7 +30,7 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
       {({ isOpen, onClose }) => (
         <>
           <PopoverTrigger>
-            <div className="group flex cursor-pointer items-center">
+            <div onClick={(e) => { e.stopPropagation(); }} className="group flex cursor-pointer items-center">
               <div className="h-fit w-fit rounded-full p-2 transition-all duration-300 ease-in-out text-gray-500/80 hover:text-red-500 group-hover:bg-red-900/30">
                 {deleteicon}
               </div>
@@ -38,7 +38,7 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
           </PopoverTrigger>
 
           <Portal>
-            <PopoverContent backgroundColor={"blackAlpha.700"} borderColor={"gray.700"} borderRadius={14} className="p-3 backdrop-blur-xl">
+            <PopoverContent onClick={(e) => { e.stopPropagation(); }} backgroundColor={"blackAlpha.700"} borderColor={"gray.700"} borderRadius={14} className="p-3 backdrop-blur-xl">
               <PopoverCloseButton className="text-gray-100 hover:bg-zinc-900" />
               <PopoverBody>
                 <h2 className="text-gray-200 font-chillax font-medium text-base">
@@ -51,7 +51,7 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
                     Close
                   </button>
 
-                  <button onClick={() => { handleDelete(); onClose(); }} className="relative flex items-center justify-center bg-red-500 py-2 px-4 rounded-xl text-gray-300">
+                  <button onClick={(e) => { handleDelete(e); onClose(); }} className="relative flex items-center justify-center bg-red-500 py-2 px-4 rounded-xl text-gray-300">
                     <span>Delete</span>
                     {deletingPost && <Spinner className="absolute" size={'md'} thickness="4px" speed="0.65s" color="gray.800" />}
                   </button>
