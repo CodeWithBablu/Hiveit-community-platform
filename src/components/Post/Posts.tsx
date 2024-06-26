@@ -124,9 +124,7 @@ function Posts({ communityData }: PostsProps) {
     observer.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !isLoading) {
-          setTimeout(async () => {
-            await fetchposts(); // Fetch more posts when the target element is intersecting with the viewport
-          }, 1500);
+          fetchposts(); // Fetch more posts when the target element is intersecting with the viewport
         }
       });
     }, options);
@@ -149,7 +147,15 @@ function Posts({ communityData }: PostsProps) {
 
   return (
     <div className="h-full">
-      {postStateValue.posts.length > 0 ? (
+
+      {isLoading &&
+        <div className="flex w-full flex-col justify-center">
+          <PostSkeleton />
+          <PostSkeleton />
+        </div>
+      }
+
+      {(postStateValue.posts.length > 0) && (
         <>
           <div className="">
             {postStateValue.posts.map((post, index) => (
@@ -164,25 +170,21 @@ function Posts({ communityData }: PostsProps) {
               />
             ))}
             <div id="load-more-marker" className="h-32"></div>{" "}
-            {/* Marker element */}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="mt-10 flex w-full animate-pulse flex-col items-center font-chillax text-lg font-medium">
-            <h2>
-              No posts? No problem! Be the trendsetter and make the first one!"
-            </h2>
-            <img className="w-[50%]" src="/404.gif" alt="" />
           </div>
         </>
       )}
 
-      {isLoading &&
-        <div className="flex w-full flex-col justify-center">
-          <PostSkeleton />
-          <PostSkeleton />
-        </div>
+      {
+        (postStateValue.posts.length == 0 && !isLoading) && (
+          <>
+            <div className="mt-10 flex w-full animate-pulse flex-col items-center font-chillax text-lg font-medium">
+              <h2>
+                No posts? No problem! Be the trendsetter and make the first one!"
+              </h2>
+              <img className="w-[50%]" src="/404.gif" alt="" />
+            </div>
+          </>
+        )
       }
 
       {!hasMore && postStateValue.posts.length > 0 && (
@@ -200,21 +202,3 @@ function Posts({ communityData }: PostsProps) {
 
 export default Posts;
 
-// const loadMorePosts = useCallback(async () => {
-//   if (isLoading || isEnd) return;
-//   setIsLoading(true);
-//   console.log('loadermoreposts');
-
-//   try {
-//     const { posts: newPosts, lastDoc: newLastDoc } = await fetchposts(communityData.id, lastDoc);
-//     setPosts(prevPosts => [...prevPosts, ...newPosts]);
-//     setLastDoc(newLastDoc);
-//     if (newPosts.length < PAGE_SIZE) {
-//       setIsEnd(true); // No more posts to load
-//     }
-//   } catch (error) {
-//     console.error("Error loading more posts: ", error)
-//   } finally {
-//     setIsLoading(false);
-//   }
-// }, [communityData, fetchposts, lastDoc, isEnd, isLoading]);

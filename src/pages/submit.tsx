@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuthModalState } from "@/slices";
 import { CommunitiesState, Community } from "@/slices/communitySlice";
 import About from "@/components/Community/About";
+import useCommunity from "@/hooks/useCommunity";
 
 const Submit = () => {
   const [user] = useAuthState(auth);
-  const currentCommunity: Community | undefined = useSelector(
-    (state: { communitiesState: CommunitiesState }) => state.communitiesState.currentCommunity,
-  );
+  const { userCommunities } = useCommunity();
   const dispatch = useDispatch();
+
+  const currentCommunity = userCommunities.currentCommunity || undefined;
 
   return (
     <div className="bg-zinc-950 font-poppins text-white">
@@ -41,7 +42,11 @@ const Submit = () => {
 
         {/* right content */}
         <>
-          {currentCommunity && <About communityData={currentCommunity} />}
+          {currentCommunity &&
+            <div className="sticky top-14 w-full max-w-[350px] h-fit mt-32">
+              <About communityData={currentCommunity} />
+            </div>
+          }
         </>
       </PageLayout>
     </div>

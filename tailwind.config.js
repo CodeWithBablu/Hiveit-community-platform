@@ -62,7 +62,7 @@ export default {
       colors: {
         primary: "#00040f",
         secondary: "#FF3c00",
-        dimGray: "#E8E9ED",
+        dimGray: 'rgb(47, 51, 54)',
         blackAplha100: "rgba(0, 0, 0, 0.06)",
         blackAplha200: "rgba(0, 0, 0, 0.08)",
         blackAplha300: "rgba(0, 0, 0, 0.16)",

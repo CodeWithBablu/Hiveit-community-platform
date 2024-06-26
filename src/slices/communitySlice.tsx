@@ -9,7 +9,7 @@ export interface Community {
   numberOfMembers: number;
   numberOfPosts: number;
   privacyType: "public" | "private" | "restricted";
-  createdAt: Timestamp;
+  createdAt: Timestamp | number;
   imageURL?: string;
   bgImageURL?: string;
 }

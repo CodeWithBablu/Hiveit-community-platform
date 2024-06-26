@@ -3,12 +3,14 @@
 
 import { auth } from "@/firebase/clientApp";
 import useSelectFile from "@/hooks/useSelectFile";
-import { formatPostDate, timestampToMillis } from "@/lib/Utils";
+import { formatNumbers, formatPostDate, timestampToMillis } from "@/lib/Utils";
+import { setAuthModalState } from "@/slices";
 import { Community } from "@/slices/communitySlice"
 import { RiCalendar2Line, RiMoreFill } from "@remixicon/react"
 import { motion } from "framer-motion"
 import { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 type AboutProps = {
@@ -23,9 +25,17 @@ function About({ communityData }: AboutProps) {
   const { selectedFile, onSelectFile } = useSelectFile();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (!user)
+      return dispatch(setAuthModalState({ open: true, view: "login" }));
+
+    navigate(`/h/${communityData.id}/submit`);
+  }
 
   return (
-    <div className="sticky top-10 h-fit mt-32 p-4 w-full max-w-[350px] rounded-2xl border-[1px] border-gray-800">
+    <div className="p-4 w-full rounded-2xl border-[1px] border-gray-800">
       <div className="flex justify-between gap-2">
         <h2 className="font-chillax font-medium text-gray-50 tracking-wider text-[18px]">About Community</h2>
         <motion.button
@@ -36,7 +46,7 @@ function About({ communityData }: AboutProps) {
         </motion.button>
       </div>
 
-      <div className="h-max whitespace-pre-wrap font-poppins break-words mt-3 text-gray-300 tracking-wider text-sm">
+      <div className="h-max whitespace-pre-wrap font-poppins break-words mt-3 text-slate-300 tracking-wider text-sm">
         {communityData.description}
       </div>
 
@@ -44,7 +54,7 @@ function About({ communityData }: AboutProps) {
 
         <div className="grid grid-cols-2 mt-3 gap-3">
           <div className="flex flex-col gap-2 font-chillax font-medium">
-            <span>102 k</span>
+            <span>{formatNumbers(communityData.numberOfMembers)}</span>
             <span>Members</span>
           </div>
 
@@ -59,11 +69,11 @@ function About({ communityData }: AboutProps) {
           <RiCalendar2Line size={20} />
           <span className="text-base">
             Since{" "}
-            {formatPostDate('only-date', timestampToMillis(communityData.createdAt))}
+            {formatPostDate('only-date', communityData.createdAt as number)}
           </span>
         </div>
 
-        <button onClick={() => navigate(`submit`)} className="border-[1px] border-blue-600 shadow-[0px_0px_15px_0px_rgba(37,99,235,0.3)] w-full rounded-full py-3 font-semibold tracking-wider mt-5">Create post</button>
+        <button onClick={handleClick} className="border-[1px] border-blue-600 shadow-[0px_0px_15px_0px_rgba(37,99,235,0.3)] w-full rounded-full py-3 font-semibold tracking-wider mt-5">Create post</button>
 
         {user?.uid === communityData.creatorId && (
           <>

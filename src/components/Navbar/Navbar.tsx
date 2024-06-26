@@ -3,15 +3,15 @@ import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
 import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
   return (
-    <nav className="flex items-center justify-between border-b-[1px] border-gray-800 bg-zinc-950 px-2 py-2 text-white xl:px-[5%]">
+    <nav className="flex items-center justify-between border-b-[1px] border-dimGray bg-zinc-950 px-2 h-16 text-white xl:px-[5%]">
       {/* left corner */}
-      <div className="relative z-50 cursor-pointer bg-transparent">
-        <div className="relative z-50 flex h-10 items-center gap-2 md:h-12">
+      <div className="relative z-10 cursor-pointer bg-transparent">
+        <div className="relative z-10 flex h-10 items-center gap-2 md:h-12">
           <Link to={"/"} className="flex items-center gap-2">
             <img
               className="h-6 w-6 rounded-full sm:h-8 sm:w-8"

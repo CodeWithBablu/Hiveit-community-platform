@@ -149,3 +149,8 @@ export const formatNumbers = (num: number) => {
     return num.toString();
   }
 };
+
+
+export function getAvatarCode(str: string) {
+  return str.length % 15;
+}

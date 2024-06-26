@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useParams } from "react-router-dom";
 import { CommunitiesState, Community } from "../slices/communitySlice";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setCurrentCommunity } from "@/slices";
 import About from "@/components/Community/About";
+import { timestampToMillis } from "@/lib/Utils";
 
 const fetchCommunityData = async (communityId: string) => {
   const communityDocRef = doc(firestore, "communities", communityId);
@@ -35,8 +36,8 @@ const CommunityPage = () => {
 
   useEffect(() => {
     if (communityData) {
-      console.log("setting current community");
-      dispatch(setCurrentCommunity({ currentCommunity: communityData }));
+      const updatedCurrCommunity = { ...communityData, createdAt: timestampToMillis(communityData.createdAt as Timestamp) } as Community;
+      dispatch(setCurrentCommunity({ currentCommunity: updatedCurrCommunity }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityData]);
@@ -67,7 +68,9 @@ const CommunityPage = () => {
 
           {/* //// Right Content */}
           <>
-            <About communityData={communityData} />
+            <div className="sticky top-14 w-full max-w-[350px] h-fit mt-14">
+              <About communityData={communityData} />
+            </div>
           </>
         </PageLayout>
       </div>

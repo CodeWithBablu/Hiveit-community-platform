@@ -41,7 +41,7 @@ const Directory = () => {
         </div>
       </MenuButton>
       <MenuList
-        zIndex={30}
+        zIndex={20}
         boxShadow={"0px 0px 15px 0px rgba(225,225,225,0.3)"}
         padding={"10px 10px"}
         color={"gray.400"}

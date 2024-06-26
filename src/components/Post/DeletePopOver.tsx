@@ -1,5 +1,6 @@
 import { Popover, PopoverTrigger, Button, Portal, PopoverContent, PopoverHeader, PopoverCloseButton, PopoverBody, PopoverFooter, Spinner } from "@chakra-ui/react";
 import { useRef } from "react";
+import { Comment } from "./Comments/CommentItem";
 
 const deleteicon = (
   <svg
@@ -19,10 +20,11 @@ const deleteicon = (
 );
 
 type Props = {
-  deletingPost: boolean,
-  handleDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  isDeleting: boolean,
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | Comment) => void,
+  comment?: Comment;
 }
-const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
+const DeletePopover = ({ isDeleting, handleDelete, comment }: Props) => {
   const initRef = useRef(null)
 
   return (
@@ -51,9 +53,9 @@ const DeletePopover = ({ deletingPost, handleDelete }: Props) => {
                     Close
                   </button>
 
-                  <button onClick={(e) => { handleDelete(e); onClose(); }} className="relative flex items-center justify-center bg-red-500 py-2 px-4 rounded-xl text-gray-300">
+                  <button onClick={(e) => { comment ? handleDelete(comment) : handleDelete(e); onClose(); }} className="relative flex items-center justify-center bg-red-500 py-2 px-4 rounded-xl text-gray-300">
                     <span>Delete</span>
-                    {deletingPost && <Spinner className="absolute" size={'md'} thickness="4px" speed="0.65s" color="gray.800" />}
+                    {isDeleting && <Spinner className="absolute" size={'md'} thickness="4px" speed="0.65s" color="gray.800" />}
                   </button>
 
                 </div>

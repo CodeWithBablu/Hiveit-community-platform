@@ -8,21 +8,28 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../firebase/clientApp";
 import {
+  Timestamp,
   collection,
   doc,
+  getDoc,
   getDocs,
   increment,
   writeBatch,
 } from "firebase/firestore";
-import { resetMySnippets, setAuthModalState, setMyCommunitySnippets } from "../slices";
+import { resetMySnippets, setAuthModalState, setCurrentCommunity, setMyCommunitySnippets } from "../slices";
 import { Toast } from "../lib/Toast";
+import { useParams } from "react-router-dom";
+import { timestampToMillis } from "@/lib/Utils";
 
 const useCommunity = () => {
   const [user] = useAuthState(auth);
+  const { communityId } = useParams();
   const dispatch = useDispatch();
+
   const userCommunities: CommunitiesState = useSelector(
     (state: { communitiesState: CommunitiesState }) => state.communitiesState,
   );
+
 
   useEffect(() => {
     if (!user) {
@@ -33,6 +40,13 @@ const useCommunity = () => {
     getMySnippets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+    if (communityId && !userCommunities.currentCommunity) {
+      getCommunityData(communityId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [communityId, userCommunities.currentCommunity]);
 
   const onJoinOrLeaveCommunity = (
     communityData: Community,
@@ -47,6 +61,18 @@ const useCommunity = () => {
     if (isJoined) leaveCommunity(communityData);
     else joinCommunity(communityData);
   };
+
+  async function getCommunityData(communityId: string) {
+    try {
+      const communityDocRef = doc(firestore, `communities`, communityId);
+      const communityDoc = await getDoc(communityDocRef);
+      let updatedCurrCommunity = { id: communityDoc.id, ...communityDoc.data() } as Community;
+      updatedCurrCommunity = { ...updatedCurrCommunity, createdAt: timestampToMillis(updatedCurrCommunity.createdAt as Timestamp) }
+      dispatch(setCurrentCommunity({ currentCommunity: updatedCurrCommunity }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function getMySnippets() {
     const snippetCollectionRef = collection(

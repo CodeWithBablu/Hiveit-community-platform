@@ -17,7 +17,7 @@ const SearchInput = () => {
           placeholder="Find community or post..."
           fontSize="12pt"
           height={12}
-          borderColor="gray.600"
+          borderColor="gray.700"
           _placeholder={{ color: "gray.500" }}
           _hover={{
             outline: "none",

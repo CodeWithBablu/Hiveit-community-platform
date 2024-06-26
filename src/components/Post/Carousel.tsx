@@ -48,7 +48,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
           </>
         ) : (
           <>
-            <div onClick={() => setIsOverlayOpen(prev => !prev)} ref={containerRef} className={`h-full w-full flex transition-transform duration-700 ease-in-out`}>
+            <div onClick={() => setIsOverlayOpen(prev => !prev)} ref={containerRef} className={`relative h-full w-full flex transition-transform duration-700 ease-in-out`}>
               {gallery.map((media, index) => (
                 <div
                   key={index}
@@ -93,7 +93,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
       {/* onNavigation btn btn */}
       <button
         className={clsx(
-          "absolute z-10 left-0 top-1/2 -translate-y-1/2 transform rounded-full p-5 text-white hover:bg-zinc-700/20 hover:backdrop-blur-xl focus:outline-none",
+          "absolute z-[5] left-0 top-1/2 -translate-y-1/2 transform rounded-full p-5 text-white hover:bg-zinc-700/20 hover:backdrop-blur-xl focus:outline-none",
           {
             hidden: gallery.length === 1 || currentIndex === 0,
           },
@@ -105,7 +105,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
 
       <button
         className={clsx(
-          "absolute z-10 right-0 top-1/2 -translate-y-1/2 transform rounded-full p-5 text-white hover:bg-zinc-700/20 hover:backdrop-blur-xl focus:outline-none",
+          "absolute z-[5] right-0 top-1/2 -translate-y-1/2 transform rounded-full p-5 text-white hover:bg-zinc-700/20 hover:backdrop-blur-xl focus:outline-none",
           {
             hidden: gallery.length === 1 || currentIndex === gallery.length - 1,
           },
