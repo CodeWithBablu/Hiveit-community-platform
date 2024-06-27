@@ -7,6 +7,7 @@ import { formatNumbers, formatPostDate, timestampToMillis } from "@/lib/Utils";
 import { setAuthModalState } from "@/slices";
 import { Community } from "@/slices/communitySlice"
 import { RiCalendar2Line, RiMoreFill } from "@remixicon/react"
+import { Timestamp } from "firebase/firestore";
 import { motion } from "framer-motion"
 import { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -69,7 +70,8 @@ function About({ communityData }: AboutProps) {
           <RiCalendar2Line size={20} />
           <span className="text-base">
             Since{" "}
-            {formatPostDate('only-date', communityData.createdAt as number)}
+            {(typeof communityData.createdAt === 'number') && formatPostDate('only-date', communityData.createdAt)}
+            {(typeof communityData.createdAt !== 'number') && formatPostDate('only-date', (communityData.createdAt.seconds * 1000))}
           </span>
         </div>
 
@@ -79,9 +81,9 @@ function About({ communityData }: AboutProps) {
           <>
             <hr className="border-gray-700 my-4" />
             <div className="flex flex-col font-chillax tracking-wide font-medium gap-3">
-              <h3 className="text-slate-300">Settings</h3>
+              <h3 className="text-slate-300">COMMUNITY SETTINGS</h3>
               <div className=" flex justify-between items-center">
-                <span onClick={() => fileSelectorRef.current?.click()} className="text-blue-500 font-poppins hover:underline cursor-pointer text-sm">Change community avatar</span>
+                <span onClick={() => fileSelectorRef.current?.click()} className="text-blue-500 font-poppins hover:underline cursor-pointer text-sm">Community Appearance</span>
 
                 {(selectedFile || communityData.imageURL) ?
                   <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={selectedFile || communityData.imageURL} alt="community image" /></div> :

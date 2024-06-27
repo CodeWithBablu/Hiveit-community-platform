@@ -83,7 +83,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
         const communityDoc = await transaction.get(communityDocRef);
 
         if (communityDoc.exists())
-          throw new Error(`Oops!! u/${communityName} already taken 😢️ `);
+          throw new Error(`Oops!! h/${communityName} already taken 😢️ `);
 
         // Task 2: Create new community
         transaction.set(communityDocRef, {

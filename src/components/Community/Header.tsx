@@ -152,9 +152,9 @@ const Header = ({ communityData }: Props) => {
               alt="communty bg Image"
             />}
 
-            {(user?.uid === communityData.creatorId) && <motion.span whileTap={{ scale: 0.80 }} onClick={() => { setFileCategory('community_image'); fileSelectorRef.current?.click() }} title="change community background image" className="absolute bottom-5 right-0 translate-x-1/2 cursor-pointer text-gray-200 bg-gray-500/30 backdrop-blur-xl rounded-full p-3">
+            {(user?.uid === communityData.creatorId) && <motion.div whileTap={{ scale: 0.80 }} onClick={() => { setFileCategory('community_image'); fileSelectorRef.current?.click() }} title="change community background image" className="absolute bottom-5 -right-[12px] cursor-pointer text-gray-200 bg-gray-500/30 backdrop-blur-xl rounded-full p-3">
               {camera}
-            </motion.span>}
+            </motion.div>}
           </div>
 
           <div

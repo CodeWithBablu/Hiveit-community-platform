@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="relative z-10 flex h-10 items-center gap-2 md:h-12">
           <Link to={"/"} className="flex items-center gap-2">
             <img
-              className="h-6 w-6 rounded-full sm:h-8 sm:w-8"
+              className="h-[30px] w-[30px] rounded-full sm:h-[40px] sm:w-[40px]"
               src="/Hiveit.png"
               alt=""
             />
@@ -26,9 +26,9 @@ const Navbar = () => {
         </div>
 
         <div className="blob absolute left-0 top-0">
-          <div className="absolute -top-4 left-0 h-12 w-12 animate-blob rounded-full bg-rose-500 opacity-70 mix-blend-multiply blur-xl delay-0 md:left-0"></div>
-          <div className="delay-5000 absolute -top-4 left-8 h-12 w-12 animate-blob rounded-full bg-teal-500 opacity-70 mix-blend-multiply blur-xl md:left-20"></div>
-          <div className="delay-2000 absolute left-5 top-4 h-12 w-12 animate-blob rounded-full bg-gray-200 opacity-70 mix-blend-multiply blur-xl md:left-8"></div>
+          <div className="absolute -top-4 left-0 h-12 w-12 animate-blob rounded-full bg-rose-600 opacity-60 mix-blend-multiply blur-xl delay-0 md:left-0"></div>
+          <div className="delay-5000 absolute -top-4 left-8 h-12 w-12 animate-blob rounded-full bg-teal-600 opacity-60 mix-blend-multiply blur-xl md:left-20"></div>
+          <div className="delay-2000 absolute left-5 top-4 h-12 w-12 animate-blob rounded-full bg-gray-300 opacity-60 mix-blend-multiply blur-xl md:left-8"></div>
         </div>
       </div>
 

@@ -13,7 +13,8 @@ import {
 import { useDispatch } from "react-redux";
 import { auth } from "../../../firebase/clientApp";
 import { setAuthModalState } from "../../../slices";
-import { truncateText } from "@/lib/Utils";
+import { getAvatarCode, truncateText } from "@/lib/Utils";
+import { avatars } from "@/config/avatar";
 
 type Props = {
   user: User;
@@ -35,13 +36,13 @@ const UserMenu = ({ user }: Props) => {
       >
         <div className="flex items-center space-x-1">
           {user ? (
-            <div className="flex items-center justify-around space-x-2">
+            <div className="flex items-center justify-around shadow-2xl shadow-secondary/20 space-x-2">
               <img
-                className="h-6 w-6 rounded-full shadow-2xl shadow-secondary lg:h-8 lg:w-8"
+                className="h-[30px] w-[30px] rounded-full lg:h-[40px] lg:w-[40px] bg-gradient-to-b from-zinc-900 to-zinc-600"
                 src={
                   user.providerData[0].photoURL
                     ? user.providerData[0].photoURL
-                    : "/profile.png"
+                    : avatars[getAvatarCode(user.displayName || user.email?.split('@')[0] as string)].url
                 }
                 alt=""
               />

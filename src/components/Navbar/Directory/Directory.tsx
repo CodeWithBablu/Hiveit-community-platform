@@ -30,7 +30,7 @@ const Directory = () => {
       <MenuButton
         cursor="pointer"
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
-        className="mx-1 h-10 rounded-md px-2"
+        className="mx-1 h-10 rounded-md lg:h-12 px-2"
       >
         <div className="flex items-center justify-between space-x-1">
           {homeicon}

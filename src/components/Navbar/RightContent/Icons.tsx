@@ -78,7 +78,7 @@ const notificationicon = (
 const Icons = () => {
   return (
     <div className="hidden py-2 sm:flex">
-      <div className="mr-2 flex items-center gap-2 border-r-2 border-slate-700 pr-2">
+      {/* <div className="mr-2 flex items-center gap-2 border-r-2 border-slate-700 pr-2">
         <motion.div
           whileTap={{ scale: 0.7 }}
           className="cursor-pointer hover:text-secondary"
@@ -91,7 +91,7 @@ const Icons = () => {
         >
           {pollicon}
         </motion.div>
-      </div>
+      </div> */}
 
       <div className="flex items-center space-x-2">
         <motion.div
