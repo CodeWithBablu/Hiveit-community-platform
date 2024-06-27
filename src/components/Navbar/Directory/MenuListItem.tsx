@@ -10,7 +10,7 @@ type MenuListItemProps = {
 
 function MenuListItem({ displayText, link, imageURL }: MenuListItemProps) {
   const navigate = useNavigate();
-
+  console.log(imageURL);
   return (
     <MenuItem
       zIndex={10}
@@ -21,7 +21,7 @@ function MenuListItem({ displayText, link, imageURL }: MenuListItemProps) {
       <img className='w-8 h-8 rounded-full shadow-[0px_0px_20px_0px_rgba(225,225,225,0.3)]' src={imageURL ? imageURL : '/profile.png'} alt="community" />
 
 
-      <span className="font-poppins ml-2 text-base font-medium">
+      <span className="font-poppins ml-2 text-sm font-medium">
         {displayText}
       </span>
     </MenuItem>

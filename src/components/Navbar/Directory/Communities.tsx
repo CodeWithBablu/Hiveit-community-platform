@@ -18,6 +18,17 @@ const Communities = () => {
   return (
     <>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
+
+      <div className="w-full font-semibold tracking-wide mb-1">
+        <h3 className="text-gray-200">Moderating</h3>
+      </div>
+
+      {mySnippets.filter(snippet => snippet.isModerator).map((snippet, index) => (
+        <MenuListItem key={index} displayText={`h/${snippet.communityId}`} link={`/h/${snippet.communityId}`} imageURL={snippet.imageURL} />
+      ))}
+
+      <hr className="border-[1px] w-full border-gray-800 mt-2 mb-3" />
+
       <div className="w-full font-semibold tracking-wide mb-1">
         <h3 className="text-gray-200">My Commmunities</h3>
       </div>
@@ -28,13 +39,13 @@ const Communities = () => {
         onClick={() => setOpen(true)}
       >
         <RiAddLine size={32} />
-        <span className="font-poppins ml-2 text-base font-medium">
+        <span className="font-poppins ml-2 text-sm font-medium">
           Create Community
         </span>
       </MenuItem>
 
-      {mySnippets.map((snippet, index) => (
-        <MenuListItem key={index} displayText={`h/${snippet.communityId}`} link={`/h/${snippet.communityId}`} imageURL={snippet.imageUrl} />
+      {mySnippets.filter(snippet => !snippet.isModerator).map((snippet, index) => (
+        <MenuListItem key={index} displayText={`h/${snippet.communityId}`} link={`/h/${snippet.communityId}`} imageURL={snippet.imageURL} />
       ))}
     </>
   );
