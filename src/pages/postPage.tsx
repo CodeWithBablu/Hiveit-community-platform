@@ -53,7 +53,7 @@ function PostPage() {
     <div className="bg-zinc-950">
       <PageLayout>
         <>
-          <div className="sticky top-0 z-[5] flex h-14 w-full items-center justify-between bg-transparent px-4 text-xs text-gray-400 backdrop-blur-xl">
+          <div className="sticky top-0 z-[5] flex h-14 w-full items-center justify-between bg-zinc-950/80 px-4 text-xs text-gray-400 backdrop-blur-xl">
             <div className="flex items-center gap-6">
               <RiArrowLeftLine
                 className="cursor-pointer text-gray-300 hover:text-gray-50"

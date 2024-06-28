@@ -14,6 +14,7 @@ import {
   getDoc,
   getDocs,
   increment,
+  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { resetMySnippets, setAuthModalState, setCurrentCommunity, setMyCommunitySnippets } from "../slices";
@@ -84,8 +85,23 @@ const useCommunity = () => {
       //get user snippets
       const snippetDocs = await getDocs(snippetCollectionRef);
       const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
+
+      const updatedSnippets = await Promise.all(
+        snippets.map(async (snippet) => {
+          const { imageURL, communityId } = snippet;
+          if (!imageURL) {
+            const communityDoc = (await getDoc(doc(firestore, 'communities', communityId))).data();
+            if (communityDoc?.imageURL) {
+              await updateDoc(doc(firestore, `users/${user?.uid}/communitySnippets`, communityId), { imageURL: communityDoc.imageURL });
+              return { ...snippet, imageURL: communityDoc.imageURL };
+            }
+          }
+          return snippet;
+        })
+      );
+
       dispatch(
-        setMyCommunitySnippets({ mySnippets: snippets as [CommunitySnippet] }),
+        setMyCommunitySnippets({ mySnippets: updatedSnippets as [CommunitySnippet] }),
       );
     } catch (error) {
       console.log("getCommunity Snippets error: ", error);
@@ -104,7 +120,8 @@ const useCommunity = () => {
       );
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
-        imageUrl: communityData.imageURL || "",
+        imageURL: communityData.imageURL || "",
+        isModerator: user?.uid === communityData.creatorId
       };
 
       batch.set(docRef, newSnippet);

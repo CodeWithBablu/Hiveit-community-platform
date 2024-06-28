@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Post } from "@/slices/postSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { formatNumbers, formatPostDate, truncateText } from "@/lib/Utils";
+import { formatNumbers, formatPostDate, getAvatarCode, truncateText } from "@/lib/Utils";
 import { RiChat1Line, RiShare2Line, RiThumbDownFill, RiThumbDownLine, RiThumbUpFill, RiThumbUpLine } from "@remixicon/react";
 import Carousel from "./Carousel";
 import DeletePopover from "./DeletePopOver";
@@ -15,6 +15,7 @@ import { CommunitiesState, Community } from "@/slices/communitySlice";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import { Comment } from "./Comments/CommentItem";
+import { avatars } from "@/config/avatar";
 
 
 type PostItemProps = {
@@ -103,10 +104,10 @@ const PostItem: React.FC<PostItemProps> = ({
   return (
     <main onClick={() => onSelectPost && onSelectPost(post)} className={`h-fit w-full ${singlePostPage ? '' : 'hover:bg-zinc-900/30 border-t-[1px] border-gray-800'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
-        {!singlePostPage && <div className="mr-2 w-[40px] shrink-0">
+        {!singlePostPage && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
           <img
             className="h-[40px] w-[40px] rounded-full"
-            src={masterImage ? masterImage : "/Hiveit.png"}
+            src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
             alt=""
           />
         </div>}
@@ -114,10 +115,10 @@ const PostItem: React.FC<PostItemProps> = ({
         <div className="flex w-full flex-col gap-2">
 
           <div className="flex items-center gap-2 font-chillax text-gray-400">
-            {singlePostPage && <div className="mr-2 w-[40px] shrink-0">
+            {singlePostPage && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
               <img
                 className="h-[40px] w-[40px] rounded-full"
-                src={masterImage ? masterImage : "/Hiveit.png"}
+                src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
                 alt=""
               />
             </div>}

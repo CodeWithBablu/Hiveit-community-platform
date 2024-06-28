@@ -1,6 +1,8 @@
 import { Menu, MenuButton, MenuList } from "@chakra-ui/react";
 import Communities from "./Communities";
 import { RiArrowDropDownLine } from "@remixicon/react";
+import useDirectory from "@/hooks/useDirectory";
+import useCommunity from "@/hooks/useCommunity";
 
 const homeicon = (
   <svg
@@ -24,19 +26,31 @@ const homeicon = (
   </svg>
 );
 
+
 const Directory = () => {
+
+  const { directoryState: { selectedMenuItem, isOpen }, toggleMenuOpen } = useDirectory();
+
+
   return (
-    <Menu>
+    <Menu isOpen={isOpen}>
       <MenuButton
         cursor="pointer"
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
-        className="mx-1 h-10 rounded-md px-2"
+        className="mx-1 h-10 rounded-md lg:h-12 px-2"
+        onClick={toggleMenuOpen}
       >
-        <div className="flex items-center justify-between space-x-1">
-          {homeicon}
+        <div className="flex items-center justify-between gap-2">
+          {selectedMenuItem.displayText === "Home" && homeicon}
+
+          {(selectedMenuItem.imageURL || selectedMenuItem.displayText !== "Home") &&
+            <img className="w-6 h-6 rounded-full" src={selectedMenuItem.imageURL ? selectedMenuItem.imageURL : "/profile.png"} alt="comm img" />
+          }
+
           <span className="hidden font-poppins text-sm font-medium sm:inline-block">
-            Home
+            {selectedMenuItem.displayText}
           </span>
+
           <RiArrowDropDownLine size={20} />
         </div>
       </MenuButton>

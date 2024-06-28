@@ -96,7 +96,7 @@ function Posts({ communityData }: PostsProps) {
         id: doc.id,
         ...doc.data(),
       })) as Post[];
-      console.log(newPosts);
+
       if (postDocs.docs.length < PAGE_SIZE) {
         setHasMore(false); // No more posts to load
       }
