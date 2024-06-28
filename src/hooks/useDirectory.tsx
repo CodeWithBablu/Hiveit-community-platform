@@ -3,7 +3,12 @@ import { CommunitiesState } from "@/slices/communitySlice";
 import { DirectoryMenuItem, DirectoryMenuState } from "@/slices/directoryMenuSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+const defaultMenuItem = {
+  displayText: "Home",
+  link: "/",
+};
 
 const useDirectory = () => {
   const directoryState: DirectoryMenuState = useSelector((state: { directoryMenuState: DirectoryMenuState }) => state.directoryMenuState);
@@ -13,10 +18,12 @@ const useDirectory = () => {
   );
 
   const dispatch = useDispatch();
+  const { communityId } = useParams();
   const navigate = useNavigate();
 
 
   const onSelectMenuItem = (menuItem: DirectoryMenuItem) => {
+    console.log(menuItem);
     dispatch(setSelectedMenuItem({ selectedMenuItem: menuItem }));
 
     navigate(menuItem.link);
@@ -30,9 +37,8 @@ const useDirectory = () => {
   };
 
   useEffect(() => {
-    // const { community } = router.query;
 
-    if (communityStateValue.currentCommunity) {
+    if (communityStateValue.currentCommunity && communityId) {
       const existingCommunity = communityStateValue.currentCommunity;
 
       dispatch(setSelectedMenuItem({
@@ -45,13 +51,10 @@ const useDirectory = () => {
       return;
     }
 
-    // setDirectoryState((prev) => ({
-    //   ...prev,
-    //   selectedMenuItem: defaultMenuItem,
-    // }));
+    // dispatch(setSelectedMenuItem({ selectedMenuItem: defaultMenuItem }));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [communityStateValue.currentCommunity]);
+  }, [communityStateValue.currentCommunity, communityId]);
 
   return { directoryState, onSelectMenuItem, toggleMenuOpen };
 };

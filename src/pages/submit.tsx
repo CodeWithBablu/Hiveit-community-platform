@@ -20,7 +20,7 @@ const Submit = () => {
       <PageLayout maxWidth="1280px">
         {/* left content */}
         <>
-          {user && <PostForm user={user} />}
+          {user && <PostForm user={user} communityImageURL={currentCommunity?.imageURL} />}
           {!user && (
             <div className="relative flex h-[100dvh] sm:h-96 sm:mt-32 w-full items-center justify-center rounded-xl p-2">
               <img

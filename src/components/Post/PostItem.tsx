@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentCommunity } from "@/slices";
 import { CommunitiesState, Community } from "@/slices/communitySlice";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Comment } from "./Comments/CommentItem";
 import { avatars } from "@/config/avatar";
 
@@ -25,6 +25,7 @@ type PostItemProps = {
   onVote: (e: React.MouseEvent<HTMLDivElement>, post: Post, vote: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post) => void;
+  isHomePage?: boolean
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -34,6 +35,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
+  isHomePage
 }) => {
   const [masterImage, setMasterImage] = useState("");
   const [deletingPost, setDeletingPost] = useState<boolean>(false);
@@ -43,6 +45,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const currentCommunity: Community | undefined = useSelector(
     (state: { communitiesState: CommunitiesState }) => state.communitiesState.currentCommunity,
   );
+
 
   const dispatch = useDispatch();
 
@@ -104,7 +107,18 @@ const PostItem: React.FC<PostItemProps> = ({
   return (
     <main onClick={() => onSelectPost && onSelectPost(post)} className={`h-fit w-full ${singlePostPage ? '' : 'hover:bg-zinc-900/30 border-t-[1px] border-gray-800'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
-        {!singlePostPage && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+
+        {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+          <Link onClick={(e) => { e.stopPropagation() }} to={`/h/${post.communityId}`} title={post.communityId}>
+            <img
+              className="h-[40px] w-[40px] rounded-full"
+              src={post.communityImgURL ? post.communityImgURL : "/profile.png"}
+              alt="comm img"
+            />
+          </Link>
+        </div>}
+
+        {(!singlePostPage && !isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
           <img
             className="h-[40px] w-[40px] rounded-full"
             src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
@@ -123,9 +137,16 @@ const PostItem: React.FC<PostItemProps> = ({
               />
             </div>}
 
-            <span title={post.creatorDisplayName} className="font-medium text-gray-400/80">
-              u/ {truncateText(post.creatorDisplayName, 20)}
-            </span>{" "}
+            {isHomePage ? (
+              <Link onClick={(e) => { e.stopPropagation() }} to={`/h/${post.communityId}`} title={post.communityId} className="font-medium text-gray-400/80 hover:text-blue-600">
+                h/ {truncateText(post.communityId, 20)}
+              </Link>
+            ) : (
+              <span title={post.creatorDisplayName} className="font-medium text-gray-400/80">
+                u/ {truncateText(post.creatorDisplayName, 20)}
+              </span>)}
+
+            {" "}
             {!singlePostPage && <>
               <span className="h-[3px] w-[2px] ml-2 rounded-full bg-zinc-400"></span>{" "}
               <span>{formatPostDate('only-date', post.createdAt as number)}</span>

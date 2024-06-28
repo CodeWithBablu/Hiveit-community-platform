@@ -31,7 +31,6 @@ const Directory = () => {
 
   const { directoryState: { selectedMenuItem, isOpen }, toggleMenuOpen } = useDirectory();
 
-
   return (
     <Menu isOpen={isOpen}>
       <MenuButton

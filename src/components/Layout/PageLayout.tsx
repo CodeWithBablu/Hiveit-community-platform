@@ -22,7 +22,7 @@ const PageLayout = ({ children, maxWidth }: Props) => {
         <div className={clsx(
           'flex-grow',
           {
-            'border-x-[1px] border-dimGray w-full max-w-[650px]': isCommunityPage && !isSubmitPage,
+            'border-x-[1px] border-dimGray w-full max-w-[650px]': (isCommunityPage || isHomePage) && !isSubmitPage,
             'w-full lg:w-[65%] lg:max-w-[860px]': isSubmitPage,
           }
         )}>

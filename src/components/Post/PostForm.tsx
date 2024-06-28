@@ -21,7 +21,6 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   increment,
   serverTimestamp,
   updateDoc,
@@ -83,7 +82,7 @@ const fileHandler = (state: State, action: Action) => {
   }
 };
 
-const PostForm = ({ user }: { user: User }) => {
+const PostForm = ({ user, communityImageURL }: { user: User, communityImageURL?: string }) => {
   const [title, setTitle] = useState("");
   const [titleSize, setTitleSize] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -125,6 +124,7 @@ const PostForm = ({ user }: { user: User }) => {
     setLoading(true);
     const newPost: Post = {
       communityId: communityId as string,
+      communityImgURL: communityImageURL || "",
       creatorId: user.uid,
       creatorDisplayName: user.email!.split("@")[0],
       type: payload.type,

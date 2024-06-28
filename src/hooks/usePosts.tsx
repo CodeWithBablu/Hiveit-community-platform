@@ -4,7 +4,7 @@ import { timestampToMillis } from "@/lib/Utils";
 import { removePost, setAuthModalState, setPostStateValue, setPostVotes, setPosts, setSelectedPost } from "@/slices";
 import { CommunitiesState, Community } from "@/slices/communitySlice";
 import { Post, PostState, PostVote } from "@/slices/postSlice";
-import { collection, deleteDoc, doc, getDocs, increment, query, updateDoc, where, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, increment, query, updateDoc, where, writeBatch } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore/lite";
 import { deleteObject, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
@@ -45,15 +45,23 @@ const usePosts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const setPostsValue = (posts: Post[]) => {
-    dispatch(
-      setPosts(
-        posts.map((post) => ({
-          ...post,
-          createdAt: timestampToMillis(post.createdAt as Timestamp),
-        })),
-      ),
+  const setPostsValue = async (posts: Post[]) => {
+    const updatedPosts = await Promise.all(
+      posts.map(async (post) => {
+        post = { ...post, createdAt: timestampToMillis(post.createdAt as Timestamp) };
+
+        const { communityImgURL } = post;
+        if (!communityImgURL) {
+          const communityDoc = (await getDoc(doc(firestore, 'communities', post.communityId))).data();
+          if (communityDoc?.imageURL) {
+            return { ...post, communityImgURL: communityDoc.imageURL };
+          }
+        }
+        return post;
+      })
     );
+
+    dispatch(setPosts(updatedPosts));
   };
 
   const onVote = async (e: React.MouseEvent<HTMLDivElement>, post: Post, vote: number, communityId: string) => {
@@ -214,7 +222,6 @@ const usePosts = () => {
 
   const clearUpPostFiles = async (post: Post) => {
     try {
-      console.log(post.createdAt);
       const storageRef = ref(storage, `posts/${post.id}`);
       const listResult = await listAll(storageRef);
       console.log(listResult);

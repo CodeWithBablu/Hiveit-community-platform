@@ -1,9 +1,6 @@
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { RiSearch2Line } from "@remixicon/react";
 
-// type Props = {
-//   // user:
-// }
 
 const SearchInput = () => {
   return (

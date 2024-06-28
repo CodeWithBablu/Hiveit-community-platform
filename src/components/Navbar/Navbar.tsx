@@ -4,6 +4,8 @@ import SearchInput from "./SearchInput";
 import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
 import useDirectory from "@/hooks/useDirectory";
+import { RiSearch2Line } from "@remixicon/react";
+import useWindowWidth from "@/hooks/useWindowWidth";
 
 const defaultMenuItem = {
   displayText: "Home",
@@ -13,6 +15,7 @@ const defaultMenuItem = {
 const Navbar = () => {
   const [user] = useAuthState(auth);
   const { onSelectMenuItem } = useDirectory();
+  // const windowWidth = useWindowWidth();
 
   return (
     <nav className="flex items-center justify-between border-b-[1px] border-dimGray bg-zinc-950 px-2 h-16 text-white xl:px-[5%]">
@@ -40,7 +43,13 @@ const Navbar = () => {
       </div>
 
       {/* search section */}
-      <SearchInput />
+
+      {/* {(windowWidth > 768) && <SearchInput />} */}
+
+      {/* {(windowWidth <= 768) && <div className="ml-auto mx-3">
+        <RiSearch2Line className="text-secondary" />
+      </div>} */}
+
       {/* <Directory/> */}
       <RightContent user={user} />
     </nav>
