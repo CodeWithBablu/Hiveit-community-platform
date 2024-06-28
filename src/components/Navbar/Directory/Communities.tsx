@@ -8,7 +8,6 @@ import useCommunity from "@/hooks/useCommunity";
 
 const Communities = () => {
   const [open, setOpen] = useState(false);
-
   const { userCommunities: { mySnippets } } = useCommunity();
 
   return (

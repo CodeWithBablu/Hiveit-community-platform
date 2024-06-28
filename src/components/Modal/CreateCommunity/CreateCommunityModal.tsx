@@ -224,11 +224,11 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
             </span>
           </ModalBody>
 
-          <ModalFooter className="gap-3 rounded-b-[8px] bg-gray-900 font-poppins font-medium text-white">
+          <ModalFooter className="gap-3 rounded-b-[8px] bg-zinc-950 font-poppins font-medium text-white">
             <motion.button
               onClick={handleClose}
               whileTap={{ scale: 0.8 }}
-              className={`rounded-xl px-4 py-3 text-red-600 hover:bg-rose-950/80`}
+              className={`rounded-full px-4 py-3 text-rose-500 hover:bg-rose-950/50`}
             >
               Close
             </motion.button>
@@ -237,7 +237,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
                 onClick={handleCreateCommunity}
                 whileTap={{ scale: 0.8 }}
                 type="submit"
-                className={`rounded-xl bg-blue-600 px-4 py-3 ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
+                className={`rounded-full bg-blue-600 px-4 py-3 ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
               >
                 Create Community
               </motion.button>
