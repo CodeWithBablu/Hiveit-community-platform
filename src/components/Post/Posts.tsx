@@ -60,6 +60,7 @@ function Posts({ communityData }: PostsProps) {
         ...doc.data(),
       })) as Post[];
 
+
       if (postDocs.docs.length < PAGE_SIZE) {
         setHasMore(false); // No more posts to load
       }
@@ -82,15 +83,10 @@ function Posts({ communityData }: PostsProps) {
 
   useEffect(() => {
     const getIntialPosts = async () => {
-      console.log("hi");
       dispatch(resetPostStatevalue());
-
-      if (observer.current) {
-        console.log("observer");
-        observer.current.disconnect(); // Disconnect the observer when component unmounts
-      }
-
+      setHasMore(true);
       setIsLoading(true);
+
       const postsQuery = query(
         collection(firestore, "posts"),
         where("communityId", "==", communityData.id),
@@ -135,7 +131,7 @@ function Posts({ communityData }: PostsProps) {
         }
       });
     }, options);
-    console.log(lastVisible);
+
     if (observer.current && lastVisible) {
       const target = document.querySelector("#load-more-marker"); // marking the last element
       if (target) {
