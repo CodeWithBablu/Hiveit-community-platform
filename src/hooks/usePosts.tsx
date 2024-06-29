@@ -45,15 +45,16 @@ const usePosts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const setPostsValue = async (posts: Post[]) => {
+  const setPostsValue = async (posts: Post[], isHomepage = false) => {
     const updatedPosts = await Promise.all(
       posts.map(async (post) => {
         post = { ...post, createdAt: timestampToMillis(post.createdAt as Timestamp) };
 
         const { communityImgURL } = post;
-        if (!communityImgURL) {
+        if (!communityImgURL && isHomepage) {
           const communityDoc = (await getDoc(doc(firestore, 'communities', post.communityId))).data();
           if (communityDoc?.imageURL) {
+            await updateDoc(doc(firestore, `posts`, post.id!), { communityImgURL: communityDoc.imageURL });
             return { ...post, communityImgURL: communityDoc.imageURL };
           }
         }

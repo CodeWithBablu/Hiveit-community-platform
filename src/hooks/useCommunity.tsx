@@ -17,7 +17,7 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { resetMySnippets, setAuthModalState, setCurrentCommunity, setMyCommunitySnippets } from "../slices";
+import { resetMySnippets, setAuthModalState, setCurrentCommunity, setInitSnippetFetched, setMyCommunitySnippets } from "../slices";
 import { Toast } from "../lib/Toast";
 import { useParams } from "react-router-dom";
 import { timestampToMillis } from "@/lib/Utils";
@@ -35,6 +35,7 @@ const useCommunity = () => {
   useEffect(() => {
     if (!user) {
       dispatch(resetMySnippets());
+      dispatch(setInitSnippetFetched({ initSnippetFetched: false }));
       return;
     }
 
@@ -100,9 +101,8 @@ const useCommunity = () => {
         })
       );
 
-      dispatch(
-        setMyCommunitySnippets({ mySnippets: updatedSnippets as [CommunitySnippet] }),
-      );
+      dispatch(setMyCommunitySnippets({ mySnippets: updatedSnippets as [CommunitySnippet] }));
+      dispatch(setInitSnippetFetched({ initSnippetFetched: true }));
     } catch (error) {
       console.log("getCommunity Snippets error: ", error);
     }

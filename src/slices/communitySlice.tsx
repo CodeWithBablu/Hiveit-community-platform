@@ -21,11 +21,13 @@ export interface CommunitySnippet {
 }
 
 export interface CommunitiesState {
+  initSnippetFetched: boolean;
   mySnippets: [CommunitySnippet] | [];
   currentCommunity?: Community,
 }
 
 const defaultCommunitiesState: CommunitiesState = {
+  initSnippetFetched: false,
   mySnippets: [],
 };
 
@@ -33,6 +35,9 @@ export const CommunitySlice = createSlice({
   name: "communitiesState",
   initialState: defaultCommunitiesState,
   reducers: {
+    setInitSnippetFetched: (state, action: PayloadAction<{ initSnippetFetched: boolean }>) => {
+      return ({ ...state, initSnippetFetched: action.payload.initSnippetFetched });
+    },
     setMyCommunitySnippets: (state, action: PayloadAction<{ mySnippets: [CommunitySnippet] | [] }>) => {
       return (state = {
         ...state,
