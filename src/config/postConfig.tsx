@@ -59,13 +59,10 @@ export const formTabs: Item[] = [
 ];
 
 export const postError = {
-  video_not_allowed_in_gallery:
-    "Videos aren’t supported within galleries...yet 🥶️",
-  suppoted_file_type:
-    "Sorry, we accept only images (.png, .jpeg, .webp, .gif) and videos (.mp4, .mov)",
+  video_not_allowed_in_gallery: "Videos aren’t supported within galleries...yet 🥶️",
+  suppoted_file_type: "Sorry, we accept only images (.png, .jpeg, .webp, .gif) and videos (.mp4, .mov)",
   too_big: "File Exceeds size limit (15 MB) 🥶️",
-  max_upload_limit_reached:
-    "You can upload a maximum of 5 files at a time. 🥶️",
+  max_upload_limit_reached: "You can upload a maximum of 5 files at a time. 🥶️",
   remove_before_adding: "Remove video first 🥶️",
   images_are_allowed_in_gallary: "Only images are supported in gallary 🥶️",
 };

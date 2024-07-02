@@ -59,3 +59,30 @@ export const CommentSkeleton = () => {
     </div>
   )
 }
+
+
+export const RecommendedCommunitySkeleton = () => {
+  return (
+    <div className="py-2 w-full overflow-hidden animate-pulse">
+      <div className='flex flex-col gap-5'>
+        <div className='w-full flex justify-between items-center'>
+          <div className=' flex items-center gap-2'>
+            <div className="mr-2 h-10 w-10 shrink-0 bg-zinc-800/70 rounded-full"></div>
+            <div className="w-20 h-4 bg-zinc-800/70 rounded"></div>
+          </div>
+          <div className="shrink-0 w-28 h-8 bg-zinc-800/70 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const RecommendedCommunitiesSkeleton = () => {
+  return (
+    <>
+      <RecommendedCommunitySkeleton />
+      <RecommendedCommunitySkeleton />
+      <RecommendedCommunitySkeleton />
+    </>
+  )
+}

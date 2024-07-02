@@ -20,6 +20,8 @@ import { useState } from "react";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Toast } from "../../../lib/Toast";
+import { useNavigate } from "react-router-dom";
+import useDirectory from "@/hooks/useDirectory";
 
 type Props = {
   open: boolean;
@@ -36,6 +38,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const [user] = useAuthState(auth);
+  const { toggleMenuOpen } = useDirectory();
+
+  const navigate = useNavigate();
 
   //// On Chnage method
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +109,8 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
           },
         );
       });
-
+      navigate(`/h/${communityName}`);
+      toggleMenuOpen();
       Toast("success", "Community created successfully!!", 4000);
       handleClose();
     } catch (error) {

@@ -75,7 +75,7 @@ function About({ communityData }: AboutProps) {
           </span>
         </div>
 
-        <button onClick={handleClick} className="border-[1px] border-blue-600 shadow-[0px_0px_15px_0px_rgba(37,99,235,0.3)] w-full rounded-full py-3 font-semibold tracking-wider mt-5">Create post</button>
+        <button onClick={handleClick} className=" text-gray-200 border-[1px] border-blue-600 w-full rounded-full py-3 font-medium tracking-wider mt-5">Create post</button>
 
         {user?.uid === communityData.creatorId && (
           <>

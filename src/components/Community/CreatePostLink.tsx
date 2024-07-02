@@ -25,7 +25,7 @@ const CreatePostLink = () => {
       <SortbyMenu />
       <button
         onClick={onClick}
-        className="flex items-center gap-2 rounded-full px-4 py-3 text-base font-semibold shadow-[0px_0px_10px_0px_rgba(37,99,235,0.3)] ring-[1px] ring-blue-600"
+        className="flex items-center gap-2 rounded-full px-4 py-3 text-base text-gray-100 ring-[1px] hover:bg-zinc-900/50 ring-gray-700"
       >
         <RiAddLine size={20} /> Create post
       </button>

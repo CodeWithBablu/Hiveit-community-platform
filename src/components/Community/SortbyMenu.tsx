@@ -1,16 +1,18 @@
 // type Props = {
 
+import { resetPostStatevalue, setFilter, setPostFetchingParams } from "@/slices";
+import { PostState, SortBy } from "@/slices/postSlice";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { RiArrowDropDownLine } from "@remixicon/react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-// }
 
-type SortBy = "latest" | "top" | "rising";
-const sortByOptions = ["latest", "top", "rising"];
+const sortByOptions = ["latest", "top", "hot"];
 
 const SortbyMenu = () => {
-  const [sortby, setSortby] = useState<SortBy>("latest");
+
+  const { filter } = useSelector((state: { postState: PostState }) => state.postState);
+  const dispatch = useDispatch();
 
   return (
     <Menu>
@@ -19,8 +21,8 @@ const SortbyMenu = () => {
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
         className="mx-1 h-10 rounded-md px-2 md:h-12"
       >
-        <div className="flex items-center gap-3 px-2 py-2 text-lg font-chillax font-medium capitalize text-blue-500">
-          {sortby} <RiArrowDropDownLine size={30} />
+        <div className="flex items-center gap-3 px-2 py-2 text-lg font-chillax font-medium capitalize text-gray-400">
+          {filter} <RiArrowDropDownLine size={30} />
         </div>
       </MenuButton>
       <MenuList
@@ -34,10 +36,10 @@ const SortbyMenu = () => {
         {sortByOptions.map((option, index) => (
           <MenuItem
             key={index}
-            onClick={() => setSortby(option as SortBy)}
+            onClick={() => { dispatch(setFilter(option as SortBy)) }}
             color={"gray.500"}
             bgColor="transparent"
-            className="gap-2 rounded-md hover:bg-zinc-900 hover:text-gray-50"
+            className="gap-2 rounded-md hover:bg-blue-700 hover:text-gray-50"
           >
             <span className="cursor-pointer text-lg font-chillax font-semibold capitalize">
               {option}

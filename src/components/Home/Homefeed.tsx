@@ -1,15 +1,15 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { DocumentData, QueryDocumentSnapshot, collection, getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot, collection, doc, getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { PostSkeleton } from "../Ui/Skeletons";
 import PostItem from "../Post/PostItem";
-import { Post } from "@/slices/postSlice";
+import { Post, PostState, PostVote } from "@/slices/postSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPostStatevalue } from "@/slices";
-import { CommunitiesState } from "@/slices/communitySlice";
+import { resetPostStatevalue, setHasMore, setPostVotes } from "@/slices";
 import useCommunity from "@/hooks/useCommunity";
+import { Spinner } from "@chakra-ui/react";
 
 // type Props = {}
 const PAGE_SIZE = 3;
@@ -17,13 +17,14 @@ const PAGE_SIZE = 3;
 const Homefeed = () => {
 
   const [user, loadingUser] = useAuthState(auth);
-  const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
-
+  const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  // const [hasMore, setHasMore] = useState(true);
 
   const { userCommunities: communityStateValue } = useCommunity();
+
+  const { filter: sortBy, hasMore } = useSelector((state: { postState: PostState }) => state.postState);
 
 
   const { postStateValue, setPostsValue, onSelectPost, onVote, OnDeletePost } = usePosts();
@@ -34,11 +35,23 @@ const Homefeed = () => {
     setIsLoading(true);
 
     try {
-      const postsQuery = query(
+      let postsQuery = query(
         collection(firestore, "posts"),
-        orderBy("voteStatus", "desc"),
         limit(PAGE_SIZE)
       );
+
+      if (sortBy === "hot") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+      }
+
+      if (sortBy === "latest") {
+        postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+      }
+
+      if (sortBy === "top") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+      }
+
       const postDocs = await getDocs(postsQuery);
       const newPosts = postDocs.docs.map((doc) => ({
         id: doc.id,
@@ -46,7 +59,7 @@ const Homefeed = () => {
       })) as Post[];
 
       if (postDocs.docs.length < PAGE_SIZE) {
-        setHasMore(false); // No more posts to load
+        dispatch(setHasMore(false)); // No more posts to load
       }
 
       setLastVisible(
@@ -63,7 +76,7 @@ const Homefeed = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPostsValue]);
+  }, [sortBy]);
 
   const fetchNoUserHomePosts = useCallback(async () => {
     try {
@@ -74,9 +87,20 @@ const Homefeed = () => {
       // get posts for this community
       let postsQuery = query(
         collection(firestore, "posts"),
-        orderBy("voteStatus", "desc"),
         limit(PAGE_SIZE)
       );
+
+      if (sortBy === "hot") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+      }
+
+      if (sortBy === "latest") {
+        postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+      }
+
+      if (sortBy === "top") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+      }
 
       if (lastVisible) {
         postsQuery = query(postsQuery, startAfter(lastVisible));
@@ -88,7 +112,7 @@ const Homefeed = () => {
       })) as Post[];
 
       if (postDocs.docs.length < PAGE_SIZE) {
-        setHasMore(false); // No more posts to load
+        dispatch(setHasMore(false)); // No more posts to load
       }
 
       setLastVisible(
@@ -102,7 +126,9 @@ const Homefeed = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [hasMore, isLoading, lastVisible, setPostsValue]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoading, lastVisible, sortBy]);
 
 
   const getIntialUserfeeds = useCallback(async () => {
@@ -113,12 +139,24 @@ const Homefeed = () => {
       if (communityStateValue.mySnippets.length) {
         const myCommunities = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
 
-        const postsQuery = query(
+        let postsQuery = query(
           collection(firestore, "posts"),
           where("communityId", "in", myCommunities),
-          // orderBy("voteStatus", "desc"),
           limit(PAGE_SIZE)
         );
+
+        if (sortBy === "hot") {
+          postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+        }
+
+        if (sortBy === "latest") {
+          postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+        }
+
+        if (sortBy === "top") {
+          postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+        }
+
         const postDocs = await getDocs(postsQuery);
         const newPosts = postDocs.docs.map((doc) => ({
           id: doc.id,
@@ -126,7 +164,7 @@ const Homefeed = () => {
         })) as Post[];
 
         if (postDocs.docs.length < PAGE_SIZE) {
-          setHasMore(false); // No more posts to load
+          dispatch(setHasMore(false)); // No more posts to load
         }
 
         setLastVisible(
@@ -134,8 +172,11 @@ const Homefeed = () => {
             ? postDocs.docs[postDocs.docs.length - 1]
             : null,
         );
+
         await setPostsValue(newPosts, true);
       }
+      else
+        getIntialNoUserfeeds();
 
     } catch (error) {
       console.log('failed to fetch initial user home feeds', error);
@@ -144,7 +185,8 @@ const Homefeed = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPostsValue]);
+  }, [sortBy, communityStateValue.mySnippets]);
+
 
   const fetchUserHomePosts = useCallback(async () => {
     try {
@@ -154,18 +196,29 @@ const Homefeed = () => {
 
       if (communityStateValue.mySnippets.length) {
         const myCommunities = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
-        // get posts for this community
 
         let postsQuery = query(
           collection(firestore, "posts"),
           where("communityId", "in", myCommunities),
-          // orderBy("voteStatus", "desc"),
           limit(PAGE_SIZE)
         );
+
+        if (sortBy === "hot") {
+          postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+        }
+
+        if (sortBy === "latest") {
+          postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+        }
+
+        if (sortBy === "top") {
+          postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+        }
 
         if (lastVisible) {
           postsQuery = query(postsQuery, startAfter(lastVisible));
         }
+
         const postDocs = await getDocs(postsQuery);
         const newPosts = postDocs.docs.map((doc) => ({
           id: doc.id,
@@ -173,7 +226,7 @@ const Homefeed = () => {
         })) as Post[];
 
         if (postDocs.docs.length < PAGE_SIZE) {
-          setHasMore(false); // No more posts to load
+          dispatch(setHasMore(false)); // No more posts to load
         }
 
         setLastVisible(
@@ -181,6 +234,7 @@ const Homefeed = () => {
             ? postDocs.docs[postDocs.docs.length - 1]
             : null,
         );
+
         await setPostsValue(newPosts, true);
       }
       else
@@ -192,24 +246,54 @@ const Homefeed = () => {
       setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, hasMore, isLoading, lastVisible, setPostsValue, communityStateValue.mySnippets])
+  }, [hasMore, isLoading, lastVisible, sortBy, communityStateValue.mySnippets]);
 
 
-  const getUserPostVotes = async () => { }
+  const getUserPostVotes = async () => {
+    try {
+      const postIds = postStateValue.posts.map(post => post.id);
+      const postsVotesQuery = query(
+        collection(firestore, `users/${user?.uid}/postVotes`),
+        where('postId', 'in', postIds)
+      );
 
+      const postVoteDocs = await getDocs(postsVotesQuery);
+      const postVotes = postVoteDocs.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      dispatch(setPostVotes({ postVotes: postVotes as PostVote[] }))
+    } catch (error) {
+      console.log('get user postValue error: ', error);
+    }
+  }
+
+
+  // load userFeeds
   useEffect(() => {
     if (communityStateValue.initSnippetFetched) {
       getIntialUserfeeds(); // Load initial posts
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [communityStateValue.initSnippetFetched]);
+  }, [communityStateValue.initSnippetFetched, sortBy]);
 
+  //load no userFeeds
   useEffect(() => {
     if (!user && !loadingUser) {
       getIntialNoUserfeeds(); // Load initial posts
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, loadingUser]);
+  }, [user, loadingUser, sortBy]);
+
+
+  useEffect(() => {
+    if (user && postStateValue.posts.length) getUserPostVotes();
+
+    return () => {
+      console.log("hello");
+      dispatch(setPostVotes({ postVotes: [] }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, postStateValue.posts]);
+
 
   useEffect(() => {
     const options = {
@@ -219,13 +303,14 @@ const Homefeed = () => {
     };
 
     observer.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+      entries.forEach(async (entry) => {
         if (entry.isIntersecting && !isLoading) {
           // Fetch more posts when the target element is intersecting with the viewport
-          if (!user)
-            fetchNoUserHomePosts();
+          if (!user) {
+            await fetchNoUserHomePosts(); // Load initial posts
+          }
           else {
-            fetchUserHomePosts();
+            await fetchUserHomePosts();
           }
         }
       });
@@ -244,48 +329,20 @@ const Homefeed = () => {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, lastVisible]);
+  }, [isLoading, lastVisible, user]);
 
-  // useEffect(() => {
-  //   const options = {
-  //     root: null, // use the viewport as the root
-  //     rootMargin: "0px", // no margin
-  //     threshold: 0.1, // trigger when 10% of the element is visible
-  //   };
 
-  //   observer.current = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting && !isLoading) {
-  //         fetchposts(); // Fetch more posts when the target element is intersecting with the viewport
-  //       }
-  //     });
-  //   }, options);
 
-  //   if (observer.current && lastVisible) {
-  //     const target = document.querySelector("#load-more-marker"); // marking the last element
-  //     if (target) {
-  //       observer.current.observe(target);
-  //     }
-  //   }
-
-  //   return () => {
-  //     if (observer.current) {
-  //       observer.current.disconnect(); // Disconnect the observer when component unmounts
-  //     }
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isLoading, lastVisible]);
+  if (isLoading && !postStateValue.posts.length) {
+    return (
+      <div className="flex min-h-[600px] items-center justify-center bg-zinc-950">
+        <Spinner className="" size={"xl"} thickness="7px" color="blue" />
+      </div>
+    );
+  }
 
   return (
     <div>
-
-      {isLoading &&
-        <div className="flex w-full flex-col justify-center">
-          <PostSkeleton />
-          <PostSkeleton />
-        </div>
-      }
-
       {(postStateValue.posts.length > 0) && (
         <>
           <div className="">
@@ -306,17 +363,11 @@ const Homefeed = () => {
         </>
       )}
 
-      {
-        (postStateValue.posts.length == 0 && !isLoading) && (
-          <>
-            <div className="mt-10 flex w-full flex-col items-center font-chillax text-lg font-medium">
-              <h2 className="animate-pulse">
-                No posts yet? Time to break the ice and start the chatter!
-              </h2>
-              <img className="w-[50%]" src="/notfound.png" alt="" />
-            </div>
-          </>
-        )
+      {isLoading &&
+        <div className="flex w-full flex-col justify-center">
+          <PostSkeleton />
+          <PostSkeleton />
+        </div>
       }
 
       {!hasMore && postStateValue.posts.length > 0 && (

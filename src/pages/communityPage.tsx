@@ -68,7 +68,7 @@ const CommunityPage = () => {
 
           {/* //// Right Content */}
           <>
-            <div className="sticky top-14 w-full max-w-[350px] h-fit mt-14">
+            <div className="sticky top-14 w-[350px] h-fit mt-14">
               <About communityData={communityData} />
             </div>
           </>

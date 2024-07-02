@@ -6,7 +6,7 @@ import { DirectoryMenuSlice } from "./directoryMenuSlice";
 const { setAuthModalState } = AuthModalSlice.actions;
 const { setInitSnippetFetched, setCurrentCommunity, setMyCommunitySnippets, resetMySnippets, changeCommunityImages } = CommunitySlice.actions;
 
-const { setPostStateValue, setSelectedPost, setPosts, removePost, resetPostStatevalue, setPostVotes } = PostsSlice.actions;
+const { setFilter, setHasMore, setLastVisible, setPostFetchingParams, setPostStateValue, setSelectedPost, setPosts, removePost, resetPostStatevalue, setPostVotes } = PostsSlice.actions;
 
 const { setIsMenuOpen, setSelectedMenuItem, setDirectoryMenuState } = DirectoryMenuSlice.actions;
 
@@ -17,6 +17,10 @@ export {
   setMyCommunitySnippets,
   changeCommunityImages,
   resetMySnippets,
+  setFilter,
+  setHasMore,
+  setLastVisible,
+  setPostFetchingParams,
   setPosts,
   setSelectedPost,
   setPostVotes,

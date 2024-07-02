@@ -107,7 +107,7 @@ export const millisToTimestamp = (millis: number): Timestamp => {
 };
 
 export const truncateText = (text: string, maxLength: number) => {
-  return text.length > maxLength ? text.slice(0, maxLength) + "... " : text;
+  return text.length > maxLength ? (text.slice(0, maxLength) + "...") : text;
 };
 
 type FormatType = 'date-time' | 'only-date';
@@ -154,3 +154,9 @@ export const formatNumbers = (num: number) => {
 export function getAvatarCode(str: string) {
   return str.length % 15;
 }
+
+
+export const calculateHotness = (voteStatus: number, createdAt: Timestamp, numofComments: number) => {
+  const ageInHours = (Date.now() - createdAt.toMillis()) / (1000 * 60 * 60);
+  return (voteStatus + numofComments * 2) / Math.pow(ageInHours + 2, 1.8);
+};

@@ -1,6 +1,6 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import { Community } from "@/slices/communitySlice";
-import { Post } from "@/slices/postSlice";
+import { Post, PostState } from "@/slices/postSlice";
 import {
   DocumentData,
   QueryDocumentSnapshot,
@@ -12,12 +12,12 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import usePosts from "@/hooks/usePosts";
 import PostItem from "./PostItem";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch } from "react-redux";
-import { resetPostStatevalue } from "@/slices";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPostStatevalue, setHasMore } from "@/slices";
 import { PostSkeleton } from "../Ui/Skeletons";
 
 type PostsProps = {
@@ -31,13 +31,15 @@ function Posts({ communityData }: PostsProps) {
 
   const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
+
+  const { filter: sortBy, hasMore } = useSelector((state: { postState: PostState }) => state.postState);
+
 
   const { postStateValue, setPostsValue, onVote, OnDeletePost, onSelectPost } = usePosts();
   const dispatch = useDispatch();
 
-  const fetchposts = async () => {
+  const fetchposts = useCallback(async () => {
     try {
       //prevent fetch if already loading
       if (isLoading || !hasMore) return;
@@ -47,9 +49,21 @@ function Posts({ communityData }: PostsProps) {
       let postsQuery = query(
         collection(firestore, "posts"),
         where("communityId", "==", communityData.id),
-        orderBy("createdAt", "desc"),
         limit(PAGE_SIZE),
       );
+
+      console.log(sortBy);
+      if (sortBy === "hot") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+      }
+
+      if (sortBy === "latest") {
+        postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+      }
+
+      if (sortBy === "top") {
+        postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+      }
 
       if (lastVisible) {
         postsQuery = query(postsQuery, startAfter(lastVisible));
@@ -62,7 +76,7 @@ function Posts({ communityData }: PostsProps) {
 
 
       if (postDocs.docs.length < PAGE_SIZE) {
-        setHasMore(false); // No more posts to load
+        dispatch(setHasMore(false)); // No more posts to load
       }
 
       setLastVisible(
@@ -79,43 +93,55 @@ function Posts({ communityData }: PostsProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [communityData.id, sortBy, hasMore, isLoading, lastVisible]);
+
+  const getIntialPosts = useCallback(async () => {
+    dispatch(resetPostStatevalue());
+    setIsLoading(true);
+
+    let postsQuery = query(
+      collection(firestore, "posts"),
+      where("communityId", "==", communityData.id),
+      limit(PAGE_SIZE),
+    );
+
+    if (sortBy === "hot") {
+      postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
+    }
+
+    if (sortBy === "latest") {
+      postsQuery = query(postsQuery, orderBy("createdAt", "desc"));
+    }
+
+    if (sortBy === "top") {
+      postsQuery = query(postsQuery, orderBy("voteStatus", "desc"));
+    }
+
+    const postDocs = await getDocs(postsQuery);
+    const newPosts = postDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Post[];
+
+    if (postDocs.docs.length < PAGE_SIZE) {
+      dispatch(setHasMore(false)); // No more posts to load
+    }
+
+    setLastVisible(
+      postDocs.docs.length > 0
+        ? postDocs.docs[postDocs.docs.length - 1]
+        : null,
+    );
+    await setPostsValue(newPosts);
+    setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [communityData.id, sortBy]);
 
   useEffect(() => {
-    const getIntialPosts = async () => {
-      dispatch(resetPostStatevalue());
-      setHasMore(true);
-      setIsLoading(true);
-
-      const postsQuery = query(
-        collection(firestore, "posts"),
-        where("communityId", "==", communityData.id),
-        orderBy("createdAt", "desc"),
-        limit(PAGE_SIZE),
-      );
-
-      const postDocs = await getDocs(postsQuery);
-      const newPosts = postDocs.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Post[];
-
-      if (postDocs.docs.length < PAGE_SIZE) {
-        setHasMore(false); // No more posts to load
-      }
-
-      setLastVisible(
-        postDocs.docs.length > 0
-          ? postDocs.docs[postDocs.docs.length - 1]
-          : null,
-      );
-      await setPostsValue(newPosts);
-      setIsLoading(false);
-    };
-
     getIntialPosts(); // Load initial posts
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [communityData]);
+  }, [communityData, sortBy]);
 
   useEffect(() => {
     const options = {
