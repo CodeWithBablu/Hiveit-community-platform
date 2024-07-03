@@ -48,7 +48,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
           </>
         ) : (
           <>
-            <div onClick={() => setIsOverlayOpen(prev => !prev)} ref={containerRef} className={`relative h-full w-full flex transition-transform duration-700 ease-in-out`}>
+            <div onClick={() => setIsOverlayOpen(prev => !prev)} ref={containerRef} className={`relative ${isOverlayOpen ? 'h-[calc(100dvh-64px)]' : 'h-full'} w-full flex transition-transform duration-700 ease-in-out`}>
               {gallery.map((media, index) => (
                 <div
                   key={index}

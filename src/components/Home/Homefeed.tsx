@@ -11,7 +11,7 @@ import { resetPostStatevalue, setHasMore, setPostVotes } from "@/slices";
 import useCommunity from "@/hooks/useCommunity";
 import { Spinner } from "@chakra-ui/react";
 
-// type Props = {}
+
 const PAGE_SIZE = 3;
 
 const Homefeed = () => {
@@ -20,7 +20,6 @@ const Homefeed = () => {
   const [isLoading, setIsLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-  // const [hasMore, setHasMore] = useState(true);
 
   const { userCommunities: communityStateValue } = useCommunity();
 
@@ -288,7 +287,6 @@ const Homefeed = () => {
     if (user && postStateValue.posts.length) getUserPostVotes();
 
     return () => {
-      console.log("hello");
       dispatch(setPostVotes({ postVotes: [] }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

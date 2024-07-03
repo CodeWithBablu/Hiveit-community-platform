@@ -1,0 +1,116 @@
+import useCommunity from '@/hooks/useCommunity';
+import { RiAddLine, RiHome2Line, RiHomeLine, RiHomeSmile2Line, RiReceiptLine } from '@remixicon/react'
+import React, { useEffect, useState } from 'react'
+import MenuListItem from '../Navbar/Directory/MenuListItem';
+import { truncateText } from '@/lib/Utils';
+import { Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/react';
+import { Box } from 'framer-motion';
+import { CommunitiesState, CommunitySnippet } from '@/slices/communitySlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRecentCommunities } from '@/slices';
+import useDirectory from '@/hooks/useDirectory';
+import { Link } from 'react-router-dom';
+
+// type Props = {}
+
+const Sidebar = () => {
+
+  const { userCommunities: { mySnippets } } = useCommunity();
+  const { toggleMenuOpen } = useDirectory();
+  const { recentCommunities } = useSelector((state: { communitiesState: CommunitiesState }) => state.communitiesState);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const storedCommunitySnippets: CommunitySnippet[] = JSON.parse(localStorage.getItem('recentCommunities') || '[]') || [];
+    dispatch(setRecentCommunities({ recentCommunities: storedCommunitySnippets }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    <div className='mt-14 sticky top-14 text-sm flex flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7.5rem)] mr-5 w-[276px] shrink-0 rounded-xl'>
+
+      <div className='flex flex-col gap-2'>
+        <div className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiHome2Line /> Home</div>
+        <div className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiAddLine /> Create Community</div>
+        <div onClick={() => { scrollToTop(); toggleMenuOpen(); }} className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiReceiptLine /> Create Post</div>
+      </div>
+
+      <hr className='border-zinc-900 my-3' />
+
+      <Accordion defaultIndex={[0, 1]} allowMultiple>
+
+        <AccordionItem border={'none'}>
+          <h2>
+            <AccordionButton padding={'12px 12px'} _hover={{ backgroundColor: '#1d4ed8', textColor: "gray.100" }} className='text-gray-500 font-medium hover:bg-zinc-900/70 rounded-lg'>
+              <div className="tracking-wide">
+                MODERATING
+              </div>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel padding={'unset'} >
+            {mySnippets.filter(snippet => snippet.isModerator).map((snippet, index) => (
+              <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
+                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
+              </Link>
+            ))}
+          </AccordionPanel>
+        </AccordionItem>
+
+        <hr className='border-zinc-900 my-3' />
+
+        <AccordionItem border={'none'}>
+          <h2>
+            <AccordionButton padding={'12px 12px'} _hover={{ backgroundColor: '#1d4ed8', textColor: "gray.100" }} className='text-gray-500 font-medium hover:bg-zinc-900/70 rounded-lg'>
+              <div className="tracking-wide">
+                COMMUNITIES
+              </div>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel padding={'unset'}>
+            {mySnippets.filter(snippet => !snippet.isModerator).map((snippet, index) => (
+              <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
+                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
+              </Link>
+            ))}
+          </AccordionPanel>
+        </AccordionItem>
+
+        <hr className='border-zinc-900 my-3' />
+
+        <AccordionItem border={'none'}>
+          <h2>
+            <AccordionButton padding={'12px 12px'} _hover={{ backgroundColor: '#1d4ed8', textColor: "gray.100" }} className='text-gray-500 font-medium hover:bg-zinc-900/70 rounded-lg'>
+              <div className="tracking-wide">
+                RECENT
+              </div>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel padding={'unset'}>
+            {recentCommunities.map((snippet, index) => (
+              <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
+                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
+              </Link>
+            ))}
+          </AccordionPanel>
+        </AccordionItem>
+
+      </Accordion>
+
+    </div>
+  )
+}
+
+export default Sidebar

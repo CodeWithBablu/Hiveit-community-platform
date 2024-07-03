@@ -23,12 +23,14 @@ export interface CommunitySnippet {
 export interface CommunitiesState {
   initSnippetFetched: boolean;
   mySnippets: [CommunitySnippet] | [];
+  recentCommunities: CommunitySnippet[] | [];
   currentCommunity?: Community,
 }
 
 const defaultCommunitiesState: CommunitiesState = {
   initSnippetFetched: false,
   mySnippets: [],
+  recentCommunities: [],
 };
 
 export const CommunitySlice = createSlice({
@@ -42,6 +44,12 @@ export const CommunitySlice = createSlice({
       return (state = {
         ...state,
         mySnippets: action.payload.mySnippets,
+      });
+    },
+    setRecentCommunities: (state, action: PayloadAction<{ recentCommunities: CommunitySnippet[] | [] }>) => {
+      return (state = {
+        ...state,
+        recentCommunities: action.payload.recentCommunities,
       });
     },
     changeCommunityImages: (state, action: PayloadAction<{ fileCategory: FileCategoryType, url: string }>) => {

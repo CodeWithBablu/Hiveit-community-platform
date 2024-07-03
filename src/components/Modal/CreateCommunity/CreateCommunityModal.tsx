@@ -42,7 +42,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
 
   const navigate = useNavigate();
 
-  //// On Chnage method
+  //// On Change method
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
     if (event.target.value.length > 21) return;

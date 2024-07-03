@@ -175,7 +175,7 @@ function Posts({ communityData }: PostsProps) {
 
 
   return (
-    <div className="h-full">
+    <div className="flex flex-col flex-grow w-full">
 
       {isLoading &&
         <div className="flex w-full flex-col justify-center">

@@ -105,7 +105,7 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
-    <main onClick={() => onSelectPost && onSelectPost(post)} className={`h-fit w-full ${singlePostPage ? '' : 'hover:bg-zinc-900/30 border-t-[1px] border-gray-800'} cursor-pointer`}>
+    <main onClick={() => onSelectPost && onSelectPost(post)} className={`h-fit w-full border-t-[1px] border-dimGray ${singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
 
         {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">

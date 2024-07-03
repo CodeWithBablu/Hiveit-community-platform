@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 import { useLocation, useMatch } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 type Props = {
   children: ReactNode;
@@ -17,15 +18,16 @@ const PageLayout = ({ children, maxWidth }: Props) => {
   const isSubmitPage = location.pathname.endsWith('/submit');
 
   return (
-    <div style={{ maxWidth: `${maxWidth ? maxWidth : '1024px'}` }} className={`mx-auto min-h-[calc(100dvh-64px)] flex w-full font-poppins lg:px-4 text-white`}>
+    <div style={{ maxWidth: `${maxWidth ? maxWidth : '1300px'}` }} className={`mx-auto min-h-[calc(100dvh-64px)] flex w-full font-poppins lg:px-4 text-white`}>
       <div className="flex w-full justify-center lg:gap-5">
         <div className={clsx(
-          'flex-grow',
+          'flex flex-grow',
           {
-            'border-x-[1px] border-dimGray w-full max-w-[650px]': (isCommunityPage || isHomePage) && !isSubmitPage,
-            'w-full lg:w-[65%] lg:max-w-[860px]': isSubmitPage,
+            'border-x-[1px] lg:border-none border-dimGray w-full max-w-[950px]': (isCommunityPage || isHomePage) && !isSubmitPage,
+            'w-full xl:w-[65%] xl:max-w-[860px]': isSubmitPage,
           }
         )}>
+          <Sidebar />
           {children && children[0 as keyof typeof children]}
         </div>
 

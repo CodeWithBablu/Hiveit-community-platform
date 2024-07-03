@@ -4,7 +4,8 @@ import { PostsSlice } from "./postSlice";
 import { DirectoryMenuSlice } from "./directoryMenuSlice";
 
 const { setAuthModalState } = AuthModalSlice.actions;
-const { setInitSnippetFetched, setCurrentCommunity, setMyCommunitySnippets, resetMySnippets, changeCommunityImages } = CommunitySlice.actions;
+
+const { setInitSnippetFetched, setCurrentCommunity, setMyCommunitySnippets, setRecentCommunities, resetMySnippets, changeCommunityImages } = CommunitySlice.actions;
 
 const { setFilter, setHasMore, setLastVisible, setPostFetchingParams, setPostStateValue, setSelectedPost, setPosts, removePost, resetPostStatevalue, setPostVotes } = PostsSlice.actions;
 
@@ -15,6 +16,7 @@ export {
   setCurrentCommunity,
   setInitSnippetFetched,
   setMyCommunitySnippets,
+  setRecentCommunities,
   changeCommunityImages,
   resetMySnippets,
   setFilter,

@@ -1,30 +1,39 @@
 import { Timestamp, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useParams } from "react-router-dom";
-import { CommunitiesState, Community } from "../slices/communitySlice";
+import { Community, CommunitySnippet } from "../slices/communitySlice";
 import NotFound from "../components/Community/NotFound";
 import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 import Header from "../components/Community/Header";
 import PageLayout from "../components/Layout/PageLayout";
 import Posts from "@/components/Post/Posts";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { setCurrentCommunity } from "@/slices";
+import { useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { setCurrentCommunity, setRecentCommunities } from "@/slices";
 import About from "@/components/Community/About";
 import { timestampToMillis } from "@/lib/Utils";
 
-const fetchCommunityData = async (communityId: string) => {
-  const communityDocRef = doc(firestore, "communities", communityId);
-  const communityDoc = await getDoc(communityDocRef);
-  if (communityDoc.exists()) {
-    const newData = { id: communityId, ...communityDoc.data() };
-    return await JSON.parse(JSON.stringify(newData));
-  }
-};
+
 
 const CommunityPage = () => {
   const { communityId } = useParams();
+
+  const fetchCommunityData = useCallback(async (communityId: string) => {
+    const communityDocRef = doc(firestore, "communities", communityId);
+    const communityDoc = await getDoc(communityDocRef);
+    if (communityDoc.exists()) {
+      const newData = { id: communityId, ...communityDoc.data() } as Community;
+      const storedCommunitySnippets: CommunitySnippet[] = JSON.parse(localStorage.getItem('recentCommunities') || '[]') || [];
+      const newSnippet: CommunitySnippet = { communityId: newData.id, imageURL: newData.imageURL };
+      const updatedRecentCommunities: CommunitySnippet[] = [newSnippet, ...storedCommunitySnippets.filter((snippet) => snippet.communityId !== newSnippet.communityId).slice(0, 4)];
+      localStorage.setItem('recentCommunities', JSON.stringify(updatedRecentCommunities));
+      dispatch(setRecentCommunities({ recentCommunities: updatedRecentCommunities }));
+      return await JSON.parse(JSON.stringify(newData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     data: communityData,
     error,
@@ -60,7 +69,7 @@ const CommunityPage = () => {
         <PageLayout>
           {/* //// Left content */}
           <>
-            <div>
+            <div className="border-x-[1px] border-dimGray">
               <Header communityData={communityData} />
               {communityData && <Posts communityData={communityData} />}
             </div>
