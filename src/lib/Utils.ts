@@ -160,3 +160,4 @@ export const calculateHotness = (voteStatus: number, createdAt: Timestamp, numof
   const ageInHours = (Date.now() - createdAt.toMillis()) / (1000 * 60 * 60);
   return (voteStatus + numofComments * 2) / Math.pow(ageInHours + 2, 1.8);
 };
+

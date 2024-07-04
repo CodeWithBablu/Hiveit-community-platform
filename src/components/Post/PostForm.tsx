@@ -242,12 +242,12 @@ const PostForm = ({ user, communityImageURL }: { user: User, communityImageURL?:
   };
 
   return (
-    <div className="mb-10 mt-16 flex flex-col gap-2 px-2">
+    <div className="mb-10 mt-16 flex flex-col gap-2 px-2 w-full h-fit">
       <h1 className="mb-3 h-12 w-fit bg-gradient-to-r from-gray-300 from-30% to-rose-500 to-80% bg-clip-text font-chillax text-2xl font-medium text-transparent">
         Create a post
       </h1>
 
-      <div className="wrapper flex h-full flex-col gap-3 rounded-xl border-[1px] border-blue-900 px-2 py-2 sm:px-3">
+      <div className="wrapper flex h-full flex-col gap-3 rounded-2xl border-[0px] sm:border-[1px] border-blue-900 px-2 py-2 sm:px-3">
         <div className="no-scrollbar flex w-full gap-4 overflow-x-scroll">
           {formTabs.map((tabItem) => (
             <TabItem
@@ -266,7 +266,7 @@ const PostForm = ({ user, communityImageURL }: { user: User, communityImageURL?:
               onChange={onChange}
               name="title"
               placeholder="title"
-              className="peer relative w-full rounded-xl border-[1px] border-gray-700 bg-transparent p-4 pr-20 font-medium placeholder-transparent outline-none focus-within:border-blue-700"
+              className="peer relative w-full text-sm sm:text-base rounded-xl border-[1px] border-dimGray bg-transparent p-4 pr-20 font-medium placeholder-transparent outline-none focus-within:border-blue-700"
               type="text"
             />
             <label
@@ -298,13 +298,13 @@ const PostForm = ({ user, communityImageURL }: { user: User, communityImageURL?:
           {payload.type === "poll" && <Poll />}
         </div>
 
-        <div className="relative flex items-center self-end">
+        <div className="relative flex items-center self-end px-2 mb-3">
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={handleSubmit}
             type="submit"
             className={clsx(
-              `rounded-xl px-8 py-3 text-lg font-medium transition-all duration-300`,
+              `rounded-full px-8 py-2 text-lg font-medium transition-all duration-300`,
               {
                 "pointer-events-none bg-gray-900/80 text-gray-400":
                   !title || loading,

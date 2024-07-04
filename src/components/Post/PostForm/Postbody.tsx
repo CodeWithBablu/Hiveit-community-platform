@@ -19,8 +19,8 @@ const Postbody = ({ body, setPayload }: Props) => {
         value={body}
         onChange={handlechange}
         placeholder="Body"
-        className="w-full rounded-xl border-[1px] border-gray-700 bg-transparent p-4 outline-none focus-within:border-blue-700"
         rows={8}
+        className="w-full rounded-xl border-[1px] no-scrollbar border-dimGray text-sm sm:text-base bg-transparent p-4 outline-none focus-within:border-blue-700"
       ></textarea>
       <span
         className={`font-dynapuff text-base ${body.length > 800 ? "text-rose-500" : "text-gray-500"}`}

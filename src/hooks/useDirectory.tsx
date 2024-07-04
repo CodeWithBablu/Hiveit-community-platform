@@ -23,7 +23,6 @@ const useDirectory = () => {
 
 
   const onSelectMenuItem = (menuItem: DirectoryMenuItem) => {
-    console.log(menuItem);
     dispatch(setSelectedMenuItem({ selectedMenuItem: menuItem }));
 
     navigate(menuItem.link);

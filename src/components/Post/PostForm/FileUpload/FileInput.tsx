@@ -116,13 +116,11 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
 
     try {
       const files = Array.from(e.dataTransfer.files);
-      console.log("Files:", files);
 
       if (files && files[0]) {
         const validFiles = getValidFiles(filesSelected, files);
         await uploadTempFiles(validFiles);
         setIsDragActive(false);
-        console.log("Valid Files:", validFiles);
       }
     } catch (error) {
       //already handled
@@ -130,17 +128,17 @@ const FileInput = ({ user, filesSelected, dispatch }: Props) => {
   };
 
   return (
-    <div className="relative min-h-72 rounded-2xl font-chillax">
+    <div className="relative min-h-36 sm:min-h-72 rounded-2xl font-chillax">
       <div
         id="drop_zone"
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
-        className={`relative flex flex-col place-content-center rounded-2xl border-2 ${isDragActive ? "border-dashed border-blue-600" : "border-gray-700"}`}
+        className={`relative flex flex-col place-content-center rounded-2xl border-2 ${isDragActive ? "border-dashed border-blue-600" : "border-dimGray"}`}
       >
         {!filesSelected.length ? (
-          <div className="flex h-full min-h-72 flex-col items-center justify-center gap-3">
+          <div className="flex h-full min-h-52 sm:min-h-72 flex-col items-center justify-center gap-3">
             <h1 className="text-base font-medium sm:text-lg">
               Drag and Drop images or videos or{" "}
             </h1>

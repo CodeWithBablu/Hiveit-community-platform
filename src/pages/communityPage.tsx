@@ -69,7 +69,7 @@ const CommunityPage = () => {
         <PageLayout>
           {/* //// Left content */}
           <>
-            <div className="border-x-[1px] border-dimGray">
+            <div className="border-x-[1px] border-dimGray w-full">
               <Header communityData={communityData} />
               {communityData && <Posts communityData={communityData} />}
             </div>

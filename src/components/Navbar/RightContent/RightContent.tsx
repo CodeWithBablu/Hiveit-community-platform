@@ -3,18 +3,25 @@ import AuthModal from "../../Modal/Auth/AuthModal";
 import AuthButtons from "./AuthButtons";
 import Icons from "./Icons";
 import UserMenu from "./UserMenu";
+import SideDrawer from "@/components/Layout/SideDrawer";
 
 type Props = {
   user?: User | null;
 };
 
 const RightContent = ({ user }: Props) => {
+
   return (
     <div>
       <AuthModal />
       <div className="flex items-center">
         {user ? <Icons /> : <AuthButtons />}
         {user && <UserMenu user={user} />}
+
+        <div className="flex xl:hidden">
+          <SideDrawer />
+        </div>
+
       </div>
     </div>
   );

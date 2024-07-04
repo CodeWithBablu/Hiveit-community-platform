@@ -1,19 +1,19 @@
 import useCommunity from '@/hooks/useCommunity';
-import { RiAddLine, RiHome2Line, RiHomeLine, RiHomeSmile2Line, RiReceiptLine } from '@remixicon/react'
-import React, { useEffect, useState } from 'react'
-import MenuListItem from '../Navbar/Directory/MenuListItem';
+import { RiAddLine, RiHome2Line, RiReceiptLine } from '@remixicon/react'
 import { truncateText } from '@/lib/Utils';
 import { Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/react';
-import { Box } from 'framer-motion';
 import { CommunitiesState, CommunitySnippet } from '@/slices/communitySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecentCommunities } from '@/slices';
 import useDirectory from '@/hooks/useDirectory';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-// type Props = {}
+type Props = {
+  isDrawer: boolean;
+}
 
-const Sidebar = () => {
+const Sidebar = ({ isDrawer }: Props) => {
 
   const { userCommunities: { mySnippets } } = useCommunity();
   const { toggleMenuOpen } = useDirectory();
@@ -34,7 +34,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='mt-14 sticky top-14 text-sm flex flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7.5rem)] mr-5 w-[276px] shrink-0 rounded-xl'>
+    <div className={`${isDrawer ? 'flex w-full' : 'hidden xl:flex w-[276px]'} mt-14 sticky top-14 text-sm flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7.5rem)] shrink-0 rounded-xl`}>
 
       <div className='flex flex-col gap-2'>
         <div className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiHome2Line /> Home</div>
@@ -44,7 +44,7 @@ const Sidebar = () => {
 
       <hr className='border-zinc-900 my-3' />
 
-      <Accordion defaultIndex={[0, 1]} allowMultiple>
+      <Accordion defaultIndex={[0, 1, 2]} allowMultiple>
 
         <AccordionItem border={'none'}>
           <h2>
@@ -58,7 +58,7 @@ const Sidebar = () => {
           <AccordionPanel padding={'unset'} >
             {mySnippets.filter(snippet => snippet.isModerator).map((snippet, index) => (
               <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
-                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <img className='w-[30px] h-[30px] shadow-[0px_0px_10px_0px_rgba(225,225,225,0.3)] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
                 <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
               </Link>
             ))}
@@ -79,7 +79,7 @@ const Sidebar = () => {
           <AccordionPanel padding={'unset'}>
             {mySnippets.filter(snippet => !snippet.isModerator).map((snippet, index) => (
               <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
-                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <img className='w-[30px] h-[30px] shadow-[0px_0px_10px_0px_rgba(225,225,225,0.3)] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
                 <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
               </Link>
             ))}
@@ -100,7 +100,7 @@ const Sidebar = () => {
           <AccordionPanel padding={'unset'}>
             {recentCommunities.map((snippet, index) => (
               <Link to={`/h/${snippet.communityId}`} key={index} className='mt-2 flex items-center cursor-pointer gap-3 px-3 py-2 hover:bg-zinc-900/70 rounded-xl'>
-                <img className='w-[30px] h-[30px] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
+                <img className='w-[30px] h-[30px] shadow-[0px_0px_10px_0px_rgba(225,225,225,0.3)] object-cover rounded-full' src={snippet.imageURL ? snippet.imageURL : '/profile.png'} alt="comm img" />
                 <span className='text-gray-300 text-sm tracking-wide'>h/{truncateText(snippet.communityId, 15)}</span>
               </Link>
             ))}

@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import { Comment } from "./Comments/CommentItem";
 import { avatars } from "@/config/avatar";
+import parseText from "../../lib/ParseText";
 
 
 type PostItemProps = {
@@ -24,7 +25,7 @@ type PostItemProps = {
   userVoteValue?: number;
   onVote: (e: React.MouseEvent<HTMLDivElement>, post: Post, vote: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
-  onSelectPost?: (post: Post) => void;
+  onSelectPost?: (post: Post, isHomePage?: boolean) => void;
   isHomePage?: boolean
 };
 
@@ -105,7 +106,7 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
-    <main onClick={() => onSelectPost && onSelectPost(post)} className={`h-fit w-full border-t-[1px] border-dimGray ${singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
+    <main onClick={() => { onSelectPost && onSelectPost(post, !!isHomePage) }} className={`h-fit w-full border-t-[1px] border-dimGray ${!singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
 
         {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
@@ -158,7 +159,8 @@ const PostItem: React.FC<PostItemProps> = ({
           {post.body && (
             <div className="w-full mb-3">
               <p className="text-sm whitespace-pre-wrap tracking-wide text-slate-300">
-                {post.body}
+                {/* {post.body} */}
+                {parseText(post.body)}
               </p>
             </div>
           )}
@@ -170,22 +172,22 @@ const PostItem: React.FC<PostItemProps> = ({
                   ? post.metaData.title
                   : `link from u/${post.creatorDisplayName}`
               }
-              onClick={(e) => { e.stopPropagation() }} className="w-full group mb-3 grid flex-grow grid-cols-[1fr_min-content] justify-between gap-3">
+              onClick={(e) => { e.stopPropagation() }} className="w-full group mb-3 grid flex-grow grid-rows-[1fr_min-content] sm:grid-rows-1 sm:grid-cols-[1fr_min-content] justify-between gap-3">
               <a
                 target="_blank"
                 href={post.link}
-                className="grid-cols-1 self-center truncate text-ellipsis text-blue-600 decoration-blue-600/60 underline-offset-4 group-hover:underline hover:underline"
+                className="grid-rows-1 sm:grid-cols-1 self-center truncate text-ellipsis text-blue-600 decoration-blue-600/60 underline-offset-4 group-hover:underline hover:underline"
               >
                 {post.link}
               </a>
               {post.metaData?.image && (
-                <div className="inline-block w-44 grid-cols-1">
+                <a href={post.link} target="_blank" className="inline-block sm:w-44 grid-rows-1 sm:grid-cols-1">
                   <img
                     className="h-full w-full flex-shrink-0 justify-items-end rounded-xl object-cover"
                     src={post.metaData.image}
                     alt=""
                   />
-                </div>
+                </a>
               )}
             </div>
           )}

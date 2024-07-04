@@ -1,7 +1,7 @@
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import { Toast } from "@/lib/Toast";
 import { timestampToMillis } from "@/lib/Utils";
-import { removePost, setAuthModalState, setPostStateValue, setPostVotes, setPosts, setSelectedPost } from "@/slices";
+import { removePost, setAuthModalState, setCurrentCommunity, setPostStateValue, setPostVotes, setPosts, setSelectedPost } from "@/slices";
 import { CommunitiesState, Community } from "@/slices/communitySlice";
 import { Post, PostState, PostVote } from "@/slices/postSlice";
 import { collection, deleteDoc, doc, getDoc, getDocs, increment, query, updateDoc, where, writeBatch } from "firebase/firestore";
@@ -179,22 +179,29 @@ const usePosts = () => {
 
 
     dispatch(setPostVotes({ postVotes }));
-
-    // const unsubscribe = onSnapshot(postVotesQuery, (querySnapshot) => {
-    //   const postVotes = querySnapshot.docs.map((postVote) => ({
-    //     id: postVote.id,
-    //     ...postVote.data(),
-    //   }));
-
-    // });
-
-    // return () => unsubscribe();
   }
 
-  const onSelectPost = (post: Post) => {
+  const onSelectPost = async (post: Post, isHomePage: boolean = false) => {
     dispatch(setSelectedPost({ post }));
+
+    if (isHomePage) {
+      await getCommunityData(post.communityId);
+    }
+    // dispatch(setCurrentCommunity({currentCommunity:{id:post.communityId,}}))
     navigate(`/h/${post.communityId}/comments/${post.id}`);
   };
+
+  async function getCommunityData(communityId: string) {
+    try {
+      const communityDocRef = doc(firestore, `communities`, communityId);
+      const communityDoc = await getDoc(communityDocRef);
+      let updatedCurrCommunity = { id: communityDoc.id, ...communityDoc.data() } as Community;
+      updatedCurrCommunity = { ...updatedCurrCommunity, createdAt: timestampToMillis(updatedCurrCommunity.createdAt as Timestamp) }
+      dispatch(setCurrentCommunity({ currentCommunity: updatedCurrCommunity }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const OnDeletePost = async (post: Post): Promise<boolean> => {
     try {

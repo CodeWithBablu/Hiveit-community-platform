@@ -23,7 +23,7 @@ const Link = ({ link, setPayload }: Props) => {
           name="link"
           autoComplete="off"
           placeholder="Add a link..."
-          className="relative w-[90%] rounded-xl border-[1px] border-gray-700 bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 md:w-full"
+          className="relative rounded-xl border-[1px] border-dimGray bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 w-full"
           type="text"
         />
 

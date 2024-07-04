@@ -50,38 +50,42 @@ function PostPage() {
 
 
   return (
-    <div className="bg-zinc-950">
+    <div className="bg-zinc-950 w-full">
       <PageLayout>
         <>
-          <div className="sticky top-0 z-[5] flex h-14 w-full items-center justify-between bg-zinc-950/80 px-4 text-xs text-gray-400 backdrop-blur-xl">
-            <div className="flex items-center gap-6">
-              <RiArrowLeftLine
-                className="cursor-pointer text-gray-300 hover:text-gray-50"
-                onClick={() => navigate(-1)}
-                size={25}
-              />
-              <div className="font-chillax text-xl font-semibold tracking-wider text-white">
-                Post
+          <div className="flex flex-col w-full border-x-[1px] border-dimGray">
+            <div className="sticky top-0 z-[5] flex h-14 w-full items-center justify-between bg-zinc-950/80 px-4 text-xs text-gray-400 backdrop-blur-xl">
+              <div className="flex items-center gap-6">
+                <RiArrowLeftLine
+                  className="cursor-pointer text-gray-300 hover:text-gray-50"
+                  onClick={() => navigate(-1)}
+                  size={25}
+                />
+                <div className="font-chillax text-xl font-semibold tracking-wider text-white">
+                  Post
+                </div>
               </div>
             </div>
+
+            {!postStateValue.selectedPost && (
+              <div className="flex items-center justify-center w-full h-32">
+                <Spinner size={'lg'} thickness="3px" speed="0.75s" color="#2563eb" />
+              </div>
+            )}
+
+            {postStateValue.selectedPost && (<PostItem post={postStateValue.selectedPost}
+              onVote={onVote}
+              onDeletePost={OnDeletePost}
+              userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
+              userVoteValue={postStateValue.postVotes.find((vote) => vote.postId === postStateValue.selectedPost?.id)?.voteValue}
+            />)}
+
+            {/* Comments */}
+            {(postStateValue.selectedPost) && <Comments user={user} communityId={postStateValue.selectedPost?.communityId} selectedPost={postStateValue.selectedPost!} />}
+
           </div>
-
-          {!postStateValue.selectedPost && (
-            <div className="flex items-center justify-center w-full h-32">
-              <Spinner size={'lg'} thickness="3px" speed="0.75s" color="#2563eb" />
-            </div>
-          )}
-
-          {postStateValue.selectedPost && (<PostItem post={postStateValue.selectedPost}
-            onVote={onVote}
-            onDeletePost={OnDeletePost}
-            userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
-            userVoteValue={postStateValue.postVotes.find((vote) => vote.postId === postStateValue.selectedPost?.id)?.voteValue}
-          />)}
-
-          {/* Comments */}
-          {(postStateValue.selectedPost) && <Comments user={user} communityId={postStateValue.selectedPost?.communityId} selectedPost={postStateValue.selectedPost!} />}
         </>
+
         <>
           {currentCommunity &&
             <div className="sticky top-14 w-full max-w-[350px] h-fit mt-14">

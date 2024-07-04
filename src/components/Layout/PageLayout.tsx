@@ -23,15 +23,15 @@ const PageLayout = ({ children, maxWidth }: Props) => {
         <div className={clsx(
           'flex flex-grow',
           {
-            'border-x-[1px] lg:border-none border-dimGray w-full max-w-[950px]': (isCommunityPage || isHomePage) && !isSubmitPage,
+            ' w-full max-w-[650px] xl:max-w-[950px]': (isCommunityPage || isHomePage) && !isSubmitPage,
             'w-full xl:w-[65%] xl:max-w-[860px]': isSubmitPage,
           }
         )}>
-          <Sidebar />
+          {!isSubmitPage && <Sidebar isDrawer={false} />}
           {children && children[0 as keyof typeof children]}
         </div>
 
-        <div className="hidden flex-grow lg:flex">
+        <div className="hidden lg:flex w-fit">
           {children && children[1 as keyof typeof children]}
         </div>
 

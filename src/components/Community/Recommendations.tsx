@@ -129,9 +129,9 @@ const Recommendations = () => {
 
           <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
 
-          <div className='flex flex-col gap-3'>
-            <button onClick={() => setOpen(true)} className=" text-gray-200 bg-blue-600 hover:bg-blue-700 w-full rounded-full py-3 font-medium tracking-wider">Create Community</button>
-            <button onClick={() => { scrollToTop(); toggleMenuOpen(); }} className=" text-gray-200 border-[1px] border-blue-600 hover:border-blue-700 w-full rounded-full py-3 font-medium tracking-wider">Create post</button>
+          <div className='flex flex-col items-center gap-4 w-full'>
+            <button onClick={() => setOpen(true)} className=" text-gray-200 bg-blue-600 hover:bg-blue-700 w-full rounded-full py-2 font-medium tracking-wider">Create Community</button>
+            <button onClick={() => { scrollToTop(); toggleMenuOpen(); }} className=" text-gray-200 border-[1px] border-blue-600 hover:border-blue-700 w-full rounded-full py-2 font-medium tracking-wider">Create post</button>
           </div>
         </div>
 

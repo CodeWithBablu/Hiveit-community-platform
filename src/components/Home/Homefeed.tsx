@@ -135,7 +135,7 @@ const Homefeed = () => {
     setIsLoading(true);
 
     try {
-      if (communityStateValue.mySnippets.length) {
+      if (communityStateValue.mySnippets.length > 2) {
         const myCommunities = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
 
         let postsQuery = query(
@@ -193,7 +193,7 @@ const Homefeed = () => {
       if (isLoading || !hasMore) return;
       setIsLoading(true);
 
-      if (communityStateValue.mySnippets.length) {
+      if (communityStateValue.mySnippets.length > 2) {
         const myCommunities = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
 
         let postsQuery = query(
@@ -328,7 +328,6 @@ const Homefeed = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, lastVisible, user]);
-
 
 
   if (isLoading && !postStateValue.posts.length) {

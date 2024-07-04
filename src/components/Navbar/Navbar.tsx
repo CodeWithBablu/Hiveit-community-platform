@@ -5,7 +5,7 @@ import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
 import useDirectory from "@/hooks/useDirectory";
 import { RiSearch2Line } from "@remixicon/react";
-import useWindowWidth from "@/hooks/useWindowWidth";
+// import useWindowWidth from "@/hooks/useWindowWidth";
 
 const defaultMenuItem = {
   displayText: "Home",
@@ -15,6 +15,7 @@ const defaultMenuItem = {
 const Navbar = () => {
   const [user] = useAuthState(auth);
   const { onSelectMenuItem } = useDirectory();
+
   // const windowWidth = useWindowWidth();
 
   return (
@@ -52,6 +53,8 @@ const Navbar = () => {
 
       {/* <Directory/> */}
       <RightContent user={user} />
+
+
     </nav>
   );
 };

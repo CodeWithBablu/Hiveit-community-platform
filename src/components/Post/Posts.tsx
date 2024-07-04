@@ -17,7 +17,7 @@ import usePosts from "@/hooks/usePosts";
 import PostItem from "./PostItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPostStatevalue, setHasMore } from "@/slices";
+import { resetPostStatevalue, setCurrentCommunity, setHasMore } from "@/slices";
 import { PostSkeleton } from "../Ui/Skeletons";
 
 type PostsProps = {
@@ -52,7 +52,6 @@ function Posts({ communityData }: PostsProps) {
         limit(PAGE_SIZE),
       );
 
-      console.log(sortBy);
       if (sortBy === "hot") {
         postsQuery = query(postsQuery, orderBy("voteStatus", "desc"), orderBy("numberOfComments", "desc"));
       }
@@ -138,6 +137,7 @@ function Posts({ communityData }: PostsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityData.id, sortBy]);
 
+
   useEffect(() => {
     getIntialPosts(); // Load initial posts
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,7 +206,7 @@ function Posts({ communityData }: PostsProps) {
       {
         (postStateValue.posts.length == 0 && !isLoading) && (
           <>
-            <div className="mt-10 flex w-full flex-col items-center font-chillax text-lg font-medium">
+            <div className="mt-10 px-4 flex w-full flex-col items-center font-chillax text-lg font-medium">
               <h2 className="animate-pulse">
                 No posts yet? Time to break the ice and start the chatter!
               </h2>
