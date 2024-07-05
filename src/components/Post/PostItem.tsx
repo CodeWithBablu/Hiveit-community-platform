@@ -109,7 +109,7 @@ const PostItem: React.FC<PostItemProps> = ({
     <main onClick={() => { onSelectPost && onSelectPost(post, !!isHomePage) }} className={`h-fit w-full border-t-[1px] border-dimGray ${!singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
 
-        {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+        {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
           <Link onClick={(e) => { e.stopPropagation() }} to={`/h/${post.communityId}`} title={post.communityId}>
             <img
               className="h-[40px] w-[40px] rounded-full"
@@ -119,7 +119,7 @@ const PostItem: React.FC<PostItemProps> = ({
           </Link>
         </div>}
 
-        {(!singlePostPage && !isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+        {(!singlePostPage && !isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
           <img
             className="h-[40px] w-[40px] rounded-full"
             src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
@@ -130,7 +130,7 @@ const PostItem: React.FC<PostItemProps> = ({
         <div className="flex w-full flex-col gap-2">
 
           <div className="flex items-center gap-2 font-chillax text-gray-400">
-            {singlePostPage && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+            {singlePostPage && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
               <img
                 className="h-[40px] w-[40px] rounded-full"
                 src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
@@ -241,7 +241,7 @@ const PostItem: React.FC<PostItemProps> = ({
                       </span>
                     </div>
 
-                    <div className="group flex cursor-pointer items-center">
+                    <div onClick={() => navigate(`/h/${post.communityId}/comments/${post.id}`)} className="group flex cursor-pointer items-center">
                       <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-sky-900/30">
                         <RiChat1Line
                           size={'1em'}

@@ -134,18 +134,18 @@ const Header = ({ communityData }: Props) => {
           </motion.span>}
         </div>
 
-        <input ref={fileSelectorRef} onChange={handleFileChange} id="file-upload" type="file" className="hidden" accept="image/x-png,image/gif,image/jpeg,/image/webp" />
+        <input ref={fileSelectorRef} onChange={handleFileChange} id="file-upload" type="file" className="hidden" accept="image/x-png,image/gif,image/jpeg,image/webp" />
 
 
         <div className="flex h-20 items-center justify-between px-4">
           <div className="relative -top-10 rounded-full bg-zinc-950 p-1">
             {(currentCommunity && currentCommunity.imageURL) && <img
-              className="h-20 w-20 rounded-full md:h-[120px] md:w-[120px]"
+              className="h-20 w-20 rounded-full md:h-[120px] md:w-[120px] object-cover bg-gradient-to-b from-gray-700 to-gray-950 to-80%"
               src={currentCommunity.imageURL}
               alt="communty bg Image"
             />}
             {(!currentCommunity || !currentCommunity.imageURL) && <img
-              className="h-20 w-20 rounded-full md:h-[120px] md:w-[120px]"
+              className="h-20 w-20 rounded-full md:h-[120px] md:w-[120px] object-cover bg-gradient-to-b from-gray-700 to-gray-950 to-80%"
               src={"/profile.png"}
               alt="communty bg Image"
             />}

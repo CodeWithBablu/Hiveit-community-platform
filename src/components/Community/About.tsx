@@ -60,8 +60,8 @@ function About({ communityData }: AboutProps) {
           </div>
 
           <div className="flex flex-col gap-2 font-chillax font-medium">
-            <span>100 M</span>
-            <span><span className="bg-green-500 inline-block rounded-full w-2 h-2 mr-1 animate-pulse"></span>Online</span>
+            <span>20</span>
+            <span><span className="bg-green-500 inline-block rounded-full w-2 h-2 mr-1 animate-pulse">{" "}</span>Online</span>
           </div>
 
         </div>
@@ -91,7 +91,7 @@ function About({ communityData }: AboutProps) {
                 }
               </div>
 
-              <input ref={fileSelectorRef} onChange={(e) => onSelectFile(e, "community_image", communityData)} id="file-upload" type="file" className="hidden" accept="image/x-png,image/gif,image/jpeg,/image/webp" />
+              <input ref={fileSelectorRef} onChange={(e) => onSelectFile(e, "community_image", communityData)} id="file-upload" type="file" className="hidden" accept="image/x-png,image/gif,image/jpeg,image/webp" />
             </div>
           </>
         )}

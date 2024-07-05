@@ -12,7 +12,7 @@ const AuthButtons = () => {
         onClick={() => {
           dispatch(setAuthModalState({ open: true, view: "login" }));
         }}
-        className="h-10 rounded-md px-5 text-xl font-medium ring-2 ring-gray-100"
+        className="h-10 rounded-md px-5 text-xl font-medium ring-1 ring-gray-100"
       >
         Login
       </motion.button>

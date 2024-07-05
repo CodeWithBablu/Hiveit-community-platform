@@ -22,6 +22,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Toast } from "../../../lib/Toast";
 import { useNavigate } from "react-router-dom";
 import useDirectory from "@/hooks/useDirectory";
+import { saveToAlgolia } from "@/config/algoliaFunctions";
+import { Community } from "@/slices/communitySlice";
 
 type Props = {
   open: boolean;
@@ -83,6 +85,15 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
     try {
       const communityDocRef = doc(firestore, "communities", communityName);
 
+      const newCommunity = {
+        creatorId: user?.uid,
+        createdAt: serverTimestamp(),
+        numberOfMembers: 1,
+        numberOfPosts: 0,
+        privacyType: communityType,
+        description: desc,
+      }
+
       await runTransaction(firestore, async (transaction) => {
         // Task 1: Check if commmunityName is taken already
         const communityDoc = await transaction.get(communityDocRef);
@@ -90,15 +101,10 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
         if (communityDoc.exists())
           throw new Error(`Oops!! h/${communityName} already taken 😢️ `);
 
+
+
         // Task 2: Create new community
-        transaction.set(communityDocRef, {
-          creatorId: user?.uid,
-          createdAt: serverTimestamp(),
-          numberOfMembers: 1,
-          numberOfPosts: 0,
-          privacyType: communityType,
-          description: desc,
-        });
+        transaction.set(communityDocRef, newCommunity);
 
         // Task 3:Add communitySnippet to the moderator(owner of this community)
         transaction.set(
@@ -109,6 +115,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
           },
         );
       });
+
+      await saveToAlgolia({ id: communityName, ...newCommunity } as Community);
+      setCommunityName("");
       navigate(`/h/${communityName}`);
       toggleMenuOpen();
       Toast("success", "Community created successfully!!", 4000);

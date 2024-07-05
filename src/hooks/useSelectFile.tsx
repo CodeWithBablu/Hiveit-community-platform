@@ -1,8 +1,9 @@
+import { updateInAlgolia } from "@/config/algoliaFunctions";
 import { firestore, storage } from "@/firebase/clientApp";
 import { FileCategoryType } from "@/lib/Definations";
 import { Toast } from "@/lib/Toast";
-import { changeCommunityImages } from "@/slices";
-import { Community } from "@/slices/communitySlice";
+import { changeCommunityImages, setRecentCommunities } from "@/slices";
+import { Community, CommunitySnippet } from "@/slices/communitySlice";
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ChangeEvent, useState } from "react"
@@ -41,7 +42,17 @@ function useSelectFile() {
           ...(fileCategory === 'community_image' && { imageURL: downloadURL }),
           ...(fileCategory === 'community_bgImage' && { bgImageURL: downloadURL }),
         });
-        dispatch(changeCommunityImages({ fileCategory: fileCategory as FileCategoryType, url: downloadURL }))
+        dispatch(changeCommunityImages({ fileCategory: fileCategory as FileCategoryType, url: downloadURL }));
+
+        if (fileCategory === 'community_image') {
+          await updateInAlgolia(communityData, downloadURL);
+          const storedCommunitySnippets: CommunitySnippet[] = JSON.parse(localStorage.getItem('recentCommunities') || '[]') || [];
+          const newSnippet: CommunitySnippet = { communityId: communityData.id, imageURL: downloadURL };
+          const updatedRecentCommunities: CommunitySnippet[] = [newSnippet, ...storedCommunitySnippets.filter((snippet) => snippet.communityId !== newSnippet.communityId).slice(0, 4)];
+          localStorage.setItem('recentCommunities', JSON.stringify(updatedRecentCommunities));
+          dispatch(setRecentCommunities({ recentCommunities: updatedRecentCommunities }));
+        }
+
         setSelectedFile(downloadURL);
       }
       else

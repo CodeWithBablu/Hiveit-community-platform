@@ -41,7 +41,7 @@ const CommentItem = ({ comment, isLiked, handleLike, onDeleteComment, deletingCo
   return (
     <div className='flex w-full px-4 py-3 border-t-[1px] border-dimGray'>
 
-      <div className="mr-2 w-[40px] h-[40px] shrink-0 bg-gradient-to-t from-gray-600 to-gray-900 to-80% rounded-full">
+      <div className="mr-2 w-[40px] h-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
         <img
           className="h-[40px] w-[40px] rounded-full"
           src={comment.creatorImage ? comment.creatorImage : avatars[getAvatarCode(comment.creatorDisplayName)].url}

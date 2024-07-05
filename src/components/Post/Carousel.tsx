@@ -3,6 +3,7 @@ import { FileWithUrl } from "./PostForm";
 import clsx from "clsx";
 import { RiArrowLeftLine, RiArrowRightLine, RiCloseLine } from "@remixicon/react";
 import VideoWrapper from "./VideoWrapper";
+import { truncateText } from "@/lib/Utils";
 
 type Carouselprops = {
   isOverlayOpen: boolean;
@@ -53,7 +54,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
                 <div
                   key={index}
                   className={clsx(
-                    `h-full w-full shrink-0 transform overflow-hidden`,
+                    `h-full w-full shrink-0 transform overflow-hidden relative`,
                     {
                       "mx-auto": gallery.length > 1,
                       'flex justify-center items-center': isOverlayOpen
@@ -80,6 +81,15 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
                         })}
                     />
                   </div>
+
+                  {(media.link || media.caption) &&
+                    <div className={`absolute bottom-2 left-0 right-0 mx-auto rounded-b-2xl w-full px-2 ${isOverlayOpen && 'max-w-[700px]'}`}>
+                      <div className=" rounded-xl w-full bg-blackAplha400 backdrop-blur-md px-3 py-2">
+                        {media.caption && <h3>{media.caption}</h3>}
+                        {media.link && <a title={media.link} href={media.link} target="_blank" className="text-blue-600 hover:underline">{truncateText(media.link, 50)}</a>}
+                      </div>
+                    </div>
+                  }
                 </div>
 
               ))}

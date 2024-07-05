@@ -1,4 +1,3 @@
-import { FileWithUrl } from "@/components/Post/PostForm";
 import {
   RiLink,
   RiImageCircleLine,
@@ -11,6 +10,7 @@ export const ALLOWED_FILE_TYPES = [
   "image/jpeg",
   "image/gif",
   "image/webp",
+  "image/avif",
   "video/mp4",
   "video/mov",
   "video/quicktime",

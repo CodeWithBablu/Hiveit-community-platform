@@ -48,8 +48,9 @@ const Navbar = () => {
       {/* {(windowWidth > 768) && <SearchInput />} */}
 
       {/* {(windowWidth <= 768) && <div className="ml-auto mx-3">
-        <RiSearch2Line className="text-secondary" />
       </div>} */}
+
+      <SearchInput />
 
       {/* <Directory/> */}
       <RightContent user={user} />
