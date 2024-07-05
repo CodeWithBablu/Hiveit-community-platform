@@ -33,6 +33,7 @@
     "use-debounce": "^10.0.1"
   },
   "devDependencies": {
+    "@types/algoliasearch": "^4.0.0",
     "@types/node": "^20.14.2",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

@@ -9,6 +9,17 @@ import { Hits, InstantSearch, SearchBox, Configure, SearchBoxProps } from "react
 import { Hit } from "./Hit";
 
 
+type HitType = {
+  objectID: string;
+  communityId: string;
+  imageURL: string;
+  _highlightResult: {
+    communityId: {
+      [key: string]: string | number
+    }
+  },
+  __position: number
+}
 const SearchInput = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -77,7 +88,7 @@ const SearchInput = () => {
                 {term ? (
                   <>
                     <Configure hitsPerPage={5} />
-                    <Hits hitComponent={Hit} />
+                    <Hits hitComponent={({ hit }) => <Hit hit={(hit as unknown) as HitType} onClose={onClose} />} />
                   </>) : (
                   <p className="text-gray-400 font-medium">Please enter a search term to see results...</p>
                 )}
