@@ -3,7 +3,7 @@ import { auth, firestore } from "../../../firebase/clientApp";
 import { Spinner } from "@chakra-ui/react";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { GoogleAuthProvider, User } from "firebase/auth";
+import { User } from "firebase/auth";
 import { useEffect } from "react";
 import { Toast } from "../../../lib/Toast";
 import { FirebaseError } from "firebase/app";
@@ -66,17 +66,18 @@ const OAuthButton = () => {
       <motion.div
         onClick={onSignin}
         whileTap={{ scale: 0.9 }}
-        className={`my-2 flex cursor-pointer items-center justify-center gap-4 rounded-md bg-primary px-6 py-2 ${loading ? "pointer-events-none opacity-60" : "opacity-100"}`}
+        className={`my-2 flex cursor-pointer items-center justify-center gap-4 rounded-md bg-gray-200 px-6 py-1 ${loading ? "pointer-events-none opacity-60" : "opacity-100"}`}
       >
         <img className="h-10 w-10" src="/google.svg" alt="" />
-        <h1 className="font-poppins text-xl font-medium text-lime-50">
+        <h1 className="font-poppins text-xl font-medium text-zinc-800">
           Signin with Google
         </h1>
       </motion.div>
       {loading && (
         <Spinner
           thickness="4px"
-          size="lg"
+          speed="0.65s"
+          size="md"
           className="absolute bottom-0 left-0 right-0 top-0 m-auto text-rose-500"
         />
       )}

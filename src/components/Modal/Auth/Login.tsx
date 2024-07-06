@@ -64,13 +64,13 @@ const Login = () => {
       <form
         name="loginForm"
         onSubmit={onSubmit}
-        className="flex w-full flex-col space-y-4"
+        className="flex w-full flex-col space-y-4 font-poppins"
       >
         <input
           onChange={onChange}
           required
           autoComplete="email"
-          className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+          className="rounded-lg border-2 p-3 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray caret-gray-200 focus:border-blue-800"
           id="email"
           name="email"
           placeholder="email please..."
@@ -80,7 +80,7 @@ const Login = () => {
           onChange={onChange}
           required
           autoComplete="current-password"
-          className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+          className="rounded-lg border-2 p-3 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray  caret-gray-200 focus:border-blue-800"
           id="password"
           name="password"
           placeholder="password please..."
@@ -91,7 +91,7 @@ const Login = () => {
           <motion.button
             whileTap={{ scale: 0.8 }}
             type="submit"
-            className={`w-28 rounded-lg bg-blue-500 px-4 py-2 text-xl font-semibold text-white ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
+            className={`w-28 rounded-full bg-blue-700 px-4 py-2 text-xl font-medium font-chillax text-white ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
           >
             Login
           </motion.button>
@@ -103,27 +103,27 @@ const Login = () => {
           )}
         </div>
 
-        <h2 className="text-md font-bold">
+        <h2 className="text-md font-semibold text-gray-400">
           Forgot your password?{" "}
           <motion.span
             whileTap={{ scale: 0.7 }}
             onClick={() =>
               dispatch(setAuthModalState({ open: true, view: "resetPassword" }))
             }
-            className="inline-block cursor-pointer text-sky-400 hover:text-sky-300"
+            className="inline-block cursor-pointer text-blue-500 hover:text-blue-600"
           >
             Reset Password
           </motion.span>{" "}
           🥰️
         </h2>
-        <h2 className="text-md font-bold">
+        <h2 className="text-md font-semibold text-gray-400">
           Ahh!! New here?{" "}
           <motion.span
             whileTap={{ scale: 0.7 }}
             onClick={() =>
               dispatch(setAuthModalState({ open: true, view: "signup" }))
             }
-            className="inline-block cursor-pointer text-sky-400 hover:text-sky-300"
+            className="inline-block cursor-pointer text-blue-500 hover:text-blue-600"
           >
             Sign Up{" "}
           </motion.span>{" "}
@@ -131,7 +131,7 @@ const Login = () => {
         </h2>
 
         {errormessage && (
-          <h3 className="min-h-5 text-center font-poppins text-[16px] font-medium text-rose-400">
+          <h3 className="min-h-5 text-center font-poppins text-[16px] font-medium text-rose-600">
             {errormessage}
           </h3>
         )}

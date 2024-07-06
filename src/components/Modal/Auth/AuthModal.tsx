@@ -42,17 +42,17 @@ const AuthModal = () => {
         }}
       >
         <ModalOverlay />
-        <ModalContent className="w-full md:min-w-[700px]">
-          <ModalHeader>
+        <ModalContent borderRadius={"10px"} marginTop={"100px"} backgroundColor={"blackAlpha.800"} className="w-full md:min-w-[700px] backdrop-blur-xl border border-gray-800">
+          <ModalHeader className="text-gray-300">
             {modalState.view == "login" && "Login"}
             {modalState.view == "signup" && "Sign Up"}
             {modalState.view == "resetPassword" && "Reset Password"}
           </ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton className="text-gray-400" />
           <ModalBody className="mb-8 flex items-center justify-around md:space-x-8">
             <>
               <img
-                className="hidden h-44 w-44 rounded-full shadow-2xl shadow-secondary md:inline-block"
+                className="hidden h-44 w-44 rounded-full shadow-2xl shadow-secondary/50 md:inline-block"
                 src="/logo.webp"
                 alt="logo"
               />
@@ -61,7 +61,7 @@ const AuthModal = () => {
               ) : (
                 <div className="flex flex-col">
                   <OAuthButton />
-                  <hr className="my-3" />
+                  <hr className="my-3 border-gray-600" />
                   <AuthInputs />
                 </div>
               )}

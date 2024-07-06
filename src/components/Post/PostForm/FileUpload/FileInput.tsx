@@ -6,7 +6,7 @@ import { Action, FileWithUrl } from "../../PostForm";
 import Gallery from "./Gallery";
 import { storage } from "../../../../firebase/clientApp";
 import { Toast } from "../../../../lib/Toast";
-import { postError } from "../../../../config/postConfig";
+import { postError } from "../../../../config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Progress, Spinner } from "@chakra-ui/react";
 import { User } from "firebase/auth";

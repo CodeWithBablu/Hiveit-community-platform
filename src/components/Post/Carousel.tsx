@@ -15,6 +15,8 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [imgLoading, setImgLoading] = useState<boolean>(true);
+
   const goToPrevious = () => {
 
     const newIndex = (currentIndex === 0) ? 0 : currentIndex - 1;
@@ -62,21 +64,32 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
                   )}
                 >
                   <div className={clsx(
-                    `w-fit rounded-2xl overflow-hidden ${gallery.length > 1 && 'mx-auto'}`,
+                    `${imgLoading ? 'w-full' : 'w-fit'} rounded-2xl overflow-hidden ${gallery.length > 1 && 'mx-auto'}`,
                     {
-                      'h-fit border-[1px] border-gray-800': !isOverlayOpen,
+                      'h-fit border-[1px] border-dimGray': !isOverlayOpen,
                       'h-full': isOverlayOpen,
                     }
                   )}>
+                    {
+                      imgLoading &&
+                      <>
+                        <div className="min-h-64 sm:min-h-72 w-full bg-zinc-900/50 animate-pulse"></div>
+                      </>
+                    }
                     <img
                       src={media.url}
                       loading="lazy"
                       alt={`Slide ${index}`}
+                      onLoad={() => {
+                        // console.log("img loaded");
+                        // if (index === 0)
+                        setImgLoading(false);
+                      }}
                       className={clsx("object-contain",
                         {
                           'w-fit': gallery.length === 1,
                           'mx-auto': gallery.length > 1,
-                          'max-h-[600px]': !isOverlayOpen,
+                          'max-h-[600px] min-h-64 sm:min-h-72': !isOverlayOpen && !imgLoading,
                           'h-full': isOverlayOpen,
                         })}
                     />

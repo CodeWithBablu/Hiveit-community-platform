@@ -1,5 +1,5 @@
 import React from "react";
-import { Item, Payload } from "../../config/postConfig";
+import { Item, Payload } from "../../config";
 
 type Props = {
   item: Item;

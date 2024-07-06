@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { Payload } from "../../../config/postConfig";
+import { Payload } from "../../../config";
 
 type Props = {
   body: string;

@@ -27,11 +27,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center space-y-4">
+    <div className="flex w-full flex-col items-center space-y-4 text-slate-400">
       {sucess ? (
-        <span className="text-center font-poppins text-[14px] font-semibold text-slate-700">
+        <span className="text-center font-poppins text-[14px] font-semibold text-slate-300">
           Reset Email successfully send to
-          <span className="block text-sky-500"> {email}</span>
+          <span className="block text-blue-500"> {email}</span>
         </span>
       ) : (
         <>
@@ -39,7 +39,7 @@ const ResetPassword = () => {
             Reset your Password
           </h1>
 
-          <span className="text-md text-center font-poppins font-medium text-rose-400">
+          <span className="text-md text-center font-poppins font-medium text-rose-600">
             {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
           </span>
 
@@ -55,7 +55,7 @@ const ResetPassword = () => {
             <input
               onChange={onChange}
               required
-              className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+              className="rounded-lg border-2 p-3 w-full max-w-80 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray  caret-gray-200 focus:border-blue-800"
               name="email"
               placeholder="email please..."
               type="text"
@@ -79,27 +79,27 @@ const ResetPassword = () => {
         </>
       )}
       <div>
-        <h2 className="text-md mb-2 font-bold">
+        <h2 className="text-md mb-2 font-semibold text-gray-400">
           Already have a account ?{" "}
           <motion.span
             whileTap={{ scale: 0.7 }}
             onClick={() =>
               dispatch(setAuthModalState({ open: true, view: "login" }))
             }
-            className="inline-block cursor-pointer text-sky-400 hover:text-sky-300"
+            className="inline-block cursor-pointer text-blue-500 hover:text-sky-600"
           >
             Login
           </motion.span>{" "}
           🥰️
         </h2>
-        <h2 className="text-md font-bold">
+        <h2 className="text-md font-semibold text-gray-400">
           Ahh!! New here?{" "}
           <motion.span
             whileTap={{ scale: 0.7 }}
             onClick={() =>
               dispatch(setAuthModalState({ open: true, view: "signup" }))
             }
-            className="inline-block cursor-pointer text-sky-400 hover:text-sky-300"
+            className="inline-block cursor-pointer text-blue-500 hover:text-sky-600"
           >
             Sign Up{" "}
           </motion.span>{" "}

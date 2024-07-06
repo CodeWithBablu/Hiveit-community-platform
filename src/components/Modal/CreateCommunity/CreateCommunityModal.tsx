@@ -133,44 +133,43 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
     <>
       <Modal isOpen={open} onClose={handleClose}>
         <ModalOverlay />
-        <ModalContent className="md:min-w-[700px]" borderRadius={10}>
-          <ModalHeader>Create Community</ModalHeader>
-          <ModalCloseButton />
+        <ModalContent backgroundColor={"blackAlpha.800"} className="md:min-w-[700px] backdrop-blur-2xl font-poppins" borderRadius={10}>
+          <ModalHeader className="text-lime-600 tracking-wide">Create Community</ModalHeader>
+          <ModalCloseButton className="text-gray-400" />
           <ModalBody className="flex flex-col gap-2">
-            <span className="text-lg font-semibold text-gray-600">
-              Community name 🥳️
+            <span className="text-lg font-medium font-poppins text-gray-300">
+              Community name <span className="text-rose-600">*</span>
             </span>
 
-            <div className="relative flex items-center">
-              <span className="font-dynapuff absolute left-2 text-lg font-medium text-gray-400">
+            <div className="relative flex items-center bg-transparent">
+              <span className="font-poppins absolute left-2 text-lg font-medium text-gray-400">
                 h/
               </span>
               <input
                 value={communityName}
                 onChange={onChange}
                 type="text"
-                className="w-80 rounded-md border-2 px-8 py-2 font-poppins text-lg font-medium text-gray-500 outline-none hover:border-sky-300 focus:border-sky-500"
+                className="w-80 rounded-md border-2 px-8 py-2 font-poppins text-lg font-medium text-gray-400 bg-transparent outline-none border-dimGray hover:border-blue-700 focus:border-blue-700"
               />
             </div>
 
-            <span
-              className={`font-dynapuff text-base ${charsRemaining < 5 ? "text-rose-400" : "text-gray-500"}`}
-            >
+            <span className={`text-base mb-3 ${charsRemaining < 5 ? "text-rose-600" : "text-gray-500"}`}>
               {charsRemaining} Characters remaining
             </span>
 
+
             <div className="flex flex-col gap-2">
-              <span className="font-dynapuff text-lg font-medium text-zinc-800">
-                Description <span className="text-rose-500">*</span>
+              <span className="text-lg font-medium text-gray-300">
+                Description <span className="text-rose-600">*</span>
               </span>
               <textarea
                 value={desc}
                 onChange={onDescChange}
                 placeholder="desc..."
-                className="w-full resize-y rounded-md border-2 px-2 py-2 font-poppins text-lg font-medium text-gray-500 outline-none hover:border-sky-300 focus:border-sky-500"
+                className="w-full resize-y rounded-md border-2 px-2 py-2 font-poppins bg-transparent text-gray-400 border-dimGray text-lg font-medium outline-none hover:border-blue-700 focus:border-blue-700"
               />
               <span
-                className={`font-dynapuff text-base ${desc.length > 400 ? "text-rose-400" : "text-gray-500"}`}
+                className={`font-dynapuff text-base ${desc.length > 400 ? "text-rose-600" : "text-gray-500"}`}
               >
                 {desc.length > 400
                   ? `${desc.length}. Desc is too long`
@@ -178,7 +177,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
               </span>
             </div>
 
-            <h1 className="font-poppins font-semibold">Community Type</h1>
+            <h1 className="text-gray-300 font-medium">Community Type</h1>
 
             <Checkbox
               onChange={onCommunityTypeChange}
@@ -186,9 +185,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
               name="public"
             >
               <div className="ml-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-gray-400">
                   <RiGroupFill size={16} />
-                  <h2 className="font-poppins font-medium">Public</h2>
+                  <h2 className="font-medium">Public</h2>
                 </div>
 
                 <h4 className="text-gray-500">
@@ -204,9 +203,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
               name="restricted"
             >
               <div className="ml-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-gray-400">
                   <RiEyeOffFill size={16} />
-                  <h2 className="font-poppins font-medium">restricted</h2>
+                  <h2 className="font-medium">restricted</h2>
                 </div>
 
                 <h4 className="text-gray-500">
@@ -222,9 +221,9 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
               name="private"
             >
               <div className="ml-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-gray-400">
                   <RiLockPasswordFill size={16} />
-                  <h2 className="font-poppins font-medium">Private</h2>
+                  <h2 className="font-medium">Private</h2>
                 </div>
 
                 <h4 className="text-gray-500">
@@ -234,16 +233,16 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
               </div>
             </Checkbox>
 
-            <span className="min-h-5 font-poppins text-base font-medium text-rose-500">
+            <span className="min-h-5 font-poppins text-base font-medium text-rose-600">
               {error}
             </span>
           </ModalBody>
 
-          <ModalFooter className="gap-3 rounded-b-[8px] bg-zinc-950 font-poppins font-medium text-white">
+          <ModalFooter className="gap-3 rounded-b-[8px] font-poppins font-medium text-white">
             <motion.button
               onClick={handleClose}
               whileTap={{ scale: 0.8 }}
-              className={`rounded-full px-4 py-3 text-rose-500 hover:bg-rose-950/50`}
+              className={`rounded-full px-4 py-3 text-rose-600 hover:bg-rose-950/50`}
             >
               Close
             </motion.button>
@@ -252,7 +251,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
                 onClick={handleCreateCommunity}
                 whileTap={{ scale: 0.8 }}
                 type="submit"
-                className={`rounded-full bg-blue-600 px-4 py-3 ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
+                className={`rounded-full bg-blue-700 px-6 py-3 ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
               >
                 Create Community
               </motion.button>
@@ -265,7 +264,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
             </div>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal >
     </>
   );
 };

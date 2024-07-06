@@ -1,12 +1,11 @@
-import { Timestamp, collection, doc, increment, setDoc, writeBatch } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import React from 'react'
 import DeletePopover from '../DeletePopOver';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import { RiHeart3Fill, RiHeart3Line, RiShare2Line, RiThumbDownFill, RiThumbDownLine, RiThumbUpFill, RiThumbUpLine } from '@remixicon/react';
-import { formatNumbers, formatPostDate, getAvatarCode, truncateText } from '@/lib/Utils';
-import { firestore } from '@/firebase/clientApp';
+import { RiHeart3Fill, RiHeart3Line, RiShare2Line } from '@remixicon/react';
+import { formatNumbers, getAvatarCode, timeAgo, truncateText } from '@/lib/Utils';
 import { avatars } from '@/config/avatar';
+import { useNavigate } from 'react-router-dom';
 
 type CommentItemProps = {
   comment: Comment;
@@ -15,6 +14,7 @@ type CommentItemProps = {
   onDeleteComment: (comment: Comment) => void;
   deletingComment: boolean;
   userId: string | null | undefined;
+  isProfilePage?: boolean;
 }
 
 export type Comment = {
@@ -36,7 +36,9 @@ export type LikedComment = {
   postId: string;
 }
 
-const CommentItem = ({ comment, isLiked, handleLike, onDeleteComment, deletingComment, userId }: CommentItemProps) => {
+const CommentItem = ({ comment, isLiked, handleLike, onDeleteComment, deletingComment, userId, isProfilePage }: CommentItemProps) => {
+
+  const navigate = useNavigate();
 
   return (
     <div className='flex w-full px-4 py-3 border-t-[1px] border-dimGray'>
@@ -51,16 +53,34 @@ const CommentItem = ({ comment, isLiked, handleLike, onDeleteComment, deletingCo
 
       <div className="flex w-full flex-col gap-1">
 
-        <div className="flex items-center gap-2 font-chillax text-gray-400">
+        <div className="flex items-baseline flex-wrap gap-2 font-chillax text-gray-400">
 
-          <span title={comment.creatorDisplayName} className="font-medium text-gray-400/80">
+          {!isProfilePage && <span title={comment.creatorDisplayName} className="font-medium text-gray-400/80 cursor-pointer hover:text-indigo-500">
             u/ {truncateText(comment.creatorDisplayName, 20)}
-          </span>{" "}
-          <>
-            <span className="h-[3px] w-[2px] ml-2 rounded-full bg-zinc-400"></span>{" "}
-            <span>{formatPostDate('only-date', comment.createdAt.seconds * 1000)}</span>
-          </>
+          </span>}
+
+          {isProfilePage && <span title={comment.communityId} onClick={() => navigate(`/h/${comment.communityId}`)} className="font-medium text-gray-400/80 cursor-pointer hover:text-indigo-500">
+            h/ {truncateText(comment.communityId, 20)}
+          </span>}
+
+          <span className="h-[4px] w-[4px] mx-1 rounded-full bg-gray-400/80"></span>
+
+          {!isProfilePage &&
+            <>
+              <span className='font-poppins text-sm'>{timeAgo(comment.createdAt.seconds * 1000)}</span>
+            </>
+          }
+          {isProfilePage &&
+            <h2 className=' mb-2 text-[16px] text-gray-100 font-medium hover:text-blue-500 hover:underline underline-offset-4 cursor-pointer'>{comment.postTitle}</h2>
+          }
         </div>
+
+        {isProfilePage &&
+          <>
+            <span className='font-poppins mb-2 text-sm text-gray-400'><span className='text-gray-100 font-medium'>{truncateText(comment.creatorDisplayName, 20)}</span> commented {timeAgo(comment.createdAt.seconds * 1000)}</span>
+            <hr className='border-dimGray' />
+          </>
+        }
 
         <div className="w-full mb-2">
           <p className="text-sm whitespace-pre-wrap font-poppins tracking-wide text-slate-200">

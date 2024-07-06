@@ -1,5 +1,5 @@
 import { FileWithUrl } from "@/components/Post/PostForm";
-import { MetaData } from "@/config/postConfig";
+import { MetaData } from "@/config";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore/lite";

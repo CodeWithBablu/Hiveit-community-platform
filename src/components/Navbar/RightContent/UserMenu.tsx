@@ -15,6 +15,7 @@ import { auth } from "../../../firebase/clientApp";
 import { setAuthModalState } from "../../../slices";
 import { getAvatarCode, truncateText } from "@/lib/Utils";
 import { avatars } from "@/config/avatar";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   user: User;
@@ -22,6 +23,7 @@ type Props = {
 
 const UserMenu = ({ user }: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logout = async () => {
     await signOut(auth);
@@ -80,6 +82,7 @@ const UserMenu = ({ user }: Props) => {
             <MenuItem
               bgColor="transparent"
               className="gap-2 rounded-md hover:bg-zinc-900 hover:text-gray-100"
+              onClick={() => navigate(`/profile/${user.displayName || user.email?.split('@')[0]}`)}
             >
               <RiProfileLine size={28} className="" />
               <span className="font-poppins text-lg font-medium">Profile</span>

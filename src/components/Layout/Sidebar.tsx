@@ -4,29 +4,34 @@ import { truncateText } from '@/lib/Utils';
 import { Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/react';
 import { CommunitiesState, CommunitySnippet } from '@/slices/communitySlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRecentCommunities } from '@/slices';
+import { setCreateCommunityModelOpen, setRecentCommunities } from '@/slices';
 import useDirectory from '@/hooks/useDirectory';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import CreateCommunityModal from '../Modal/CreateCommunity/CreateCommunityModal';
 
 type Props = {
   isDrawer: boolean;
+  handleClose?: () => void;
 }
 
-const Sidebar = ({ isDrawer }: Props) => {
+const Sidebar = ({ isDrawer, handleClose }: Props) => {
 
   const { userCommunities: { mySnippets } } = useCommunity();
   const { toggleMenuOpen } = useDirectory();
   const { recentCommunities } = useSelector((state: { communitiesState: CommunitiesState }) => state.communitiesState);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     const storedCommunitySnippets: CommunitySnippet[] = JSON.parse(localStorage.getItem('recentCommunities') || '[]') || [];
     dispatch(setRecentCommunities({ recentCommunities: storedCommunitySnippets }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   const scrollToTop = () => {
+    console.log("hr");
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -37,9 +42,11 @@ const Sidebar = ({ isDrawer }: Props) => {
     <div className={`${isDrawer ? 'flex w-full' : 'hidden xl:flex w-[276px]'} mt-14 sticky top-14 text-sm flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7.5rem)] shrink-0 rounded-xl`}>
 
       <div className='flex flex-col gap-2'>
-        <div className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiHome2Line /> Home</div>
-        <div className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiAddLine /> Create Community</div>
-        <div onClick={() => { scrollToTop(); toggleMenuOpen(); }} className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiReceiptLine /> Create Post</div>
+        {/* <CreateCommunityModal open={open} handleClose={() => setOpen(false)} /> */}
+
+        <div onClick={() => { (handleClose && handleClose()); navigate("/") }} className='z-50 px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiHome2Line /> Home</div>
+        <div onClick={() => { dispatch(setCreateCommunityModelOpen(true)); (handleClose && handleClose()); }} className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiAddLine /> Create Community</div>
+        <div onClick={() => { (handleClose && handleClose()); scrollToTop(); toggleMenuOpen(); }} className='px-3 py-3 text-gray-300 hover:bg-zinc-900/70 rounded-lg cursor-pointer flex items-center gap-3'><RiReceiptLine /> Create Post</div>
       </div>
 
       <hr className='border-zinc-900 my-3' />

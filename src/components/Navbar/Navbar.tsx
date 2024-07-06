@@ -44,17 +44,10 @@ const Navbar = () => {
       </div>
 
       {/* search section */}
-
-      {/* {(windowWidth > 768) && <SearchInput />} */}
-
-      {/* {(windowWidth <= 768) && <div className="ml-auto mx-3">
-      </div>} */}
-
       <SearchInput />
 
       {/* <Directory/> */}
       <RightContent user={user} />
-
 
     </nav>
   );

@@ -10,14 +10,16 @@ import CommentItem, { Comment, LikedComment } from './CommentItem';
 import { CommentSkeleton } from '@/components/Ui/Skeletons';
 import { avatars } from '@/config/avatar';
 import { getAvatarCode } from '@/lib/Utils';
+import { Usertype } from '@/lib/Definations';
 
 type CommentsProps = {
   user: User | null | undefined;
-  selectedPost: Post;
-  communityId: string;
+  selectedPost?: Post;
+  communityId?: string;
+  profileUser?: Usertype;
 }
 
-function Comments({ user, selectedPost, communityId, }: CommentsProps) {
+function Comments({ user, selectedPost, communityId, profileUser }: CommentsProps) {
 
   const [comments, setComments] = useState<Comment[]>([]);
   const [likedComments, setLikedComments] = useState<LikedComment[]>([]);
@@ -31,6 +33,8 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
   const onCreateComment = async (commentText: string, user: User) => {
     if (!user)
       return dispatch(setAuthModalState({ open: true, view: "login" }));
+
+    if (!selectedPost || !communityId) return;
 
     setCreateLoading(true);
     try {
@@ -74,6 +78,9 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
   };
 
   const onDeleteComment = async (comment: Comment) => {
+    if (!user)
+      return dispatch(setAuthModalState({ open: true, view: "login" }));
+
     setDeletingComment(true);
     try {
       const batch = writeBatch(firestore);
@@ -83,13 +90,31 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
       batch.delete(commentDocRef);
 
       // update post numberOfComment +1
-      const postDocRef = doc(firestore, "posts", selectedPost.id!);
+      const postDocRef = doc(firestore, "posts", comment.postId!);
       batch.update(postDocRef, { numberOfComments: increment(-1) });
       await batch.commit();
       //update client redux state
-      const updatedSelectedPost = { ...selectedPost, numberOfComments: selectedPost.numberOfComments - 1 } as Post;
-      dispatch(setSelectedPost({ post: updatedSelectedPost }));
+      if (selectedPost) {
+        const updatedSelectedPost = { ...selectedPost, numberOfComments: selectedPost.numberOfComments - 1 } as Post;
+        dispatch(setSelectedPost({ post: updatedSelectedPost }));
+      }
+
       setComments(prev => prev.filter((item) => item.id !== comment.id));
+
+      // const batch = writeBatch(firestore);
+
+      // //delete comment doxument
+      // const commentDocRef = doc(firestore, 'comments', comment.id)
+      // batch.delete(commentDocRef);
+
+      // // update post numberOfComment +1
+      // const postDocRef = doc(firestore, "posts", selectedPost.id!);
+      // batch.update(postDocRef, { numberOfComments: increment(-1) });
+      // await batch.commit();
+      // //update client redux state
+      // const updatedSelectedPost = { ...selectedPost, numberOfComments: selectedPost.numberOfComments - 1 } as Post;
+      // dispatch(setSelectedPost({ post: updatedSelectedPost }));
+      // setComments(prev => prev.filter((item) => item.id !== comment.id));
 
     } catch (error) {
       console.log('onDeleteComment : ', error);
@@ -160,12 +185,19 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
 
   const getPostComments = async () => {
     setFetchLoading(true);
-
     try {
-      const commentsQuery = query(collection(firestore, "comments"),
-        where("postId", "==", selectedPost.id),
+      let commentsQuery = query(
+        collection(firestore, "comments"),
         orderBy('createdAt', 'desc')
       );
+
+      if (selectedPost) {
+        commentsQuery = query(commentsQuery, where("postId", "==", selectedPost.id));
+      }
+
+      if (profileUser) {
+        commentsQuery = query(commentsQuery, where("creatorId", "==", profileUser.uid));
+      }
 
       const commentsDocs = await getDocs(commentsQuery);
       const comments = commentsDocs.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -182,10 +214,14 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
   };
 
   async function getLikedComments() {
-    const likedCommentsQuery = query(
+    let likedCommentsQuery = query(
       collection(firestore, `users/${user?.uid}/likedComments`),
-      where("postId", "==", selectedPost.id)
     );
+
+    if (selectedPost) {
+      likedCommentsQuery = query(likedCommentsQuery, where("postId", "==", selectedPost.id));
+    }
+
     const likedCommentsDocs = await getDocs(likedCommentsQuery);
     const likedComments = likedCommentsDocs.docs.map((doc) => ({
       id: doc.id,
@@ -203,13 +239,13 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
 
   return (
     <div className='w-full border-b-[1px] mb-10 border-dimGray'>
-      <CommentInput
+      {selectedPost && <CommentInput
         commentText={commentText}
         setCommentText={setCommentText}
         createLoading={createLoading}
         onCreateComment={onCreateComment}
         user={user}
-      />
+      />}
 
       {(fetchLoading && (
         <>
@@ -231,12 +267,16 @@ function Comments({ user, selectedPost, communityId, }: CommentsProps) {
 
       {
         (comments.length > 0 && !fetchLoading) && comments.map(comment => (
-          <CommentItem key={comment.id} userId={user ? user.uid : null}
+          <CommentItem
+            key={comment.id}
+            userId={user ? user.uid : null}
             isLiked={!!likedComments.find(likedComment => likedComment.commentId === comment.id)}
             handleLike={handleLike}
             comment={comment}
             deletingComment={deletingComment}
-            onDeleteComment={onDeleteComment} />
+            onDeleteComment={onDeleteComment}
+            isProfilePage={selectedPost ? false : true}
+          />
         ))
       }
     </div>

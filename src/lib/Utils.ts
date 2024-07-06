@@ -1,5 +1,5 @@
 import { FileWithUrl } from "../components/Post/PostForm";
-import { ALLOWED_FILE_TYPES, postError } from "../config/postConfig";
+import { ALLOWED_FILE_TYPES, postError } from "../config";
 import { Toast, ToastType } from "./Toast";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
@@ -159,5 +159,36 @@ export function getAvatarCode(str: string) {
 export const calculateHotness = (voteStatus: number, createdAt: Timestamp, numofComments: number) => {
   const ageInHours = (Date.now() - createdAt.toMillis()) / (1000 * 60 * 60);
   return (voteStatus + numofComments * 2) / Math.pow(ageInHours + 2, 1.8);
+};
+
+export const timeAgo = (time: number) => {
+  const seconds = Math.floor((Date.now() - time) / 1000);
+
+  if (seconds < 60) {
+    return `${seconds} sec${seconds !== 1 ? 's' : ''} ago`;
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) {
+    return `${minutes} min${minutes !== 1 ? 's' : ''} ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    return `${hours} hr${hours !== 1 ? 's' : ''} ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+  if (days < 30) {
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
+  }
+
+  const months = Math.floor(days / 30);
+  if (months < 12) {
+    return `${months} month${months !== 1 ? 's' : ''} ago`;
+  }
+
+  const years = Math.floor(months / 12);
+  return `${years} year${years !== 1 ? 's' : ''} ago`;
 };
 

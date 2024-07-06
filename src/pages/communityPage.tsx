@@ -22,6 +22,7 @@ const CommunityPage = () => {
   const fetchCommunityData = useCallback(async (communityId: string) => {
     const communityDocRef = doc(firestore, "communities", communityId);
     const communityDoc = await getDoc(communityDocRef);
+
     if (communityDoc.exists()) {
       const newData = { id: communityId, ...communityDoc.data() } as Community;
       const storedCommunitySnippets: CommunitySnippet[] = JSON.parse(localStorage.getItem('recentCommunities') || '[]') || [];

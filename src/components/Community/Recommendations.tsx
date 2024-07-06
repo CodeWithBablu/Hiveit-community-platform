@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { RecommendedCommunitiesSkeleton } from '../Ui/Skeletons';
 import useDirectory from '@/hooks/useDirectory';
 import CreateCommunityModal from '../Modal/CreateCommunity/CreateCommunityModal';
+import { setCreateCommunityModelOpen } from '@/slices';
+import { useDispatch } from 'react-redux';
 
 // type Props = {}
 
@@ -16,10 +18,10 @@ const Recommendations = () => {
 
   const [communities, setCommunities] = useState<Community[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState(false);
 
   const { userCommunities: { mySnippets }, onJoinOrLeaveCommunity } = useCommunity();
   const { toggleMenuOpen } = useDirectory();
+  const dispatch = useDispatch();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -127,10 +129,9 @@ const Recommendations = () => {
 
           <h2 className='text-gray-400 text-[12px] text-center font-medium tracking-wide'>Your thoughts, our hive, one buzzing community!</h2>
 
-          <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
 
           <div className='flex flex-col items-center gap-4 w-full'>
-            <button onClick={() => setOpen(true)} className=" text-gray-200 bg-blue-600 hover:bg-blue-700 w-full rounded-full py-2 font-medium tracking-wider">Create Community</button>
+            <button onClick={() => dispatch(setCreateCommunityModelOpen(true))} className=" text-gray-200 bg-blue-600 hover:bg-blue-700 w-full rounded-full py-2 font-medium tracking-wider">Create Community</button>
             <button onClick={() => { scrollToTop(); toggleMenuOpen(); }} className=" text-gray-200 border-[1px] border-blue-600 hover:border-blue-700 w-full rounded-full py-2 font-medium tracking-wider">Create post</button>
           </div>
         </div>

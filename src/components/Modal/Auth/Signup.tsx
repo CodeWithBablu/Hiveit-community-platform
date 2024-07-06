@@ -7,12 +7,11 @@ import { auth, firestore } from "../../../firebase/clientApp";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import { Spinner } from "@chakra-ui/react";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth/cordova";
 import { FirebaseError } from "firebase/app";
 import { Toast } from "@/lib/Toast";
 
-// type Props = {}
 
 const Signup = () => {
   const [signupForm, setSignUpForm] = useState({
@@ -113,7 +112,7 @@ const Signup = () => {
           onChange={onChange}
           required
           autoComplete="email"
-          className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+          className="rounded-lg border-2 p-3 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray  caret-gray-200 focus:border-blue-800"
           name="email"
           placeholder="email please..."
           type="text"
@@ -122,7 +121,7 @@ const Signup = () => {
           onChange={onChange}
           required
           autoComplete="current-password"
-          className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+          className="rounded-lg border-2 p-3 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray  caret-gray-200 focus:border-blue-800"
           name="password"
           placeholder="password please..."
           type="password"
@@ -131,7 +130,7 @@ const Signup = () => {
           onChange={onChange}
           required
           autoComplete="current-password"
-          className="rounded-lg border-2 p-2 font-poppins font-medium outline-none hover:border-sky-500 focus:border-sky-500"
+          className="rounded-lg border-2 p-3 text-gray-400 placeholder-gray-500 font-medium autofill-auth outline-none bg-transparent border-dimGray  caret-gray-200 focus:border-blue-800"
           name="cpassword"
           placeholder="confirm password please..."
           type="password"
@@ -141,7 +140,7 @@ const Signup = () => {
           <motion.button
             whileTap={{ scale: 0.8 }}
             type="submit"
-            className={`w-28 rounded-lg bg-blue-500 px-4 py-2 text-xl font-semibold text-white ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
+            className={`w-28 rounded-full bg-blue-700 px-4 py-2 text-xl font-medium font-chillax text-white ${loading ? "pointer-events-none opacity-30" : "opacity-100"}`}
           >
             Sign Up
           </motion.button>
@@ -152,14 +151,14 @@ const Signup = () => {
             />
           )}
         </div>
-        <h3 className="text-md font-bold">
+        <h3 className="text-md font-semibold text-gray-400">
           Ahh!! Already have account?{" "}
           <motion.span
             whileTap={{ scale: 0.7 }}
             onClick={() =>
               dispatch(setAuthModalState({ open: true, view: "login" }))
             }
-            className="inline-block cursor-pointer text-sky-400 hover:text-sky-300"
+            className="inline-block cursor-pointer text-blue-500 hover:text-blue-600"
           >
             Login{" "}
           </motion.span>{" "}
@@ -167,7 +166,7 @@ const Signup = () => {
         </h3>
 
         {errormessage && (
-          <h3 className="min-h-5 text-center font-poppins text-[16px] font-medium text-rose-400">
+          <h3 className="min-h-5 text-center font-poppins text-[16px] font-medium text-rose-600">
             {errormessage}
           </h3>
         )}
