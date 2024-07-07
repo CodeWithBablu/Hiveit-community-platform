@@ -97,7 +97,7 @@ const Carousel = ({ isOverlayOpen, setIsOverlayOpen, gallery }: Carouselprops) =
 
                   {(media.link || media.caption) &&
                     <div className={`absolute bottom-2 left-0 right-0 mx-auto rounded-b-2xl w-full px-2 ${isOverlayOpen && 'max-w-[700px]'}`}>
-                      <div className=" rounded-xl w-full bg-blackAplha400 backdrop-blur-md px-3 py-2">
+                      <div className=" rounded-xl w-full bg-blackAplha400 backdrop-blur-2xl px-3 py-2">
                         {media.caption && <h3>{media.caption}</h3>}
                         {media.link && <a title={media.link} href={media.link} target="_blank" className="text-blue-600 hover:underline">{truncateText(media.link, 50)}</a>}
                       </div>

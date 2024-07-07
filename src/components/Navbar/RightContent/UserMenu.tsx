@@ -11,23 +11,48 @@ import {
   RiUser4Line,
 } from "@remixicon/react";
 import { useDispatch } from "react-redux";
-import { auth } from "../../../firebase/clientApp";
+import { auth, firestore } from "../../../firebase/clientApp";
 import { setAuthModalState } from "../../../slices";
 import { getAvatarCode, truncateText } from "@/lib/Utils";
 import { avatars } from "@/config/avatar";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
 
 type Props = {
   user: User;
 };
 
 const UserMenu = ({ user }: Props) => {
+  const [masterImage, setMasterImage] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getPostmasterImage = async () => {
+      const imageRef = doc(firestore, `users/${user.uid}`);
+      const image = await getDoc(imageRef);
+      const data = image.data();
+      if (data && data.providerData[0].photoURL) {
+        setMasterImage(data.providerData[0].photoURL);
+      }
+    };
+
+    getPostmasterImage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logout = async () => {
     await signOut(auth);
   };
+
+  let photoURL = avatars[getAvatarCode(user.displayName || user.email?.split('@')[0] as string)].url;
+
+  if (masterImage)
+    photoURL = masterImage;
+  else if (user.providerData[0].photoURL)
+    photoURL = user.providerData[0].photoURL;
 
   return (
     <Menu>
@@ -41,12 +66,8 @@ const UserMenu = ({ user }: Props) => {
             <div className="flex items-center justify-around shadow-2xl shadow-secondary/20 space-x-2">
               <img
                 className="h-[30px] w-[30px] rounded-full lg:h-[40px] lg:w-[40px] bg-gradient-to-b from-zinc-900 to-zinc-600"
-                src={
-                  user.providerData[0].photoURL
-                    ? user.providerData[0].photoURL
-                    : avatars[getAvatarCode(user.displayName || user.email?.split('@')[0] as string)].url
-                }
-                alt=""
+                src={photoURL}
+                alt="profile img"
               />
 
               <div className="hidden flex-col lg:flex">

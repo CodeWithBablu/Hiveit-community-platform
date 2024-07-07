@@ -55,8 +55,9 @@ export const formTabs: Item[] = [
     title: "Poll",
     type: "poll",
     icon: <RiMenu4Fill size={22} />,
-  },
+  }
 ];
+
 
 export const postError = {
   video_not_allowed_in_gallery: "Videos aren’t supported within galleries...yet 🥶️",

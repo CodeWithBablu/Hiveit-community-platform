@@ -5,13 +5,13 @@ import { auth } from "@/firebase/clientApp";
 import useSelectFile from "@/hooks/useSelectFile";
 import { formatNumbers, formatPostDate, timestampToMillis } from "@/lib/Utils";
 import { setAuthModalState } from "@/slices";
-import { Community } from "@/slices/communitySlice"
+import { CommunitiesState, Community } from "@/slices/communitySlice"
 import { RiCalendar2Line, RiMoreFill } from "@remixicon/react"
 import { Timestamp } from "firebase/firestore";
 import { motion } from "framer-motion"
 import { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 type AboutProps = {
@@ -23,7 +23,12 @@ function About({ communityData }: AboutProps) {
   const [user] = useAuthState(auth);
   const fileSelectorRef = useRef<HTMLInputElement>(null);
 
-  const { selectedFile, onSelectFile } = useSelectFile();
+
+
+  const imageURL = useSelector(
+    (state: { communitiesState: CommunitiesState }) => state.communitiesState.currentCommunity?.imageURL || "",
+  );
+  const { onSelectFile } = useSelectFile();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -85,8 +90,8 @@ function About({ communityData }: AboutProps) {
               <div className=" flex justify-between items-center">
                 <span onClick={() => fileSelectorRef.current?.click()} className="text-blue-500 font-poppins hover:underline cursor-pointer text-sm">Community Appearance</span>
 
-                {(selectedFile || communityData.imageURL) ?
-                  <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={selectedFile || communityData.imageURL} alt="community image" /></div> :
+                {(imageURL || communityData.imageURL) ?
+                  <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={imageURL || communityData.imageURL} alt="community image" /></div> :
                   <div className=" border-[1px] border-gray-800 rounded-full"><img className="rounded-full w-14 h-14 " src={'/profile.png'} alt="community image" /></div>
                 }
               </div>

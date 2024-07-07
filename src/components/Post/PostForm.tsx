@@ -4,7 +4,7 @@ import { Spinner } from "@chakra-ui/react";
 import TabItem from "./TabItem";
 import { ChangeEvent, useReducer, useState } from "react";
 import Postbody from "./PostForm/Postbody";
-import { MetaData, Payload, formTabs } from "../../config";
+import { formTabs, MetaData, Payload } from "../../config";
 import FileInput from "./PostForm/FileUpload/FileInput";
 import { User } from "firebase/auth";
 import clsx from "clsx";

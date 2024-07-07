@@ -1,4 +1,4 @@
-export type FileCategoryType = "community_image" | "community_bgImage";
+export type FileCategoryType = "community_image" | "community_bgImage" | "user_image";
 
 
 export type Usertype = {
