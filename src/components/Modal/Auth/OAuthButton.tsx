@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { Spinner } from "@chakra-ui/react";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { useEffect } from "react";
 import { Toast } from "../../../lib/Toast";
@@ -56,6 +56,7 @@ const OAuthButton = () => {
       email: user.email,
       displayName: user.displayName,
       providerData: user.providerData,
+      createdAt: serverTimestamp()
     };
     const userDocRef = doc(firestore, "users", user.uid);
     await setDoc(userDocRef, newUser);

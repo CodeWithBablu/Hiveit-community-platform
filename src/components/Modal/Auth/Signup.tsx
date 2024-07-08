@@ -7,7 +7,7 @@ import { auth, firestore } from "../../../firebase/clientApp";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import { Spinner } from "@chakra-ui/react";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth/cordova";
 import { FirebaseError } from "firebase/app";
 import { Toast } from "@/lib/Toast";
@@ -44,6 +44,7 @@ const Signup = () => {
       email: user.email,
       displayName: user.displayName,
       providerData: user.providerData,
+      createdAt: serverTimestamp()
     };
     const userDocRef = doc(firestore, "users", user.uid);
     await setDoc(userDocRef, newUser);
