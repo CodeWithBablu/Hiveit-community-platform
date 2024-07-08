@@ -12,7 +12,6 @@ import CreateCommunityModal from '../Modal/CreateCommunity/CreateCommunityModal'
 import { setCreateCommunityModelOpen } from '@/slices';
 import { useDispatch } from 'react-redux';
 
-// type Props = {}
 
 const Recommendations = () => {
 

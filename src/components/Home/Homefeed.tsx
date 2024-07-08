@@ -352,7 +352,7 @@ const Homefeed = () => {
                 onVote={onVote}
                 onSelectPost={onSelectPost}
                 onDeletePost={OnDeletePost}
-                isHomePage={true}
+                communityMode={true}
               />
             ))}
             <div id="load-more-marker" className="h-32"></div>{" "}

@@ -131,10 +131,10 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
 
   return (
     <>
-      <Modal isOpen={open} onClose={handleClose}>
+      <Modal isOpen={open} onClose={handleClose} isCentered>
         <ModalOverlay />
-        <ModalContent backgroundColor={"blackAlpha.800"} className="md:min-w-[700px] backdrop-blur-2xl font-poppins" borderRadius={10}>
-          <ModalHeader className="text-lime-600 tracking-wide">Create Community</ModalHeader>
+        <ModalContent backgroundColor={"blackAlpha.800"} className="md:min-w-[700px] backdrop-blur-2xl font-poppins border border-dimGray" borderRadius={10}>
+          <ModalHeader className="text-sky-600 tracking-wide">Create Community</ModalHeader>
           <ModalCloseButton className="text-gray-400" />
           <ModalBody className="flex flex-col gap-2">
             <span className="text-lg font-medium font-poppins text-gray-300">

@@ -39,7 +39,7 @@ const Sidebar = ({ isDrawer, handleClose }: Props) => {
   };
 
   return (
-    <div className={`${isDrawer ? 'flex w-full' : 'hidden xl:flex w-[276px]'} mt-14 sticky top-14 text-sm flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7.5rem)] shrink-0 rounded-xl`}>
+    <div className={`${isDrawer ? 'flex w-full' : 'hidden xl:flex w-[276px]'} mt-14 sticky top-14 text-sm flex-col gap-2 p-3 h-fit max-h-[calc(100dvh-7rem)] overflow-y-scroll shrink-0 rounded-xl`}>
 
       <div className='flex flex-col gap-2'>
         {/* <CreateCommunityModal open={open} handleClose={() => setOpen(false)} /> */}
@@ -116,6 +116,7 @@ const Sidebar = ({ isDrawer, handleClose }: Props) => {
 
       </Accordion>
 
+      {/* <div className='h-[1000px] bg-rose-100'></div> */}
     </div>
   )
 }

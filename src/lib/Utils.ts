@@ -138,13 +138,13 @@ export const formatNumbers = (num: number) => {
   };
 
   if (num >= 1000000000000) {
-    return format(num / 1000000000000, 'T');
+    return format(num / 1000000000000, ' T');
   } else if (num >= 1000000000) {
-    return format(num / 1000000000, 'B');
+    return format(num / 1000000000, ' B');
   } else if (num >= 1000000) {
-    return format(num / 1000000, 'M');
+    return format(num / 1000000, ' M');
   } else if (num >= 1000) {
-    return format(num / 1000, 'K');
+    return format(num / 1000, ' K');
   } else {
     return num.toString();
   }

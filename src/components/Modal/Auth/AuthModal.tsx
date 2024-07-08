@@ -36,13 +36,14 @@ const AuthModal = () => {
   return (
     <>
       <Modal
+        isCentered
         isOpen={modalState.open}
         onClose={() => {
           dispatch(setAuthModalState({ open: false, view: "login" }));
         }}
       >
         <ModalOverlay />
-        <ModalContent borderRadius={"10px"} marginTop={"100px"} backgroundColor={"blackAlpha.800"} className="w-full md:min-w-[700px] backdrop-blur-xl border border-gray-800">
+        <ModalContent borderRadius={"10px"} backgroundColor={"blackAlpha.800"} className="w-full md:min-w-[700px] backdrop-blur-xl border border-gray-800">
           <ModalHeader className="text-gray-300">
             {modalState.view == "login" && "Login"}
             {modalState.view == "signup" && "Sign Up"}

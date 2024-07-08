@@ -19,6 +19,7 @@ import { resetPostStatevalue, setHasMore, setPostVotes } from "@/slices";
 import PostItem from "@/components/Post/PostItem";
 import { PostSkeleton } from "@/components/Ui/Skeletons";
 import CreatePostLink from "@/components/Community/CreatePostLink";
+import ProfileInfo from "@/components/Home/ProfileInfo";
 
 const camera = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 md:size-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
@@ -57,7 +58,7 @@ const ProfilePage = () => {
 
       let postsQuery = query(
         collection(firestore, "posts"),
-        where("creatorId", "==", user?.uid),
+        where("creatorId", "==", profileUser?.uid),
         limit(PAGE_SIZE),
       );
 
@@ -92,7 +93,7 @@ const ProfilePage = () => {
           ? postDocs.docs[postDocs.docs.length - 1]
           : null,
       );
-      await setPostsValue(newPosts);
+      await setPostsValue(newPosts, true);
     } catch (error) {
       console.log(
         "fetchPosts error: ",
@@ -102,7 +103,7 @@ const ProfilePage = () => {
       setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, hasMore, isLoading, lastVisible, user?.uid]);
+  }, [sortBy, hasMore, isLoading, lastVisible, profileUser?.uid]);
 
   const getIntialPosts = useCallback(async () => {
     dispatch(resetPostStatevalue());
@@ -110,7 +111,7 @@ const ProfilePage = () => {
 
     let postsQuery = query(
       collection(firestore, "posts"),
-      where("creatorId", "==", user?.uid),
+      where("creatorId", "==", profileUser?.uid),
       limit(PAGE_SIZE),
     );
 
@@ -141,10 +142,10 @@ const ProfilePage = () => {
         ? postDocs.docs[postDocs.docs.length - 1]
         : null,
     );
-    await setPostsValue(newPosts);
+    await setPostsValue(newPosts, true);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, user?.uid]);
+  }, [sortBy, profileUser?.uid]);
 
   const getUserPostVotes = async () => {
     try {
@@ -187,22 +188,20 @@ const ProfilePage = () => {
   }, [username]);
 
   useEffect(() => {
-    if (!user) return;
-
+    if (!profileUser) return;
     getIntialPosts(); // Load initial posts
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, sortBy]);
+  }, [profileUser, sortBy]);
 
 
   useEffect(() => {
-    if (user && postStateValue.posts.length) getUserPostVotes();
-    console.log("pop")
+    if (user && !loadingUser && postStateValue.posts.length) getUserPostVotes();
     return () => {
       // dispatch(resetPostStatevalue());
       dispatch(setPostVotes({ postVotes: [] }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, postStateValue.posts]);
+  }, [user, loadingUser, postStateValue.posts]);
 
   useEffect(() => {
     if (!loadingUser && username) {
@@ -222,7 +221,8 @@ const ProfilePage = () => {
     observer.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !isLoading) {
-          fetchposts(); // Fetch more posts when the target element is intersecting with the viewport
+          if (profileUser)
+            fetchposts(); // Fetch more posts when the target element is intersecting with the viewport
         }
       });
     }, options);
@@ -240,7 +240,7 @@ const ProfilePage = () => {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, lastVisible]);
+  }, [isLoading, lastVisible, profileUser]);
 
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -354,6 +354,7 @@ const ProfilePage = () => {
                                   onVote={onVote}
                                   onSelectPost={onSelectPost}
                                   onDeletePost={OnDeletePost}
+                                  communityMode={true}
                                 />
                               ))}
                               <div id="load-more-marker" className="h-32"></div>{" "}
@@ -401,8 +402,7 @@ const ProfilePage = () => {
           {/* //// Right Content */}
           <>
             <div className="sticky top-14 w-[350px] h-fit mt-14">
-              {/* <ProfileInfo /> */}
-              <h2>profile Info</h2>
+              {profileUser && <ProfileInfo profileUser={profileUser} />}
             </div>
           </>
         </PageLayout>

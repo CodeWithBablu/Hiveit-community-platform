@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Comment } from "./Comments/CommentItem";
 import { avatars } from "@/config/avatar";
 import parseText from "../../lib/ParseText";
+import { Spinner, useClipboard } from "@chakra-ui/react";
 
 
 type PostItemProps = {
@@ -26,7 +27,7 @@ type PostItemProps = {
   onVote: (e: React.MouseEvent<HTMLDivElement>, post: Post, vote: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post, isHomePage?: boolean) => void;
-  isHomePage?: boolean
+  communityMode?: boolean
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -36,11 +37,12 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
-  isHomePage
+  communityMode
 }) => {
   const [masterImage, setMasterImage] = useState("");
   const [deletingPost, setDeletingPost] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
+  const { onCopy, value, setValue, hasCopied } = useClipboard('')
 
 
   const currentCommunity: Community | undefined = useSelector(
@@ -55,6 +57,8 @@ const PostItem: React.FC<PostItemProps> = ({
       const imageRef = doc(firestore, `users/${post.creatorId}`);
       const image = await getDoc(imageRef);
       const data = image.data();
+      if (window)
+        setValue(`${window.location.protocol}//${window.location.host}/h/${post.communityId}/comments/${post.id}`);
       if (data && data.providerData[0].photoURL) {
         setMasterImage(data.providerData[0].photoURL);
       }
@@ -106,10 +110,10 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
-    <main onClick={() => { onSelectPost && onSelectPost(post, !!isHomePage) }} className={`h-fit w-full border-t-[1px] border-dimGray ${!singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
+    <main onClick={() => { onSelectPost && onSelectPost(post, !!communityMode) }} className={`h-fit w-full border-t-[1px] border-dimGray ${!singlePostPage && 'hover:bg-zinc-900/30'} cursor-pointer`}>
       <div className="flex w-full px-4 py-3">
 
-        {(!singlePostPage && isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
+        {(!singlePostPage && communityMode) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
           <Link onClick={(e) => { e.stopPropagation() }} to={`/h/${post.communityId}`} title={post.communityId}>
             <img
               className="h-[40px] w-[40px] rounded-full"
@@ -119,7 +123,7 @@ const PostItem: React.FC<PostItemProps> = ({
           </Link>
         </div>}
 
-        {(!singlePostPage && !isHomePage) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
+        {(!singlePostPage && !communityMode) && <div className="mr-2 h-[40px] w-[40px] shrink-0 bg-gradient-to-b from-gray-700 to-gray-900 to-80% rounded-full">
           <img
             className="h-[40px] w-[40px] rounded-full"
             src={masterImage ? masterImage : avatars[getAvatarCode(post.creatorDisplayName)].url}
@@ -138,7 +142,7 @@ const PostItem: React.FC<PostItemProps> = ({
               />
             </div>}
 
-            {isHomePage ? (
+            {communityMode ? (
               <Link onClick={(e) => { e.stopPropagation() }} to={`/h/${post.communityId}`} title={post.communityId} className="font-medium text-gray-400/80 hover:text-blue-600">
                 h/ {truncateText(post.communityId, 20)}
               </Link>
@@ -256,12 +260,15 @@ const PostItem: React.FC<PostItemProps> = ({
                     <div className="flex gap-2 sm:ml-auto">
                       {userIsCreator && <DeletePopover isDeleting={deletingPost} handleDelete={handleDelete as (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | Comment) => void} />}
 
-                      <div className="group flex cursor-pointer items-center">
-                        <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-blue-900/30">
+                      <div onClick={(e) => { e.stopPropagation(); onCopy() }} className="group flex cursor-pointer items-center">
+                        <div className={`relative flex justify-center items-center h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in ${hasCopied ? 'pointer-events-none' : 'group-hover:bg-blue-900/30'}`}>
                           <RiShare2Line
                             size={'1em'}
-                            className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-blue-500"
+                            className={`relative text-gray-500/80 text-[20px] sm:text-2xl ${!hasCopied && 'group-hover:text-blue-500'}`}
                           />
+
+                          {hasCopied && <Spinner className="absolute" size={"sm"} thickness="2px" speed="0.7s" color="gray" />}
+
                         </div>
                       </div>
                     </div>
@@ -329,12 +336,15 @@ const PostItem: React.FC<PostItemProps> = ({
             <div className="flex gap-2 sm:ml-auto">
               {userIsCreator && <DeletePopover isDeleting={deletingPost} handleDelete={handleDelete as (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | Comment) => void} />}
 
-              <div className="group flex cursor-pointer items-center">
-                <div className="h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in group-hover:bg-blue-900/30">
+              <div onClick={(e) => { e.stopPropagation(); onCopy() }} className="group flex cursor-pointer items-center">
+                <div className={`relative flex justify-center items-center h-fit w-fit rounded-full p-2 transition-all duration-200 ease-in ${hasCopied ? 'pointer-events-none' : 'group-hover:bg-blue-900/30'}`}>
                   <RiShare2Line
                     size={'1em'}
-                    className="text-gray-500/80 text-[20px] sm:text-2xl group-hover:text-blue-500"
+                    className={`relative text-gray-500/80 text-[20px] sm:text-2xl ${!hasCopied && 'group-hover:text-blue-500'}`}
                   />
+
+                  {hasCopied && <Spinner className="absolute" size={"sm"} thickness="2px" speed="0.7s" color="gray" />}
+
                 </div>
               </div>
             </div>

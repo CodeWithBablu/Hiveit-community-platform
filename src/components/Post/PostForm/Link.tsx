@@ -1,4 +1,4 @@
-import { Payload } from "@/config/postConfig";
+import { Payload } from "@/config";
 import { isValidURL } from "@/lib/Utils";
 import clsx from "clsx";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
