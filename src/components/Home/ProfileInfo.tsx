@@ -91,7 +91,7 @@ function ProfileInfo({ profileUser }: ProfileinfoProps) {
         <h3 className='relative z-10 top-3 left-4 w-fit font-semibold tracking-wide text-zinc-900'>profile</h3>
       </div>
 
-      <div className="p-4 max-h-[calc(100dvh-220px)] overflow-y-scroll">
+      <div className="p-4 max-h-[calc(100dvh-270px)] overflow-y-scroll">
         <h2 className="text-xl font-chillax font-medium tracking-wide">{profileUser.displayName || profileUser.email.split('@')[0]}</h2>
 
         <div className="flex justify-between mt-3 w-full font-poppins tracking-wide">
@@ -150,7 +150,6 @@ function ProfileInfo({ profileUser }: ProfileinfoProps) {
               }
             </>}
         </div>
-
 
       </div>
     </div>
