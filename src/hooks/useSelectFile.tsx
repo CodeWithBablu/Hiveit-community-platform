@@ -41,10 +41,19 @@ function useSelectFile() {
           downloadURL = await getDownloadURL(snapshot.ref);
 
           const communityDocRef = doc(firestore, `communities/${data.id}`);
+          const communitySnippetDocRef = doc(firestore, `users/${data.creatorId}/communitySnippets/${data.id}`);
+
           await updateDoc(communityDocRef, {
             ...(fileCategory === 'community_image' && { imageURL: downloadURL }),
             ...(fileCategory === 'community_bgImage' && { bgImageURL: downloadURL }),
           });
+
+          if (fileCategory === "community_image") {
+            await updateDoc(communitySnippetDocRef, {
+              imageURL: downloadURL,
+            });
+          }
+
           dispatch(changeCommunityImages({ fileCategory: fileCategory as FileCategoryType, url: downloadURL }));
 
           if (fileCategory === 'community_image') {

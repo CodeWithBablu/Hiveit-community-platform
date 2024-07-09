@@ -23,7 +23,7 @@ export interface CommunitySnippet {
 export interface CommunitiesState {
   initSnippetFetched: boolean;
   createCommunityModelOpen: boolean;
-  mySnippets: [CommunitySnippet] | [];
+  mySnippets: CommunitySnippet[] | [];
   recentCommunities: CommunitySnippet[] | [];
   currentCommunity?: Community,
 }
@@ -65,7 +65,16 @@ export const CommunitySlice = createSlice({
             ...state.currentCommunity,
             ...(action.payload.fileCategory === 'community_image' && { imageURL: action.payload.url }),
             ...(action.payload.fileCategory === 'community_bgImage' && { bgImageURL: action.payload.url })
-          }
+          },
+          mySnippets: [
+            ...state.mySnippets.map((snippet: CommunitySnippet) => {
+              if ((snippet.communityId === state.currentCommunity?.id) && action.payload.fileCategory === "community_image") {
+                return { ...snippet, imageURL: action.payload.url } as CommunitySnippet
+              }
+
+              return snippet;
+            })
+          ]
         }
       }
       else

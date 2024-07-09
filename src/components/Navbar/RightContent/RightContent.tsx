@@ -12,13 +12,13 @@ type Props = {
 const RightContent = ({ user }: Props) => {
 
   return (
-    <div>
+    <div className="shrink-0">
       <AuthModal />
       <div className="flex items-center">
         {user ? <Icons /> : <AuthButtons />}
         {user && <UserMenu user={user} />}
 
-        <div className="flex xl:hidden ml-3">
+        <div className="flex xl:hidden lg:ml-3">
           <SideDrawer />
         </div>
 

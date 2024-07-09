@@ -44,6 +44,7 @@ const SearchInput = () => {
             <RiSearch2Line size={20} color="red" />
           </InputLeftElement>
           <Input
+            readOnly
             className="font-poppins font-normal outline-none"
             placeholder="Find community or post..."
             fontSize="12pt"

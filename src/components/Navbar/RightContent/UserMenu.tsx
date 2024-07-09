@@ -13,11 +13,12 @@ import {
 import { useDispatch } from "react-redux";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { setAuthModalState } from "../../../slices";
-import { getAvatarCode, truncateText } from "@/lib/Utils";
+import { formatNumbers, getAvatarCode, truncateText } from "@/lib/Utils";
 import { avatars } from "@/config/avatar";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { Post } from "@/slices/postSlice";
 
 type Props = {
   user: User;
@@ -25,6 +26,8 @@ type Props = {
 
 const UserMenu = ({ user }: Props) => {
   const [masterImage, setMasterImage] = useState("");
+  const [postKarma, setPostKarma] = useState(0);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,6 +40,15 @@ const UserMenu = ({ user }: Props) => {
       if (data && data.providerData[0].photoURL) {
         setMasterImage(data.providerData[0].photoURL);
       }
+
+      const profilePostsQuery = query(
+        collection(firestore, `posts`),
+        where("creatorId", "==", user.uid)
+      );
+
+      const profilePosts = await getDocs(profilePostsQuery);
+      const updatedPostKarma = (profilePosts.docs.map(post => ({ id: post.id, ...post.data() })) as Post[]).reduce((accumulator, post) => accumulator += post.voteStatus, 0)
+      setPostKarma(updatedPostKarma);
     };
 
     getPostmasterImage();
@@ -59,7 +71,7 @@ const UserMenu = ({ user }: Props) => {
       <MenuButton
         cursor="pointer"
         _hover={{ outline: "none", background: "whiteAlpha.200" }}
-        className="mx-1 h-10 rounded-md px-2 md:h-12"
+        className="mx-1 h-10 rounded-md px-2 md:h-12 shrink-0"
       >
         <div className="flex items-center space-x-1">
           {user ? (
@@ -70,6 +82,11 @@ const UserMenu = ({ user }: Props) => {
                 alt="profile img"
               />
 
+              <span className="flex lg:hidden items-center shrink-0 text-sm text-secondary">
+                <RiBardLine size={20} />
+                <span>{formatNumbers(postKarma)}</span>
+              </span>
+
               <div className="hidden flex-col lg:flex">
                 <span className="hidden lg:inline-block">
                   {truncateText(
@@ -77,10 +94,11 @@ const UserMenu = ({ user }: Props) => {
                     15,
                   )}
                 </span>
-                <span className="flex items-center text-sm text-gray-500">
-                  <RiBardLine size={20} className="text-secondary" /> 1 Karma
+                <span className="flex items-center text-sm text-gray-400">
+                  <RiBardLine size={20} className="text-secondary" /> <span className="text-secondary mr-1">{formatNumbers(postKarma)}</span> Karma
                 </span>
               </div>
+
             </div>
           ) : (
             <RiUser4Line size={24} className="" />

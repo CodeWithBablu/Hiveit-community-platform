@@ -209,8 +209,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
                 </div>
 
                 <h4 className="text-gray-500">
-                  Anyone can view, posts or create new post and comment to the
-                  community
+                  Anyone can view, but only approved users can contribute
                 </h4>
               </div>
             </Checkbox>
@@ -227,8 +226,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
                 </div>
 
                 <h4 className="text-gray-500">
-                  Anyone can view, posts or create new post and comment to the
-                  community
+                  Only approved users can view and contribute
                 </h4>
               </div>
             </Checkbox>
