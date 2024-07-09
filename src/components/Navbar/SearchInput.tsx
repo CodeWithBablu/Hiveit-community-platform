@@ -79,6 +79,9 @@ const SearchInput = () => {
           {/* <ModalCloseButton /> */}
           <ModalBody className="w-full">
             <InstantSearch
+              future={{
+                preserveSharedStateOnUnmount: true,
+              }}
               searchClient={searchClient}
               indexName={import.meta.env.VITE_ALGOLIA_INDEX}
             >

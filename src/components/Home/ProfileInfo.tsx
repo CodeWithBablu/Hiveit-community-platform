@@ -111,9 +111,11 @@ function ProfileInfo({ profileUser }: ProfileinfoProps) {
           </div>
         </div>
 
-        <hr className="border-dimGray my-4" />
 
-        <h3 className='my-4 font-semibold tracking-wide text-zinc-400'>MODERATOR OF THESE COMMUNITIES</h3>
+        {!!communities.length && <>
+          <hr className="border-dimGray my-4" />
+          <h3 className='my-4 font-semibold tracking-wide text-zinc-400'>MODERATOR OF THESE COMMUNITIES</h3>
+        </>}
 
         <div className='flex flex-col gap-5'>
           {isLoading ?

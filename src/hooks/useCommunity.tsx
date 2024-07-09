@@ -68,6 +68,7 @@ const useCommunity = () => {
     try {
       const communityDocRef = doc(firestore, `communities`, communityId);
       const communityDoc = await getDoc(communityDocRef);
+      if (!communityDoc.exists()) return;
       let updatedCurrCommunity = { id: communityDoc.id, ...communityDoc.data() } as Community;
       updatedCurrCommunity = { ...updatedCurrCommunity, createdAt: timestampToMillis(updatedCurrCommunity.createdAt as Timestamp) }
       dispatch(setCurrentCommunity({ currentCommunity: updatedCurrCommunity }));
