@@ -69,11 +69,9 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
     if (currFileIndex >= index) {
       const newCurrFileIndex = currFileIndex === 0 ? 0 : currFileIndex - 1;
       setCurrFileIndex((prev) => {
-        console.log(prev === 0 ? 0 : prev - 1);
         return prev === 0 ? 0 : prev - 1;
       });
 
-      console.log("Updated currFileIndex:", newCurrFileIndex);
     }
 
     dispatch({ type: "Delete_file", payload: index });
@@ -174,7 +172,7 @@ const Gallery = ({ inputRef, filesSelected, dispatch }: Props) => {
                   name="link"
                   autoComplete="off"
                   placeholder="Add a link..."
-                  className="relative w-[90%] rounded-xl border-[1px] border-gray-700 bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 md:w-full"
+                  className="relative w-[90%] rounded-xl border-[1px] text-sky-500 border-gray-700 bg-transparent p-4 pr-20 font-medium outline-none focus-within:border-blue-700 md:w-full"
                   type="text"
                 />
                 {filesSelected[currFileIndex].link && (
