@@ -54,17 +54,15 @@
 
 <br><br> Mobile views  </b><br>
 
+<div style="display: flex; width:'100%'; justify-content: center;">
 ![mobileView](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/d0ea387a-1a02-4d25-8b35-11b4fb6e66de)
-
-
 ![mobileView2](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/cf19097f-0502-4324-b8fd-07a96103638b)
+</div>
 
 
 ![mobileView3](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/5f0fcc1a-4afe-42d1-a467-732bf9cc4ed8)
 
-
 ![mobileView4](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/8c73f59e-8da4-40d0-af47-03e7e0668357)
-
 
 ![mobileView5](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/463fa5ec-ed3f-4f1d-a4a8-81e4a018f702)
 
