@@ -55,9 +55,17 @@
 <br><br> Mobile views  </b><br>
 
 ![mobileView](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/d0ea387a-1a02-4d25-8b35-11b4fb6e66de)
+
+
 ![mobileView2](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/cf19097f-0502-4324-b8fd-07a96103638b)
+
+
 ![mobileView3](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/5f0fcc1a-4afe-42d1-a467-732bf9cc4ed8)
+
+
 ![mobileView4](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/8c73f59e-8da4-40d0-af47-03e7e0668357)
+
+
 ![mobileView5](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/463fa5ec-ed3f-4f1d-a4a8-81e4a018f702)
 
 
@@ -65,38 +73,43 @@
 
 Here're some of the project's best features:
 
-User Authentication:
-Comprehensive user authentication system including login, signup, and password reset, all with robust validation.
+**Comprehensive Authentication System:**
+- Login, signup, and password reset with robust validation using Firebase auth.
 
-Community Management:
-Create and manage communities with ease, providing a space for users to connect and share.
+**Community Management:**
+- Create and manage communities easily, providing a space for users to connect and share.
 
-Post Management:
-Users can create, delete, and share posts effortlessly, fostering active community engagement.
+**Post Creation and Management:**
+- Users can create, delete, and share posts effortlessly, fostering active community engagement.
 
-Voting System:
-Interactive upvote and downvote functionality for posts, allowing users to express their opinions and contribute to content ranking.
+**Lazy Loading Posts:**
+- Efficiently load posts as users scroll, improving performance, reduces initial load time and smooth user experience.
+- Implement lazy loading for posts, enhancing performance by reducing initial load time and ensuring a smooth user experience as content loads dynamically with scrolling.
+- Enhance user experience with lazy loading of posts, thus optimizing performance by minimizing initial load times and seamlessly loading content as users scroll through the platform.
 
-Commenting:
-Users can comment on posts, facilitating discussions and interactions within the community.
+**Interactive Voting:**
+- Upvote and downvote functionality for posts, allowing users to express their opinions and contribute to content ranking.
 
-Karma Statistics:
-A detailed karma stats widget to track user contributions and engagement.
-Security:
+**Discussion Facilitation:**
+- Users can comment on posts, facilitating discussions and interactions within the community.
+- 
+**Karma Stats Widget:**
+- Track user contributions and engagement with a detailed karma statistics widget.
 
-Implemented Firebase rules to ensure secure and controlled access to data.
+**Secure Access:**
+- Implemented Firebase rules to ensure secure and controlled access to data.
 
-Event Handling:
-Utilization of Firebase functions to handle events and automate tasks efficiently.
+**Automated Event Handling:**
+- Utilization of Firebase functions to handle events and automate tasks efficiently.
 
-Multimedia Support:
-An image carousel feature to enhance posts with visual content.
+**Image Carousel:**
+- Enhance posts with visual content through an image carousel feature.
 
-Data Integrity:
-Employing Firebase Batch writes and Transactions for safer and more reliable data modifications.
-User Interface:
+**Reliable Data Modifications ensures data integrity:**
+- Employing Firebase Batch writes and Transactions for safer and more reliable data modifications.
 
-A user-friendly interface inspired by Twitter, designed to provide an intuitive and seamless user experience.
+**User-Friendly Interface:**
+- An intuitive and seamless user interface inspired by Twitter.
 
 There is more to explore
 
@@ -105,7 +118,7 @@ There is more to explore
 <p>1. Get the latest snapshot</p>
 
 ```
-git clone https://github.com/CodeWithBablu/Esteto.git
+git clone git@github.com:CodeWithBablu/Hiveit-community-platform.git
 ```
 
 <p>2. Install NPM dependencies</p>
@@ -124,61 +137,47 @@ npm start
   -  tailwindcss
   -  for those who don't want to dig in
 
-env file setup for fronend
+env file setup 
 ```
-VITE_SOCKET_BASE_URL="ws://localhost:<BACKEND_PORT>/"
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
 
-VITE_MAPBOX_PUBLIC_KEY=
-VITE_MAPBOX_ACCESS_TOKEN=
-
-VITE_BACKEND_URL=
+VITE_ALGOLIA_APP_ID=
+VITE_ALGOLIA_PUBLIC_KEY=
+VITE_ALGOLIA_ADMIN_KEY=
+VITE_ALGOLIA_INDEX=
 ```
-env file setup for backend
-```
-  PORT=
-  DATABASE_URL=
-  JWT_SECRET_KEY=
-```
-
-**Continue with backend part here**
-<b>[Backend repo](https://github.com/CodeWithBablu/Esteto-API.git)</b>
 
 <h2>💻 Built with</h2>
 
 Technologies used in the project:
 
-*Frontend tech's
+*Tech stack
 - React
 - tailwindcss
-- scss
 - typeScript
-- zustland
+- Redux for state management
+- Firebase : Auth, Store, Storage
   
-*Backend tech's
-- Node Js
-- Express Js
-- MongoDB
-- Mongoose
-- socket.io
-
 Honourable mention
-- Mapbox (for fetching address using geocoding forward and reverse api)
-- leaflet 
-- react-quill (for text editor)
-- openDatasoft API (for fetching cities data)
-- heroicons
+- algoliaSearch for full text search
+- framer motion
+- remix icons
+- chakra UI
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Chat feature
-- [x] Integrate an image upload widget to enable users to add photos of their properties
-- [x] Allow users to set property locations with an interactive map and search functionality, providing a more intuitive alternative to manually entering addresses.
-- [ ] Implement AI-powered recommendations to simplify property search
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] **Gallery Feature:** Implemented functionality for uploading images and videos to posts.
+- [x] **Karma Display:** Enabled display of post and comment karma.
+- [ ] **AI-Powered Recommendations:** Plan to implement AI-driven recommendations for posts.
+- [ ] **Chat Feature:** Upcoming feature for real-time user communication.
+- [ ] **Moderation Tools:** Introduction of tools for community moderation and content management.
 
 
 <p align="center">
