@@ -339,7 +339,7 @@ const Homefeed = () => {
   }
 
   return (
-    <div>
+    <div className="relative">
       {(postStateValue.posts.length > 0) && (
         <>
           <div className="">
@@ -376,6 +376,7 @@ const Homefeed = () => {
           <hr className="flex-grow border-[1px] border-gray-800" />
         </div>
       )}
+
     </div>
   )
 }
