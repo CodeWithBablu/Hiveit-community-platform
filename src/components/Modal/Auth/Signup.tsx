@@ -107,7 +107,7 @@ const Signup = () => {
       <form
         name="signupForm"
         onSubmit={onSubmit}
-        className="flex w-full flex-col space-y-4"
+        className="flex w-full flex-col gap-4 font-poppins"
       >
         <input
           onChange={onChange}
@@ -147,8 +147,9 @@ const Signup = () => {
           </motion.button>
           {loading && (
             <Spinner
-              thickness="4px"
-              className="absolute bottom-0 left-0 right-0 top-0 m-auto"
+              speed="0.7s"
+              thickness="3px"
+              className="absolute bottom-0 text-gray-300 left-0 right-0 top-0 m-auto"
             />
           )}
         </div>

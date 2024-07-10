@@ -18,7 +18,7 @@ const RightContent = ({ user }: Props) => {
         {user ? <Icons /> : <AuthButtons />}
         {user && <UserMenu user={user} />}
 
-        <div className="flex xl:hidden lg:ml-3">
+        <div className="flex xl:hidden ml-1 md:ml-3">
           <SideDrawer />
         </div>
 

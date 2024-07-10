@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCreateCommunityModelOpen, setRecentCommunities } from '@/slices';
 import useDirectory from '@/hooks/useDirectory';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import CreateCommunityModal from '../Modal/CreateCommunity/CreateCommunityModal';
+import { useEffect } from 'react';
 
 type Props = {
   isDrawer: boolean;

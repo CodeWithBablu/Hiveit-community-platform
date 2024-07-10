@@ -67,10 +67,10 @@ const OAuthButton = () => {
       <motion.div
         onClick={onSignin}
         whileTap={{ scale: 0.9 }}
-        className={`my-2 flex cursor-pointer items-center justify-center gap-4 rounded-md bg-gray-200 px-6 py-1 ${loading ? "pointer-events-none opacity-60" : "opacity-100"}`}
+        className={`my-2 flex cursor-pointer items-center justify-center gap-4 rounded-md shadow-[0_0_20px_0px_rgb(255,255,255,0.2)] px-6 py-2 ${loading ? "pointer-events-none opacity-60" : "opacity-100"}`}
       >
-        <img className="h-10 w-10" src="/google.svg" alt="" />
-        <h1 className="font-poppins text-xl font-medium text-zinc-800">
+        <img className="h-10 w-10" src="/google.svg" alt="google auth" />
+        <h1 className="font-poppins text-xl font-medium text-gray-200">
           Signin with Google
         </h1>
       </motion.div>

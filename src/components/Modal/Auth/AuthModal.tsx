@@ -50,7 +50,7 @@ const AuthModal = () => {
             {modalState.view == "resetPassword" && "Reset Password"}
           </ModalHeader>
           <ModalCloseButton className="text-gray-400" />
-          <ModalBody className="mb-8 flex items-center justify-around md:space-x-8">
+          <ModalBody className="mb-8 flex items-center justify-around">
             <>
               <img
                 className="hidden h-44 w-44 rounded-full shadow-2xl shadow-secondary/50 md:inline-block"
@@ -60,7 +60,7 @@ const AuthModal = () => {
               {modalState.view === "resetPassword" ? (
                 <ResetPassword />
               ) : (
-                <div className="flex flex-col">
+                <div className="flex flex-col shrink-0">
                   <OAuthButton />
                   <hr className="my-3 border-gray-600" />
                   <AuthInputs />
