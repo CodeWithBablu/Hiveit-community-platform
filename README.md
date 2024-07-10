@@ -54,7 +54,7 @@
 
 <br><br> Mobile views  </b><br>
 
-<div style="display: flex; width:'100%'; justify-content: center;">
+<div style="display: flex; width: 100%; justify-content: center;">
 ![mobileView](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/d0ea387a-1a02-4d25-8b35-11b4fb6e66de)
 ![mobileView2](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/cf19097f-0502-4324-b8fd-07a96103638b)
 </div>
