@@ -54,17 +54,18 @@
 
 <br><br> Mobile views  </b><br>
 
-<div style="display: flex; width: 100%; justify-content: center;">
-![mobileView](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/d0ea387a-1a02-4d25-8b35-11b4fb6e66de)
-![mobileView2](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/cf19097f-0502-4324-b8fd-07a96103638b)
+<div style="display: flex; justify-conten: center;">
+
+<p align="center">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/85dd49f8-5632-4efd-ae76-0027cf9d6850">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/b2b04cce-4b14-4365-b1cc-696cdcad1929">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/0a346509-c07e-4650-a591-667bcbd62987">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/07cf5d05-d395-479b-a671-7bbbf6c346d7">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/171c1ea5-c114-4ac0-b4a3-8bf600f22725">
+  <img style="margin-right:"50px" width="400" height="800" src="https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/9a1d5d74-f587-46f0-9fc9-371899ed686b">
+</p>
+ 
 </div>
-
-
-![mobileView3](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/5f0fcc1a-4afe-42d1-a467-732bf9cc4ed8)
-
-![mobileView4](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/8c73f59e-8da4-40d0-af47-03e7e0668357)
-
-![mobileView5](https://github.com/CodeWithBablu/Hiveit-community-platform/assets/59352323/463fa5ec-ed3f-4f1d-a4a8-81e4a018f702)
 
 
 <h2>🧐 Features 😎️</h2>
