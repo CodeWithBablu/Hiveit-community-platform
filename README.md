@@ -8,7 +8,7 @@
 
 <b>[Live Demo](https://hiveit.vercel.app/)</b>
 
-
+https://github.com/user-attachments/assets/6d9e13a4-f9fa-42b1-b6bb-761ba4c7a30b
 
 <h2>A Glimpse Behind the Curtain :</h2>
 
